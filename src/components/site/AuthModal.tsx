@@ -122,26 +122,25 @@ function AuthModalInner({ open, onOpenChange, onAuthenticated }: AuthModalProps)
                       </span>
                       <div>
                         <p className="text-[11px] font-mono uppercase tracking-wider text-sage font-semibold">
-                          Mock authentication
+                          Login demonstrativo
                         </p>
                         <h2 id="auth-modal-title" className="font-display text-xl font-medium text-foreground leading-tight">
-                          Sign in to DaisyFlower
+                          Entrar no DaisyFlower
                         </h2>
                       </div>
                     </div>
 
                     <p className="mt-5 text-sm text-muted-foreground text-pretty leading-relaxed">
-                      Connect your Discord account to sync your garden, view missions, track your
-                      collection, and manage your settings from the web. This is a frontend mockup —
-                      no real data is sent or stored.
+                      Conecte sua conta do Discord para ver seu jardim no site — plantas, missões,
+                      coleção e configurações. Isto é um mockup: nenhum dado real é enviado.
                     </p>
 
                     {/* What you get */}
                     <ul className="mt-5 space-y-2.5">
                       {[
-                        "Sync your garden across Discord and web",
-                        "Track missions, collection, and XP in real time",
-                        "Manage notification and language preferences",
+                        "Veja seu jardim no navegador, sem abrir o Discord",
+                        "Acompanhe missões, coleção e XP em tempo real",
+                        "Gerencie idioma e notificações",
                       ].map((item) => (
                         <li key={item} className="flex items-start gap-2.5 text-sm">
                           <span className="grid place-items-center h-5 w-5 rounded-full bg-sage/15 text-sage mt-0.5 shrink-0">
@@ -158,12 +157,12 @@ function AuthModalInner({ open, onOpenChange, onAuthenticated }: AuthModalProps)
                       className="mt-6 w-full inline-flex items-center justify-center gap-2.5 rounded-xl bg-[#5865F2] hover:bg-[#4752c4] text-white px-5 py-3 text-sm font-semibold shadow-md transition-colors"
                     >
                       <DiscordIcon className="h-5 w-5" />
-                      Continue with Discord
+                      Continuar com Discord
                     </button>
 
                     <p className="mt-4 flex items-center justify-center gap-1.5 text-[11px] text-muted-foreground">
                       <ShieldIcon size={12} />
-                      We only request your Discord ID and username. No password, no messages.
+                      Pedimos só seu ID e nome de usuário do Discord. Sem senha, sem mensagens.
                     </p>
                   </motion.div>
                 )}
@@ -185,10 +184,10 @@ function AuthModalInner({ open, onOpenChange, onAuthenticated }: AuthModalProps)
                       </span>
                     </div>
                     <h3 className="mt-5 font-display text-lg font-medium text-foreground">
-                      Connecting to Discord…
+                      Conectando ao Discord…
                     </h3>
                     <p className="mt-1.5 text-sm text-muted-foreground">
-                      Authorizing DaisyFlower to read your garden data
+                      Autorizando DaisyFlower a ler seu jardim
                     </p>
                   </motion.div>
                 )}
@@ -211,10 +210,10 @@ function AuthModalInner({ open, onOpenChange, onAuthenticated }: AuthModalProps)
                       <CheckIcon size={26} />
                     </motion.div>
                     <h3 className="mt-5 font-display text-lg font-medium text-foreground">
-                      Welcome back, gardener!
+                      Bem-vindo de volta!
                     </h3>
                     <p className="mt-1.5 text-sm text-muted-foreground">
-                      Your garden is ready. Redirecting you to the dashboard…
+                      Seu jardim está pronto. Abrindo seu painel…
                     </p>
                   </motion.div>
                 )}

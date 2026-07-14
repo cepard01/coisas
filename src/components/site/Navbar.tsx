@@ -14,11 +14,10 @@ import {
 } from "./icons";
 
 const NAV_LINKS = [
-  { href: "#features", label: "Features" },
-  { href: "#loop", label: "Gameplay" },
-  { href: "#catalog", label: "Catalog" },
-  { href: "#dashboard", label: "Dashboard" },
-  { href: "#roadmap", label: "Roadmap" },
+  { href: "#how", label: "Como funciona" },
+  { href: "#plants", label: "Plantas" },
+  { href: "#dashboard", label: "Painel" },
+  { href: "#faq", label: "Perguntas" },
 ];
 
 export function Navbar() {
@@ -35,7 +34,6 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Track active section for nav highlight
   useEffect(() => {
     const ids = NAV_LINKS.map((l) => l.href.slice(1));
     const observer = new IntersectionObserver(
@@ -70,11 +68,10 @@ export function Navbar() {
       >
         <div className="mx-auto max-w-6xl px-5 sm:px-6">
           <nav className="flex h-16 items-center justify-between gap-4">
-            {/* Wordmark */}
             <button
               onClick={() => handleNav("#top")}
               className="flex items-center gap-2 group"
-              aria-label="DaisyFlower home"
+              aria-label="DaisyFlower início"
             >
               <DaisyMark size={26} className="text-terra transition-transform group-hover:rotate-12" />
               <span className="font-display text-lg font-semibold tracking-tight text-foreground">
@@ -82,7 +79,6 @@ export function Navbar() {
               </span>
             </button>
 
-            {/* Desktop nav — centered */}
             <div className="hidden md:flex items-center gap-1 absolute left-1/2 -translate-x-1/2">
               {NAV_LINKS.map((link) => {
                 const isActive = activeSection === link.href.slice(1);
@@ -108,18 +104,7 @@ export function Navbar() {
               })}
             </div>
 
-            {/* Right side */}
             <div className="hidden md:flex items-center gap-1">
-              <a
-                href="https://github.com/cepard01/daisyflower"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="grid place-items-center h-9 w-9 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
-                aria-label="GitHub"
-              >
-                <GithubIcon size={17} />
-              </a>
-              <div className="w-px h-5 bg-border mx-1" />
               {hydrated && player ? (
                 <UserMenu player={player} onSignOut={signOut} onNav={handleNav} />
               ) : (
@@ -127,16 +112,15 @@ export function Navbar() {
                   onClick={() => setAuthOpen(true)}
                   className="rounded-lg bg-foreground text-background px-4 py-2 text-sm font-medium hover:bg-foreground/90 transition-colors"
                 >
-                  Sign in
+                  Entrar
                 </button>
               )}
             </div>
 
-            {/* Mobile toggle */}
             <button
               onClick={() => setOpen((v) => !v)}
               className="md:hidden grid place-items-center h-9 w-9 rounded-lg text-foreground hover:bg-secondary transition-colors"
-              aria-label={open ? "Close menu" : "Open menu"}
+              aria-label={open ? "Fechar menu" : "Abrir menu"}
               aria-expanded={open}
             >
               {open ? <CloseIcon size={18} /> : <MenuIcon size={18} />}
@@ -144,7 +128,6 @@ export function Navbar() {
           </nav>
         </div>
 
-        {/* Mobile menu */}
         <AnimatePresence>
           {open && (
             <motion.div
@@ -180,33 +163,23 @@ export function Navbar() {
                         <DaisyMark size={18} className="text-sage" />
                       </span>
                       <div>
-                        <p className="text-sm font-semibold text-foreground">
-                          {player.username}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          Level {player.level}
-                        </p>
+                        <p className="text-sm font-semibold text-foreground">{player.username}</p>
+                        <p className="text-xs text-muted-foreground">Nível {player.level}</p>
                       </div>
                     </div>
                     <button
-                      onClick={() => {
-                        signOut();
-                        setOpen(false);
-                      }}
+                      onClick={() => { signOut(); setOpen(false); }}
                       className="mt-3 w-full text-left text-sm text-muted-foreground hover:text-foreground transition-colors"
                     >
-                      Sign out
+                      Sair
                     </button>
                   </div>
                 ) : (
                   <button
-                    onClick={() => {
-                      setOpen(false);
-                      setAuthOpen(true);
-                    }}
+                    onClick={() => { setOpen(false); setAuthOpen(true); }}
                     className="mt-2 mx-3 inline-flex items-center justify-center rounded-lg bg-foreground text-background px-4 py-2.5 text-sm font-medium"
                   >
-                    Sign in
+                    Entrar
                   </button>
                 )}
               </div>
@@ -261,30 +234,28 @@ function UserMenu({
               className="absolute right-0 top-full mt-2 w-52 z-50 bg-card border border-border rounded-xl shadow-lg overflow-hidden"
             >
               <div className="p-3 border-b border-border">
-                <p className="text-sm font-semibold text-foreground truncate">
-                  {player.username}
-                </p>
-                <p className="text-xs text-muted-foreground">Level {player.level} · Gardener</p>
+                <p className="text-sm font-semibold text-foreground truncate">{player.username}</p>
+                <p className="text-xs text-muted-foreground">Nível {player.level} · Jardineiro</p>
               </div>
               <div className="p-1.5">
                 <button
                   onClick={() => { setOpen(false); onNav("#dashboard"); }}
                   className="w-full text-left px-2.5 py-2 text-sm text-foreground hover:bg-secondary rounded-lg transition-colors"
                 >
-                  My dashboard
+                  Meu painel
                 </button>
                 <button
-                  onClick={() => { setOpen(false); onNav("#catalog"); }}
+                  onClick={() => { setOpen(false); onNav("#plants"); }}
                   className="w-full text-left px-2.5 py-2 text-sm text-foreground hover:bg-secondary rounded-lg transition-colors"
                 >
-                  Browse catalog
+                  Ver plantas
                 </button>
                 <div className="h-px bg-border my-1.5" />
                 <button
                   onClick={() => { setOpen(false); onSignOut(); }}
                   className="w-full text-left px-2.5 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-secondary rounded-lg transition-colors"
                 >
-                  Sign out
+                  Sair
                 </button>
               </div>
             </motion.div>

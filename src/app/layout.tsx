@@ -25,30 +25,30 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "DaisyFlower — A gardening simulator for Discord",
+  title: "DaisyFlower — Cultive seu jardim dentro do Discord",
   description:
-    "DaisyFlower is a cozy, UI-first gardening game for Discord. Plant seeds, react to weather, harvest flowers, discover mutations, and grow your botanical collection.",
+    "DaisyFlower é um jogo de jardim tranquilo para Discord. Plante sementes, cuide das flores, reaja ao clima e descubra mutações raras. Grátis, em português.",
   keywords: [
     "DaisyFlower",
-    "Discord bot",
-    "gardening game",
-    "farm simulator",
-    "Discord game",
-    "cozy game",
+    "bot Discord",
+    "jogo de jardim",
+    "simulador de fazenda",
+    "jogo Discord",
+    "jogo tranquilo",
   ],
-  authors: [{ name: "DaisyFlower Project" }],
+  authors: [{ name: "DaisyFlower" }],
   openGraph: {
-    title: "DaisyFlower — A gardening simulator for Discord",
+    title: "DaisyFlower — Cultive seu jardim dentro do Discord",
     description:
-      "Plant seeds, care for your garden, react to weather, harvest flowers, and discover rare mutations — all inside Discord.",
+      "Plante sementes, cuide do seu jardim, reaja ao clima e descubra mutações raras — tudo dentro do Discord.",
     siteName: "DaisyFlower",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "DaisyFlower — Gardening simulator for Discord",
+    title: "DaisyFlower — Jogo de jardim para Discord",
     description:
-      "A cozy, UI-first gardening game built with TypeScript, Discord.js v14, MongoDB, and Redis.",
+      "Um simulador de jardim tranquilo, grátis e em português para Discord.",
   },
 };
 
