@@ -98,7 +98,7 @@ function LockedDashboard({ onSignIn }: { onSignIn: () => void }) {
   );
 }
 
-function DashboardLayout({
+export function DashboardLayout({
   tab,
   onTab,
   player,
