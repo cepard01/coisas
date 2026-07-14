@@ -5,30 +5,31 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { PageHeader } from "@/components/site/PageHeader";
 import { Reveal } from "@/components/site/Reveal";
-import { FAQS } from "@/lib/daisy-data";
+import { useI18n } from "@/hooks/use-i18n";
 import { PlusIcon, MinusIcon, ArrowRightIcon } from "@/components/site/icons";
 
-export default function PerguntasPage() {
+export default function FaqPage() {
+  const { t } = useI18n();
   const [open, setOpen] = useState<number | null>(0);
 
   return (
     <>
       <PageHeader
-        number="04"
-        eyebrow="Perguntas frequentes"
+        number={t.faq.number}
+        eyebrow={t.faq.eyebrow}
         title={
           <>
-            Tudo que você{" "}
-            <em className="font-normal text-sage">quer saber.</em>
+            {t.faq.title}{" "}
+            <em className="font-normal text-sage">{t.faq.highlight}</em>
           </>
         }
-        description="Não achou sua dúvida? Abra uma issue no GitHub que a gente responde."
+        description={t.faq.description}
       />
 
       <section className="py-16 md:py-24">
         <div className="mx-auto max-w-3xl px-5 sm:px-6">
           <div className="space-y-2">
-            {FAQS.map((item, i) => {
+            {t.faq.items.map((item, i) => {
               const isOpen = open === i;
               return (
                 <Reveal key={i} delay={Math.min(i * 0.03, 0.2)}>
@@ -70,10 +71,10 @@ export default function PerguntasPage() {
           <Reveal delay={0.2}>
             <div className="mt-12 rounded-xl border border-border bg-card p-6 text-center">
               <p className="font-display text-lg font-medium text-foreground">
-                Ainda com dúvidas?
+                {t.faq.stillQuestions}
               </p>
               <p className="mt-2 text-sm text-muted-foreground text-pretty">
-                Abra uma issue no GitHub ou pergunte no servidor de suporte.
+                {t.faq.stillBody}
               </p>
               <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
                 <a
@@ -82,13 +83,13 @@ export default function PerguntasPage() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-background px-4 py-2 text-sm font-medium text-foreground hover:bg-secondary transition-colors"
                 >
-                  GitHub Issues
+                  {t.faq.githubIssues}
                 </a>
                 <Link
-                  href="/comecar"
+                  href="/get-started"
                   className="group inline-flex items-center gap-2 rounded-lg bg-foreground text-background px-4 py-2 text-sm font-medium hover:bg-foreground/90 transition-colors"
                 >
-                  Começar agora
+                  {t.nav.getStarted}
                   <ArrowRightIcon size={14} className="transition-transform group-hover:translate-x-0.5" />
                 </Link>
               </div>

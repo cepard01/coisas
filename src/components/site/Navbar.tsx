@@ -6,7 +6,9 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/use-auth";
+import { useI18n } from "@/hooks/use-i18n";
 import { AuthModal } from "./AuthModal";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 import {
   DaisyMark,
   MenuIcon,
@@ -15,19 +17,20 @@ import {
   GithubIcon,
 } from "./icons";
 
-const NAV_LINKS = [
-  { href: "/como-funciona", label: "Como funciona" },
-  { href: "/plantas", label: "Plantas" },
-  { href: "/painel", label: "Painel" },
-  { href: "/perguntas", label: "Perguntas" },
-];
-
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
   const pathname = usePathname();
   const { player, signIn, signOut, hydrated } = useAuth();
+  const { t } = useI18n();
+
+  const NAV_LINKS = [
+    { href: "/how-it-works", label: t.nav.howItWorks },
+    { href: "/plants", label: t.nav.plants },
+    { href: "/panel", label: t.nav.panel },
+    { href: "/faq", label: t.nav.faq },
+  ];
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -36,7 +39,6 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Close mobile menu on route change
   useEffect(() => {
     setOpen(false);
   }, [pathname]);
@@ -53,7 +55,7 @@ export function Navbar() {
       >
         <div className="mx-auto max-w-6xl px-5 sm:px-6">
           <nav className="flex h-16 items-center justify-between gap-4">
-            <Link href="/" className="flex items-center gap-2 group" aria-label="DaisyFlower início">
+            <Link href="/" className="flex items-center gap-2 group" aria-label="DaisyFlower home">
               <DaisyMark size={26} className="text-terra transition-transform group-hover:rotate-12" />
               <span className="font-display text-lg font-semibold tracking-tight text-foreground">
                 DaisyFlower
@@ -85,7 +87,8 @@ export function Navbar() {
               })}
             </div>
 
-            <div className="hidden md:flex items-center gap-1">
+            <div className="hidden md:flex items-center gap-1.5">
+              <LanguageSwitcher compact />
               <a
                 href="https://github.com/cepard01/daisyflower"
                 target="_blank"
@@ -95,7 +98,7 @@ export function Navbar() {
               >
                 <GithubIcon size={17} />
               </a>
-              <div className="w-px h-5 bg-border mx-1" />
+              <div className="w-px h-5 bg-border mx-0.5" />
               {hydrated && player ? (
                 <UserMenu player={player} onSignOut={signOut} />
               ) : (
@@ -103,7 +106,7 @@ export function Navbar() {
                   onClick={() => setAuthOpen(true)}
                   className="rounded-lg bg-foreground text-background px-4 py-2 text-sm font-medium hover:bg-foreground/90 transition-colors"
                 >
-                  Entrar
+                  {t.nav.signIn}
                 </button>
               )}
             </div>
@@ -111,7 +114,7 @@ export function Navbar() {
             <button
               onClick={() => setOpen((v) => !v)}
               className="md:hidden grid place-items-center h-9 w-9 rounded-lg text-foreground hover:bg-secondary transition-colors"
-              aria-label={open ? "Fechar menu" : "Abrir menu"}
+              aria-label={open ? "Close menu" : "Open menu"}
               aria-expanded={open}
             >
               {open ? <CloseIcon size={18} /> : <MenuIcon size={18} />}
@@ -144,10 +147,10 @@ export function Navbar() {
                   </Link>
                 ))}
                 <Link
-                  href="/comecar"
+                  href="/get-started"
                   className="px-3 py-2.5 text-sm font-medium text-foreground hover:bg-secondary rounded-lg transition-colors"
                 >
-                  Começar agora
+                  {t.nav.getStarted}
                 </Link>
                 <a
                   href="https://github.com/cepard01/daisyflower"
@@ -155,8 +158,13 @@ export function Navbar() {
                   rel="noopener noreferrer"
                   className="px-3 py-2.5 text-sm font-medium text-foreground hover:bg-secondary rounded-lg transition-colors flex items-center gap-2"
                 >
-                  <GithubIcon size={15} /> GitHub
+                  <GithubIcon size={15} /> {t.nav.github}
                 </a>
+                <div className="h-px bg-border my-2" />
+                <div className="px-3 py-2 flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">Language</span>
+                  <LanguageSwitcher />
+                </div>
                 <div className="h-px bg-border my-2" />
                 {hydrated && player ? (
                   <div className="px-3 py-2">
@@ -166,14 +174,14 @@ export function Navbar() {
                       </span>
                       <div>
                         <p className="text-sm font-semibold text-foreground">{player.username}</p>
-                        <p className="text-xs text-muted-foreground">Nível {player.level}</p>
+                        <p className="text-xs text-muted-foreground">{t.userMenu.level} {player.level}</p>
                       </div>
                     </div>
                     <button
                       onClick={signOut}
                       className="mt-3 w-full text-left text-sm text-muted-foreground hover:text-foreground transition-colors"
                     >
-                      Sair
+                      {t.userMenu.signOut}
                     </button>
                   </div>
                 ) : (
@@ -181,7 +189,7 @@ export function Navbar() {
                     onClick={() => setAuthOpen(true)}
                     className="mt-2 mx-3 inline-flex items-center justify-center rounded-lg bg-foreground text-background px-4 py-2.5 text-sm font-medium"
                   >
-                    Entrar
+                    {t.nav.signIn}
                   </button>
                 )}
               </div>
@@ -204,6 +212,7 @@ function UserMenu({
 }) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const { t } = useI18n();
 
   useEffect(() => {
     setOpen(false);
@@ -240,29 +249,29 @@ function UserMenu({
             >
               <div className="p-3 border-b border-border">
                 <p className="text-sm font-semibold text-foreground truncate">{player.username}</p>
-                <p className="text-xs text-muted-foreground">Nível {player.level} · Jardineiro</p>
+                <p className="text-xs text-muted-foreground">{t.userMenu.level} {player.level} · Gardener</p>
               </div>
               <div className="p-1.5">
                 <Link
-                  href="/painel"
+                  href="/panel"
                   onClick={() => setOpen(false)}
                   className="w-full text-left px-2.5 py-2 text-sm text-foreground hover:bg-secondary rounded-lg transition-colors block"
                 >
-                  Meu painel
+                  {t.userMenu.myPanel}
                 </Link>
                 <Link
-                  href="/plantas"
+                  href="/plants"
                   onClick={() => setOpen(false)}
                   className="w-full text-left px-2.5 py-2 text-sm text-foreground hover:bg-secondary rounded-lg transition-colors block"
                 >
-                  Ver plantas
+                  {t.userMenu.seePlants}
                 </Link>
                 <div className="h-px bg-border my-1.5" />
                 <button
                   onClick={onSignOut}
                   className="w-full text-left px-2.5 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-secondary rounded-lg transition-colors"
                 >
-                  Sair
+                  {t.userMenu.signOut}
                 </button>
               </div>
             </motion.div>

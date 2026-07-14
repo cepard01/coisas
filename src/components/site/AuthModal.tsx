@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useI18n } from "@/hooks/use-i18n";
 import {
   CloseIcon,
   SproutIcon,
@@ -33,6 +34,7 @@ export function AuthModal({ open, onOpenChange, onAuthenticated }: AuthModalProp
 
 function AuthModalInner({ open, onOpenChange, onAuthenticated }: AuthModalProps) {
   const [step, setStep] = useState<Step>("intro");
+  const { t } = useI18n();
 
   // Lock scroll when open
   useEffect(() => {
@@ -122,26 +124,21 @@ function AuthModalInner({ open, onOpenChange, onAuthenticated }: AuthModalProps)
                       </span>
                       <div>
                         <p className="text-[11px] font-mono uppercase tracking-wider text-sage font-semibold">
-                          Login demonstrativo
+                          {t.auth.mockLabel}
                         </p>
                         <h2 id="auth-modal-title" className="font-display text-xl font-medium text-foreground leading-tight">
-                          Entrar no DaisyFlower
+                          {t.auth.title}
                         </h2>
                       </div>
                     </div>
 
                     <p className="mt-5 text-sm text-muted-foreground text-pretty leading-relaxed">
-                      Conecte sua conta do Discord para ver seu jardim no site — plantas, missões,
-                      coleção e configurações. Isto é um mockup: nenhum dado real é enviado.
+                      {t.auth.body}
                     </p>
 
                     {/* What you get */}
                     <ul className="mt-5 space-y-2.5">
-                      {[
-                        "Veja seu jardim no navegador, sem abrir o Discord",
-                        "Acompanhe missões, coleção e XP em tempo real",
-                        "Gerencie idioma e notificações",
-                      ].map((item) => (
+                      {t.auth.benefits.map((item) => (
                         <li key={item} className="flex items-start gap-2.5 text-sm">
                           <span className="grid place-items-center h-5 w-5 rounded-full bg-sage/15 text-sage mt-0.5 shrink-0">
                             <CheckIcon size={12} />
@@ -157,12 +154,12 @@ function AuthModalInner({ open, onOpenChange, onAuthenticated }: AuthModalProps)
                       className="mt-6 w-full inline-flex items-center justify-center gap-2.5 rounded-xl bg-[#5865F2] hover:bg-[#4752c4] text-white px-5 py-3 text-sm font-semibold shadow-md transition-colors"
                     >
                       <DiscordIcon className="h-5 w-5" />
-                      Continuar com Discord
+                      {t.auth.discordButton}
                     </button>
 
                     <p className="mt-4 flex items-center justify-center gap-1.5 text-[11px] text-muted-foreground">
                       <ShieldIcon size={12} />
-                      Pedimos só seu ID e nome de usuário do Discord. Sem senha, sem mensagens.
+                      {t.auth.privacy}
                     </p>
                   </motion.div>
                 )}
@@ -184,10 +181,10 @@ function AuthModalInner({ open, onOpenChange, onAuthenticated }: AuthModalProps)
                       </span>
                     </div>
                     <h3 className="mt-5 font-display text-lg font-medium text-foreground">
-                      Conectando ao Discord…
+                      {t.auth.connecting}
                     </h3>
                     <p className="mt-1.5 text-sm text-muted-foreground">
-                      Autorizando DaisyFlower a ler seu jardim
+                      {t.auth.connectingSub}
                     </p>
                   </motion.div>
                 )}
@@ -210,10 +207,10 @@ function AuthModalInner({ open, onOpenChange, onAuthenticated }: AuthModalProps)
                       <CheckIcon size={26} />
                     </motion.div>
                     <h3 className="mt-5 font-display text-lg font-medium text-foreground">
-                      Bem-vindo de volta!
+                      {t.auth.done}
                     </h3>
                     <p className="mt-1.5 text-sm text-muted-foreground">
-                      Seu jardim está pronto. Abrindo seu painel…
+                      {t.auth.doneSub}
                     </p>
                   </motion.div>
                 )}

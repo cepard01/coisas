@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
+import { I18nProvider } from "@/hooks/use-i18n";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -27,30 +28,29 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "DaisyFlower — Cultive seu jardim dentro do Discord",
+  title: "DaisyFlower — Grow your garden inside Discord",
   description:
-    "DaisyFlower é um jogo de jardim tranquilo para Discord. Plante sementes, cuide das flores, reaja ao clima e descubra mutações raras. Grátis, em português.",
+    "DaisyFlower is a calm garden game for Discord. Plant seeds, tend to flowers, react to weather, and discover rare mutations. Free, multilingual.",
   keywords: [
     "DaisyFlower",
-    "bot Discord",
-    "jogo de jardim",
-    "simulador de fazenda",
-    "jogo Discord",
-    "jogo tranquilo",
+    "Discord bot",
+    "garden game",
+    "farm simulator",
+    "Discord game",
+    "cozy game",
   ],
   authors: [{ name: "DaisyFlower" }],
   openGraph: {
-    title: "DaisyFlower — Cultive seu jardim dentro do Discord",
+    title: "DaisyFlower — Grow your garden inside Discord",
     description:
-      "Plante sementes, cuide do seu jardim, reaja ao clima e descubra mutações raras — tudo dentro do Discord.",
+      "Plant seeds, tend to your garden, react to weather, and discover rare mutations — all inside Discord.",
     siteName: "DaisyFlower",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "DaisyFlower — Jogo de jardim para Discord",
-    description:
-      "Um simulador de jardim tranquilo, grátis e em português para Discord.",
+    title: "DaisyFlower — Garden game for Discord",
+    description: "A calm garden simulator, free and multilingual, for Discord.",
   },
 };
 
@@ -60,17 +60,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${inter.variable} ${fraunces.variable} ${jetbrains.variable} font-sans antialiased bg-background text-foreground`}
         suppressHydrationWarning
       >
-        <div className="min-h-screen flex flex-col">
-          <Navbar />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </div>
-        <Toaster />
+        <I18nProvider>
+          <div className="min-h-screen flex flex-col">
+            <Navbar />
+            <main className="flex-1">{children}</main>
+            <Footer />
+          </div>
+          <Toaster />
+        </I18nProvider>
       </body>
     </html>
   );

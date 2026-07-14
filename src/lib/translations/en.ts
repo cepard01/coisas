@@ -1,0 +1,524 @@
+export const en = {
+  nav: {
+    howItWorks: "How it works",
+    plants: "Plants",
+    panel: "Dashboard",
+    faq: "FAQ",
+    signIn: "Sign in",
+    getStarted: "Get started",
+    github: "GitHub",
+  },
+  hero: {
+    badge: "garden simulator · free",
+    badgeSub: "for Discord",
+    titleLine1: "Grow your own",
+    titleHighlight: "little garden",
+    titleLine2: "inside Discord.",
+    subtitle:
+      "Plant seeds, tend to your flowers, react to the weather, and discover rare mutations. A calm game that grows with you — no rush, no grind, no spam.",
+    ctaPrimary: "Add to Discord",
+    ctaSecondary: "How it works",
+    stats: [
+      { value: "5", label: "plants to grow" },
+      { value: "4", label: "weather states" },
+      { value: "2", label: "languages" },
+      { value: "0", label: "annoying timers" },
+    ],
+    illustration: {
+      now: "NOW",
+      weather: "☀ Sunny",
+      weatherEffect: "growing 50% faster",
+      caption: "4 plants · 2 ready to harvest",
+      live: "growing now",
+    },
+  },
+  whatIs: {
+    eyebrow: "What it is",
+    body1:
+      "DaisyFlower is a Discord bot where you tend a virtual garden. Plant seeds, watch them grow, water when needed, and harvest beautiful flowers.",
+    body2:
+      "Everything happens in interactive panels with buttons — no commands to memorize. And the best part: your plants keep growing even when Discord is closed.",
+  },
+  explore: {
+    title: "Explore from here",
+    subtitle: "Each page has just what you need — no fluff.",
+    cards: [
+      {
+        emoji: "🌱",
+        title: "How it works",
+        description:
+          "Three steps: plant, let it grow, harvest. See exactly what it's like to play in Discord.",
+        cta: "See the guide",
+      },
+      {
+        emoji: "🌻",
+        title: "Plants & weather",
+        description:
+          "Sunflowers, roses, rare mutations. Every plant has its way. Every weather changes everything.",
+        cta: "See plants",
+      },
+      {
+        emoji: "📊",
+        title: "Your dashboard",
+        description:
+          "Connect with Discord and see your garden in the browser — plants, wallet, missions, collection.",
+        cta: "Open dashboard",
+      },
+    ],
+  },
+  finalCta: {
+    title: "Ready to plant",
+    highlight: "your first seed?",
+    description:
+      "Takes 30 seconds. No signup, no download. Add the bot and type /start.",
+    button: "Get started",
+  },
+  features: {
+    number: "01",
+    eyebrow: "Features",
+    title: "Built to feel like",
+    highlight: "tending a real garden.",
+    description:
+      "Every system exists to make you feel calm, curious, and gently guided — never overwhelmed.",
+    items: [
+      {
+        eyebrow: "Simulation",
+        title: "Grows even when you're away.",
+        body: "Plants don't run timers. They store timestamps. When you open your garden or harvest, DaisyFlower computes the current state from time, weather, and modifiers — instantly. Close Discord, come back later, everything grew.",
+      },
+      {
+        eyebrow: "Weather",
+        title: "A living sky above every garden.",
+        body: "Weather rotates on a 4-hour cycle. Sun accelerates growth but drains water. Rain refills soil for free. Storms slow things down but open rare mutation chances. Snow hints at winter plants.",
+      },
+      {
+        eyebrow: "Mutations",
+        title: "Discovery, not random luck.",
+        body: "Plant a Red Rose and a White Rose side by side. When both mature, there's a 30% chance one blooms as a rare Pink Rose. Hints appear when you're close, and discoveries are recorded in your Collection Book.",
+      },
+      {
+        eyebrow: "Interface",
+        title: "Panels, not commands to memorize.",
+        body: "Commands are just entry points. The actual game lives in interactive panels — buttons, menus, and modals. Plant, water, harvest, buy, sell: all guided flows that explain themselves.",
+      },
+      {
+        eyebrow: "Languages",
+        title: "Bilingual by design.",
+        body: "Built-in English and Portuguese with automatic Discord locale detection. Switch anytime. Adding a language is just a folder of translations — no code changes.",
+      },
+      {
+        eyebrow: "Content",
+        title: "New plants arrive as data files.",
+        body: "Seeds, flowers, crops, weather, mutations — all data-driven. New content appears in shop, autocomplete, and validation without touching core systems. The game is built to grow.",
+      },
+    ],
+  },
+  howItWorks: {
+    number: "02",
+    eyebrow: "How it works",
+    title: "Three steps.",
+    highlight: "No complications.",
+    description:
+      "You don't need to memorize commands. Everything happens in interactive panels with buttons — like a mini-game inside Discord.",
+    steps: [
+      {
+        emoji: "🌱",
+        step: "1",
+        title: "Plant a seed",
+        description:
+          "Open /garden, pick an empty slot, choose a seed from your bag. In seconds you see the sprout coming up.",
+      },
+      {
+        emoji: "⏳",
+        step: "2",
+        title: "Let it grow",
+        description:
+          "Close Discord if you want. Your plants keep growing with the weather and humidity. Come back whenever you feel like it.",
+      },
+      {
+        emoji: "🌻",
+        step: "3",
+        title: "Harvest and earn",
+        description:
+          "When the plant is mature, tap Harvest. You receive flowers, Daisies (the in-game currency), and XP to level up.",
+      },
+    ],
+    discordMockup: {
+      eyebrow: "Here's what it looks like in Discord",
+      title: "A panel with buttons, not a wall of text.",
+      channelName: "# my-garden",
+      youSaid: "you · just now",
+      youName: "you",
+      now: "now",
+      gardenTitle: "🌼 My Garden",
+      gardenSubtitle: "4 plants · 2 ready to harvest · humidity 50%",
+      slots: [
+        { emoji: "🌻", status: "growing 72%" },
+        { emoji: "🌹", status: "growing 45%" },
+        { emoji: "🌻", status: "ready!" },
+      ],
+      buttons: { plant: "🌱 Plant", harvest: "🌻 Harvest", water: "💧 Water", shop: "🛒 Shop" },
+      tip: "Tip: Harvest your ready Sunflower 🌻",
+      inputPlaceholder: "Send a message to #my-garden",
+    },
+    weather: {
+      eyebrow: "Weather changes everything",
+      title: "Every forecast affects your garden.",
+      description:
+        "Weather rotates every 4 hours. You need to adapt — water more in the sun, take advantage of rain, wait out the storm.",
+      items: [
+        {
+          emoji: "☀️",
+          name: "Sunny",
+          effect: "Plants grow 50% faster",
+          advice: "But water evaporates quick — water before you leave.",
+        },
+        {
+          emoji: "🌧️",
+          name: "Rainy",
+          effect: "Rain waters your garden for free",
+          advice: "Safe time to let plants grow peacefully.",
+        },
+        {
+          emoji: "⛈️",
+          name: "Storm",
+          effect: "Slower growth",
+          advice: "But opens chances for rare mutations later.",
+        },
+        {
+          emoji: "🌨️",
+          name: "Snow",
+          effect: "Everything grows slowly",
+          advice: "Special winter plants may appear.",
+        },
+      ],
+    },
+    mutations: {
+      eyebrow: "Discovery, not random luck",
+      title: "Plant combinations and discover rare mutations.",
+      description:
+        "Some plants only appear when you grow two others side by side. The bot gives hints when you're close to something special. No random confusion — every discovery makes sense.",
+      label: "mutation example",
+      chance: "30% chance",
+      inputs: ["Red Rose", "White Rose"],
+      output: "Pink Rose",
+      hint: "Plant a Red Rose and a White Rose side by side. When both mature, there's a 30% chance one blooms as a rare Pink Rose.",
+    },
+  },
+  plants: {
+    number: "03",
+    eyebrow: "What you grow",
+    title: "Flowers, roses, and",
+    highlight: "rare mutations.",
+    description:
+      "Start with simple sunflowers. As you play, unlock roses, combine seeds, and discover hybrids that only bloom with patience and curiosity.",
+    items: [
+      {
+        emoji: "🌻",
+        name: "Sunflower",
+        rarity: "Common",
+        growTime: "1 minute",
+        price: 50,
+        sellPrice: 200,
+        description: "Brightens any garden. Grows fast and is perfect for beginners.",
+        tip: "Plant several at once to harvest a lovely yellow row.",
+        color: "sun",
+      },
+      {
+        emoji: "🌹",
+        name: "Red Rose",
+        rarity: "Uncommon",
+        growTime: "2 minutes",
+        price: 100,
+        sellPrice: 400,
+        description: "Classic and elegant. Sells well and opens the path to mutations.",
+        tip: "Plant next to a White Rose to discover something special.",
+        color: "rose",
+      },
+      {
+        emoji: "🤍",
+        name: "White Rose",
+        rarity: "Uncommon",
+        growTime: "2 minutes",
+        price: 100,
+        description: "Delicate and pure. Pairs with any garden.",
+        tip: "Needs a bit more care — keep humidity high.",
+        color: "sky",
+      },
+      {
+        emoji: "🌸",
+        name: "Pink Rose",
+        rarity: "Rare",
+        growTime: "3 minutes",
+        price: 0,
+        description: "A rare hybrid. Only blooms when you grow Red and White roses together.",
+        tip: "30% chance to appear when both mature side by side.",
+        color: "rose",
+      },
+      {
+        emoji: "🥕",
+        name: "Carrot",
+        rarity: "Common",
+        growTime: "1 minute",
+        price: 30,
+        sellPrice: 50,
+        description: "Crunchy and useful. Good for quick Daisies.",
+        tip: "Grows well in any weather — a safe bet.",
+        color: "terra",
+      },
+    ],
+    growsIn: "Grows in",
+    price: "Price",
+    origin: "Origin",
+    mutation: "mutation",
+    sellsFor: "Sells for",
+    mutationCallout: {
+      label: "🧬 Special discovery",
+      title: "The Pink Rose only blooms for you.",
+      body: "You can't buy Pink Rose seeds anywhere. They only appear when you plant a Red Rose and a White Rose side by side, wait for both to mature, and get a little lucky — 30% chance on each harvest.",
+      link: "Learn how mutations work",
+    },
+  },
+  panel: {
+    number: "04",
+    eyebrow: "Your dashboard on the web",
+    title: "Your garden,",
+    highlight: "in the browser.",
+    description:
+      "Connect your Discord account and track your garden from the site — without opening the app. See your plants, wallet, missions, and collection in a clean panel.",
+    locked: {
+      title: "Connect to see",
+      body: "Sign in with Discord (mockup — no real data is sent) to explore what your dashboard would look like.",
+      button: "Sign in with Discord",
+    },
+    whatYouCanDo: {
+      eyebrow: "What you do here",
+      title: "Everything in Discord, also on the site.",
+      items: [
+        { emoji: "🌼", title: "See your garden", body: "Slots, growth, humidity, and weather — all at a glance." },
+        { emoji: "🪙", title: "Track your wallet", body: "Daisies balance, XP, level, and recent transactions." },
+        { emoji: "🎯", title: "Follow your missions", body: "Tutorial, daily, and weekly missions with progress." },
+        { emoji: "📚", title: "Complete your collection", body: "Discovered and locked flowers with hints to find them." },
+      ],
+    },
+    dashboard: {
+      url: "daisyflower.app/dashboard",
+      synced: "synced",
+      tabs: { garden: "Garden", wallet: "Wallet", missions: "Missions", collection: "Collection" },
+      alerts: "Alerts",
+      settings: "Settings",
+      garden: {
+        title: "My Garden",
+        subtitle: "3 plants growing · 1 ready to harvest",
+        weather: "Sunny",
+        slotsUsed: "Slots used",
+        humidity: "Humidity",
+        nextReady: "Next ready",
+        mutationHint: "Mutation hint",
+        slotsLabel: "Garden slots",
+        slots: [
+          { emoji: "🌻", name: "Sunflower", progress: 72, eta: "~18m" },
+          { emoji: "🌹", name: "Red Rose", progress: 45, eta: "~1h 6m" },
+          { emoji: "🤍", name: "White Rose", progress: 90, eta: "~12m" },
+        ],
+        readySlot: { emoji: "🌻", name: "Sunflower" },
+        activityLabel: "Recent activity",
+        activity: [
+          { time: "2m ago", text: "Sunflower in slot 4 became ready to harvest.", tone: "sage" },
+          { time: "14m ago", text: "Watered White Rose in slot 3. Humidity +30%.", tone: "sky" },
+          { time: "1h ago", text: "Planted Red Rose seed in slot 2.", tone: "ink" },
+          { time: "3h ago", text: "Weather changed from Rain to Sunny.", tone: "gold" },
+        ],
+        harvestNow: "Harvest now",
+        empty: "empty",
+        plantHere: "+ plant here",
+        growing: "growing",
+        ready: "ready!",
+      },
+      wallet: {
+        title: "Wallet",
+        subtitle: "Your Daisies, XP, and progress",
+        balance: "Balance",
+        daisies: "Daisies",
+        thisWeek: "+320 this week",
+        level: "Level 7",
+        levelName: "Gardener",
+        xpToNext: "2,140 / 3,000 XP",
+        unlocks: "860 XP to Level 8 — unlocks decorations",
+        transactions: "Recent transactions",
+        transactionsRows: [
+          { icon: "🌻", label: "Sold 2 Sunflowers", amount: "+400", time: "2m ago", positive: true },
+          { icon: "🌱", label: "Bought Rose Seed", amount: "−100", time: "1h ago" },
+          { icon: "✓", label: "Daily mission reward", amount: "+50", time: "3h ago", positive: true },
+          { icon: "↑", label: "Level 7 reward", amount: "+200", time: "1d ago", positive: true },
+          { icon: "🚿", label: "Bought Watering Can", amount: "−500", time: "2d ago" },
+        ],
+      },
+      missions: {
+        title: "Missions",
+        subtitle: "3 of 6 completed today",
+        streak: "4-day streak",
+        items: [
+          { type: "Tutorial", title: "Plant your first seed", reward: "+10 XP", done: true },
+          { type: "Tutorial", title: "Harvest your first flower", reward: "1 seed", done: true },
+          { type: "Daily", title: "Harvest 3 flowers", reward: "+50 Daisies", progress: "2 / 3" },
+          { type: "Daily", title: "Water your garden", reward: "+15 XP", progress: "1 / 1", done: true },
+          { type: "Daily", title: "Check the weather", reward: "+10 Daisies" },
+          { type: "Weekly", title: "Discover a mutation", reward: "rare seed", locked: true },
+        ],
+      },
+      collection: {
+        title: "Collection Book",
+        subtitle: "4 of 8 discovered · 50% complete",
+        entries: [
+          { emoji: "🌻", name: "Sunflower", rarity: "Common", found: true, count: 12 },
+          { emoji: "🌹", name: "Red Rose", rarity: "Uncommon", found: true, count: 4 },
+          { emoji: "🤍", name: "White Rose", rarity: "Uncommon", found: true, count: 2 },
+          { emoji: "🌸", name: "Pink Rose", rarity: "Rare", found: false, hint: "Plant Red + White Rose side by side." },
+          { emoji: "🥕", name: "Carrot", rarity: "Common", found: true, count: 7 },
+          { emoji: "?", name: "Unknown", rarity: "Rare", found: false, hint: "Keep growing different seeds." },
+          { emoji: "?", name: "Unknown", rarity: "Epic", found: false, hint: "Requires a special weather condition." },
+          { emoji: "?", name: "Unknown", rarity: "Uncommon", found: false, hint: "Try the shop during autumn." },
+        ],
+        harvested: "harvested",
+        unknown: "Unknown",
+      },
+    },
+  },
+  faq: {
+    number: "05",
+    eyebrow: "Frequently asked",
+    title: "Everything you",
+    highlight: "want to know.",
+    description: "Didn't find your question? Open an issue on GitHub and we'll answer.",
+    items: [
+      {
+        question: "Is DaisyFlower free?",
+        answer:
+          "Yes, completely. No premium currency, no paywall, no subscription. All plants, mutations, and content are unlocked by playing. The code is open source under the MIT license.",
+      },
+      {
+        question: "How do I add the bot to my server?",
+        answer:
+          'Click "Add to Discord", authorize the bot in your server, and type /start in any channel. You receive a starter kit with 3 sunflower seeds, 1 watering can, and 50 Daisies to begin.',
+      },
+      {
+        question: "Do I need to keep Discord open for plants to grow?",
+        answer:
+          "No. Your plants grow on their own with time and weather. Plant, close Discord, come back hours later — the bot calculates everything when you open your garden again. No annoying notifications, no pressure.",
+      },
+      {
+        question: "What languages does it support?",
+        answer:
+          "English and Portuguese (Brazil). The bot auto-detects your Discord locale, but you can switch anytime with /settings. The website supports the same languages — switch from the navbar.",
+      },
+      {
+        question: "What are mutations?",
+        answer:
+          "Special plants that only appear when you grow the right seeds side by side. For example: plant a Red Rose and a White Rose together. When both mature, there's a 30% chance one becomes a rare Pink Rose. The bot gives hints when you're close to discovering one.",
+      },
+      {
+        question: "Will I lose my plants if the bot restarts?",
+        answer:
+          "No. Everything is saved in a durable database. Even if the bot restarts, your garden, flowers, Daisies, and level stay exactly where you left them.",
+      },
+      {
+        question: "Can I play with friends?",
+        answer:
+          "Each player has their own private garden. Coming soon: visit other players' gardens, collection leaderboards, and community missions. For now, it's a personal, relaxing game.",
+      },
+      {
+        question: "Is the project finished?",
+        answer:
+          "It's in active development. The main loop (plant, grow, harvest, buy) already works. Pink Rose mutation works. We're adding missions, collection book, and seasonal events. See progress on GitHub.",
+      },
+    ],
+    stillQuestions: "Still have questions?",
+    stillBody: "Open an issue on GitHub or ask in the support server.",
+    githubIssues: "GitHub Issues",
+  },
+  getStarted: {
+    number: "06",
+    eyebrow: "Get started",
+    title: "Your garden is",
+    highlight: "waiting.",
+    description:
+      "Takes 30 seconds. No signup, no download. Add the bot to your server, type /start, and you have seeds to plant.",
+    steps: [
+      { n: "1", title: "Add the bot", body: "Click the button below and authorize it in your server." },
+      { n: "2", title: "Type /start", body: "In any channel where the bot can see messages." },
+      { n: "3", title: "Plant", body: 'Tap "Start My Garden" and follow the buttons.' },
+    ],
+    kit: {
+      label: "Starter kit · free",
+      title: "Everyone starts equal",
+      body: "No pay-to-win, no paid advantages. Just enough to plant your first sunflower.",
+      items: [
+        { emoji: "🌻", name: "Sunflower Seeds", amount: "×3" },
+        { emoji: "🚿", name: "Watering Can", amount: "×1" },
+        { emoji: "🪙", name: "Daisies", amount: "50" },
+      ],
+    },
+    discordPreview: {
+      label: "In Discord",
+      youType: "you type",
+      botResponds: "🌼 DaisyFlower responds",
+      botMessage:
+        'Welcome to DaisyFlower! Your starter kit is ready. Tap "Start My Garden" to plant your first sunflower.',
+      buttons: { start: "🌱 Start My Garden", how: "❔ How it works", lang: "⚙️ Language" },
+    },
+    finalButton: "Add DaisyFlower to Discord",
+    finalNote: "Free · open source · MIT · made with care",
+  },
+  footer: {
+    tagline:
+      "A calm garden simulator for Discord. Free, open source, made with care by people who like slow games.",
+    github: "GitHub",
+    addToDiscord: "Add to Discord",
+    theGame: "The game",
+    forPlayers: "For players",
+    project: "Project",
+    links: {
+      howItWorks: "How it works",
+      plants: "Plants & weather",
+      panel: "Web dashboard",
+      getStarted: "Get started",
+      faq: "FAQ",
+      sourceCode: "Source code",
+      docs: "Documentation",
+      progress: "Progress",
+    },
+    copyright: "© {year} DaisyFlower · MIT · free forever",
+    signature: "made slowly, on purpose",
+  },
+  auth: {
+    mockLabel: "Demo login",
+    title: "Sign in to DaisyFlower",
+    body: "Connect your Discord account to see your garden on the site — plants, missions, collection, and settings. This is a mockup: no real data is sent.",
+    benefits: [
+      "See your garden in the browser, without opening Discord",
+      "Track missions, collection, and XP in real time",
+      "Manage language and notifications",
+    ],
+    discordButton: "Continue with Discord",
+    privacy: "We only ask for your Discord ID and username. No password, no messages.",
+    connecting: "Connecting to Discord…",
+    connectingSub: "Authorizing DaisyFlower to read your garden",
+    done: "Welcome back!",
+    doneSub: "Your garden is ready. Opening your dashboard…",
+  },
+  userMenu: {
+    level: "Level",
+    myPanel: "My dashboard",
+    seePlants: "See plants",
+    signOut: "Sign out",
+  },
+  rarity: {
+    Common: "Common",
+    Uncommon: "Uncommon",
+    Rare: "Rare",
+    Epic: "Epic",
+  },
+};
+
+export type Translation = typeof en;

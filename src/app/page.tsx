@@ -3,13 +3,14 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
+import { useI18n } from "@/hooks/use-i18n";
 import { AuthModal } from "@/components/site/AuthModal";
 import { Reveal } from "@/components/site/Reveal";
 import { ArrowRightIcon, ArrowUpRightIcon } from "@/components/site/icons";
-import { HERO_STATS } from "@/lib/daisy-data";
 
 export default function Home() {
-  const { player, signIn, hydrated } = useAuth();
+  const { signIn } = useAuth();
+  const { t } = useI18n();
   const [authOpen, setAuthOpen] = useState(false);
 
   return (
@@ -19,37 +20,36 @@ export default function Home() {
         <div className="mx-auto max-w-6xl px-5 sm:px-6">
           <div className="flex items-center gap-3 text-sm text-muted-foreground">
             <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-sage">
-              simulador de jardim · grátis
+              {t.hero.badge}
             </span>
             <span className="h-px w-10 bg-border" />
-            <span className="text-xs">para Discord</span>
+            <span className="text-xs">{t.hero.badgeSub}</span>
           </div>
 
           <h1 className="mt-7 font-display text-[2.75rem] sm:text-7xl lg:text-[5.5rem] xl:text-[6rem] font-medium tracking-tight leading-[0.95] text-balance max-w-5xl">
-            Cultive seu{" "}
-            <span className="italic font-normal text-sage">pequeno jardim</span>
-            <br className="hidden sm:block" /> dentro do Discord.
+            {t.hero.titleLine1}{" "}
+            <span className="italic font-normal text-sage">{t.hero.titleHighlight}</span>
+            <br className="hidden sm:block" /> {t.hero.titleLine2}
           </h1>
 
           <div className="mt-10 grid sm:grid-cols-2 gap-8 sm:gap-12 items-start">
             <div className="sm:col-start-2">
               <p className="text-base lg:text-lg text-muted-foreground text-pretty leading-relaxed max-w-md">
-                Plante sementes, cuide das suas flores, reaja ao clima e descubra mutações raras.
-                Um jogo tranquilo que cresce com você — sem pressa, sem grind, sem spam.
+                {t.hero.subtitle}
               </p>
               <div className="mt-6 flex flex-wrap items-center gap-3">
                 <Link
-                  href="/comecar"
+                  href="/get-started"
                   className="group inline-flex items-center gap-2 rounded-lg bg-foreground text-background px-5 py-2.5 text-sm font-medium hover:bg-foreground/90 transition-colors"
                 >
-                  Adicionar ao Discord
+                  {t.hero.ctaPrimary}
                   <ArrowRightIcon size={15} className="transition-transform group-hover:translate-x-0.5" />
                 </Link>
                 <Link
-                  href="/como-funciona"
+                  href="/how-it-works"
                   className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-medium text-foreground hover:bg-secondary transition-colors"
                 >
-                  Como funciona
+                  {t.hero.ctaSecondary}
                 </Link>
               </div>
             </div>
@@ -59,8 +59,8 @@ export default function Home() {
             <GardenIllustration />
 
             <dl className="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-x-8 gap-y-5 max-w-3xl">
-              {HERO_STATS.map((s, i) => (
-                <div key={s.label} className={i > 0 ? "sm:border-l sm:border-border sm:pl-6" : ""}>
+              {t.hero.stats.map((s, i) => (
+                <div key={i} className={i > 0 ? "sm:border-l sm:border-border sm:pl-6" : ""}>
                   <dt className="font-display text-3xl font-medium text-foreground marker-num tabular">
                     {s.value}
                   </dt>
@@ -72,44 +72,47 @@ export default function Home() {
         </div>
       </section>
 
-      {/* O que é — short explainer */}
+      {/* What it is — short explainer */}
       <section className="py-20 md:py-28 border-t border-border">
         <div className="mx-auto max-w-4xl px-5 sm:px-6">
           <Reveal>
             <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-sage font-semibold">
-              O que é
+              {t.whatIs.eyebrow}
             </p>
             <div className="mt-5 space-y-5 text-lg sm:text-xl text-foreground leading-relaxed text-pretty font-display">
-              <p>
-                DaisyFlower é um bot de Discord onde você cuida de um jardim virtual. Plante
-                sementes, acompanhe o crescimento, regue quando precisar e colha flores bonitas.
-              </p>
-              <p className="text-muted-foreground">
-                Tudo acontece em painéis interativos com botões — não precisa decorar comandos.
-                E o melhor: suas plantas continuam crescendo mesmo com o Discord fechado.
-              </p>
+              <p>{t.whatIs.body1}</p>
+              <p className="text-muted-foreground">{t.whatIs.body2}</p>
             </div>
           </Reveal>
         </div>
       </section>
 
-      {/* Feature cards — link to inner pages */}
+      {/* Features — rich grid */}
+      <FeaturesSection />
+
+      {/* How it works preview */}
+      <HowItWorksPreview />
+
+      {/* Plant gallery preview */}
+      <PlantPreview />
+
+      {/* Explore cards */}
       <section className="py-20 md:py-28 border-t border-border">
         <div className="mx-auto max-w-6xl px-5 sm:px-6">
           <Reveal>
             <h2 className="font-display text-3xl sm:text-4xl font-medium tracking-tight text-foreground text-balance">
-              Explore por aí
+              {t.explore.title}
             </h2>
             <p className="mt-3 text-base text-muted-foreground text-pretty max-w-xl">
-              Cada página tem só o que precisa — sem enrolação.
+              {t.explore.subtitle}
             </p>
           </Reveal>
 
           <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {FEATURE_CARDS.map((card, i) => (
-              <Reveal key={card.href} delay={i * 0.06}>
+            {t.explore.cards.map((card, i) => (
+              <Reveal key={i} delay={i * 0.06}>
                 <Link
-                  href={card.href}
+                  href={["/how-it-works", "/plants", "/panel"][i]}
                   className="group block card-hairline card-hairline-hover rounded-xl p-6 h-full"
                 >
                   <div className="text-3xl mb-4">{card.emoji}</div>
@@ -133,17 +136,17 @@ export default function Home() {
         <div className="mx-auto max-w-3xl px-5 sm:px-6 text-center">
           <Reveal>
             <h2 className="font-display text-3xl sm:text-5xl font-medium tracking-tight text-foreground text-balance leading-[1.05]">
-              Pronto para plantar{" "}
-              <em className="font-normal text-sage">sua primeira semente?</em>
+              {t.finalCta.title}{" "}
+              <em className="font-normal text-sage">{t.finalCta.highlight}</em>
             </h2>
             <p className="mt-5 text-base text-muted-foreground text-pretty">
-              Leva 30 segundos. Sem cadastro, sem download. Adicione o bot e digite /start.
+              {t.finalCta.description}
             </p>
             <Link
-              href="/comecar"
+              href="/get-started"
               className="group mt-8 inline-flex items-center gap-2 rounded-lg bg-foreground text-background px-6 py-3 text-sm font-medium hover:bg-foreground/90 transition-colors"
             >
-              Começar agora
+              {t.finalCta.button}
               <ArrowRightIcon size={16} className="transition-transform group-hover:translate-x-0.5" />
             </Link>
           </Reveal>
@@ -155,31 +158,189 @@ export default function Home() {
   );
 }
 
-const FEATURE_CARDS = [
-  {
-    emoji: "🌱",
-    title: "Como funciona",
-    description: "Três passos: plantar, deixar crescer, colher. Veja exatamente como é jogar no Discord.",
-    cta: "Ver o guia",
-    href: "/como-funciona",
-  },
-  {
-    emoji: "🌻",
-    title: "Plantas e clima",
-    description: "Girassóis, rosas, mutações raras. Cada planta tem seu jeito. Cada clima muda tudo.",
-    cta: "Ver plantas",
-    href: "/plantas",
-  },
-  {
-    emoji: "📊",
-    title: "Seu painel",
-    description: "Conecte com Discord e veja seu jardim no navegador — plantas, carteira, missões e coleção.",
-    cta: "Ver painel",
-    href: "/painel",
-  },
-];
+/* ── Features section (rich, 6 cards) ───────────────────────────────── */
+
+function FeaturesSection() {
+  const { t } = useI18n();
+  return (
+    <section className="py-20 md:py-28 border-t border-border">
+      <div className="mx-auto max-w-6xl px-5 sm:px-6">
+        <Reveal>
+          <div className="max-w-3xl">
+            <div className="flex items-center gap-3 text-muted-foreground">
+              <span className="font-mono text-xs marker-num">{t.features.number}</span>
+              <span className="h-px w-8 bg-border" />
+              <span className="font-mono text-xs uppercase tracking-[0.18em] text-sage font-semibold">
+                {t.features.eyebrow}
+              </span>
+            </div>
+            <h2 className="mt-5 font-display text-4xl sm:text-5xl lg:text-[3.5rem] font-medium tracking-tight text-foreground text-balance leading-[1.05]">
+              {t.features.title}{" "}
+              <em className="font-normal text-sage">{t.features.highlight}</em>
+            </h2>
+            <p className="mt-5 text-base sm:text-lg text-muted-foreground text-pretty leading-relaxed max-w-2xl">
+              {t.features.description}
+            </p>
+          </div>
+        </Reveal>
+
+        <div className="mt-14 grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-border rounded-2xl overflow-hidden border border-border">
+          {t.features.items.map((item, i) => (
+            <Reveal key={i} delay={Math.min(i * 0.04, 0.2)}>
+              <div className="bg-card p-5 sm:p-6 group hover:bg-secondary/30 transition-colors h-full">
+                <p className="font-mono text-[10px] uppercase tracking-wider text-sage font-semibold">
+                  {item.eyebrow}
+                </p>
+                <h3 className="mt-2 font-display text-lg font-medium text-foreground leading-tight">
+                  {item.title}
+                </h3>
+                <p className="mt-2 text-sm text-muted-foreground text-pretty leading-relaxed">
+                  {item.body}
+                </p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── How it works preview (3 steps + mini mockup) ───────────────────── */
+
+function HowItWorksPreview() {
+  const { t } = useI18n();
+  return (
+    <section className="py-20 md:py-28 border-t border-border bg-background">
+      <div className="mx-auto max-w-6xl px-5 sm:px-6">
+        <Reveal>
+          <div className="max-w-3xl">
+            <div className="flex items-center gap-3 text-muted-foreground">
+              <span className="font-mono text-xs marker-num">{t.howItWorks.number}</span>
+              <span className="h-px w-8 bg-border" />
+              <span className="font-mono text-xs uppercase tracking-[0.18em] text-sage font-semibold">
+                {t.howItWorks.eyebrow}
+              </span>
+            </div>
+            <h2 className="mt-5 font-display text-4xl sm:text-5xl lg:text-[3.5rem] font-medium tracking-tight text-foreground text-balance leading-[1.05]">
+              {t.howItWorks.title}{" "}
+              <em className="font-normal text-sage">{t.howItWorks.highlight}</em>
+            </h2>
+            <p className="mt-5 text-base sm:text-lg text-muted-foreground text-pretty leading-relaxed max-w-2xl">
+              {t.howItWorks.description}
+            </p>
+          </div>
+        </Reveal>
+
+        <div className="mt-14 grid lg:grid-cols-3 gap-6">
+          {t.howItWorks.steps.map((step, i) => (
+            <Reveal key={i} delay={i * 0.08} className="flex flex-col">
+              <div className="flex items-baseline justify-between mb-4">
+                <span className="text-4xl">{step.emoji}</span>
+                <span className="font-display text-5xl font-medium text-foreground/10 marker-num">
+                  {step.step}
+                </span>
+              </div>
+              <h3 className="font-display text-xl font-medium text-foreground">{step.title}</h3>
+              <p className="mt-2 text-sm text-muted-foreground text-pretty leading-relaxed flex-1">
+                {step.description}
+              </p>
+            </Reveal>
+          ))}
+        </div>
+
+        <Reveal delay={0.2}>
+          <div className="mt-10 text-center">
+            <Link
+              href="/how-it-works"
+              className="group inline-flex items-center gap-1.5 text-sm font-medium text-sage hover:underline"
+            >
+              {t.explore.cards[0].cta}
+              <ArrowRightIcon size={14} className="transition-transform group-hover:translate-x-0.5" />
+            </Link>
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+/* ── Plant gallery preview (3 cards) ────────────────────────────────── */
+
+function PlantPreview() {
+  const { t } = useI18n();
+  const preview = t.plants.items.slice(0, 3);
+
+  const COLOR_BG = {
+    sun: "from-gold/10",
+    rose: "from-terra/10",
+    sky: "from-sky-soft/15",
+    terra: "from-terra-deep/8",
+    gold: "from-gold/12",
+  } as const;
+
+  return (
+    <section className="py-20 md:py-28 border-t border-border">
+      <div className="mx-auto max-w-6xl px-5 sm:px-6">
+        <Reveal>
+          <div className="max-w-3xl">
+            <div className="flex items-center gap-3 text-muted-foreground">
+              <span className="font-mono text-xs marker-num">{t.plants.number}</span>
+              <span className="h-px w-8 bg-border" />
+              <span className="font-mono text-xs uppercase tracking-[0.18em] text-sage font-semibold">
+                {t.plants.eyebrow}
+              </span>
+            </div>
+            <h2 className="mt-5 font-display text-4xl sm:text-5xl lg:text-[3.5rem] font-medium tracking-tight text-foreground text-balance leading-[1.05]">
+              {t.plants.title}{" "}
+              <em className="font-normal text-sage">{t.plants.highlight}</em>
+            </h2>
+            <p className="mt-5 text-base sm:text-lg text-muted-foreground text-pretty leading-relaxed max-w-2xl">
+              {t.plants.description}
+            </p>
+          </div>
+        </Reveal>
+
+        <div className="mt-14 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {preview.map((plant, i) => (
+            <Reveal key={i} delay={i * 0.06}>
+              <div className="card-hairline card-hairline-hover rounded-xl overflow-hidden h-full flex flex-col">
+                <div className={`relative h-32 grid place-items-center bg-gradient-to-br ${COLOR_BG[plant.color]} to-transparent`}>
+                  <span className="text-5xl">{plant.emoji}</span>
+                </div>
+                <div className="p-4 flex-1 flex flex-col">
+                  <h3 className="font-display text-lg font-medium text-foreground">{plant.name}</h3>
+                  <p className="mt-1 text-sm text-muted-foreground text-pretty flex-1">{plant.description}</p>
+                  <div className="mt-3 flex items-center justify-between text-xs">
+                    <span className="text-muted-foreground">{t.plants.growsIn}</span>
+                    <span className="text-foreground font-medium">{plant.growTime}</span>
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+
+        <Reveal delay={0.2}>
+          <div className="mt-10 text-center">
+            <Link
+              href="/plants"
+              className="group inline-flex items-center gap-1.5 text-sm font-medium text-sage hover:underline"
+            >
+              {t.explore.cards[1].cta}
+              <ArrowRightIcon size={14} className="transition-transform group-hover:translate-x-0.5" />
+            </Link>
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+/* ── Garden illustration SVG ────────────────────────────────────────── */
 
 function GardenIllustration() {
+  const { t } = useI18n();
   return (
     <div className="relative w-full overflow-hidden rounded-xl border border-border bg-card">
       <div
@@ -195,7 +356,7 @@ function GardenIllustration() {
         viewBox="0 0 800 280"
         className="relative w-full h-auto block"
         preserveAspectRatio="xMidYMid meet"
-        aria-label="Ilustração de um jardim com girassóis e rosas em diferentes estágios"
+        aria-label="Garden illustration with sunflowers and roses at different growth stages"
       >
         <circle cx="700" cy="55" r="22" fill="oklch(0.8 0.1 85)" opacity="0.7" />
         <circle cx="700" cy="55" r="14" fill="oklch(0.82 0.12 85)" />
@@ -280,31 +441,27 @@ function GardenIllustration() {
         {/* Plant 5 — empty */}
         <g transform="translate(690, 200)" opacity="0.5">
           <ellipse cx="0" cy="0" rx="14" ry="4" fill="oklch(0.38 0.04 50)" />
-          <text x="0" y="-10" textAnchor="middle" fontSize="11" fill="oklch(0.48 0.012 75)" fontFamily="monospace">
-            vazio
-          </text>
         </g>
 
+        {/* Weather indicator */}
         <g transform="translate(40, 40)">
           <text x="0" y="0" fontSize="10" fill="oklch(0.48 0.012 75)" fontFamily="monospace" letterSpacing="1">
-            AGORA
+            {t.hero.illustration.now}
           </text>
           <text x="0" y="18" fontSize="14" fill="oklch(0.21 0.012 75)" fontFamily="serif" fontWeight="600">
-            ☀ Ensolarado
+            {t.hero.illustration.weather}
           </text>
           <text x="0" y="34" fontSize="10" fill="oklch(0.48 0.012 75)" fontFamily="monospace">
-            crescendo 50% mais rápido
+            {t.hero.illustration.weatherEffect}
           </text>
         </g>
       </svg>
 
       <div className="relative flex items-center justify-between px-5 py-3 border-t border-border bg-background/50">
-        <p className="font-mono text-[11px] text-muted-foreground">
-          4 plantas · 2 prontas para colher
-        </p>
+        <p className="font-mono text-[11px] text-muted-foreground">{t.hero.illustration.caption}</p>
         <p className="font-mono text-[11px] text-sage flex items-center gap-1.5">
           <span className="h-1.5 w-1.5 rounded-full bg-sage animate-pulse-dot" />
-          crescendo agora
+          {t.hero.illustration.live}
         </p>
       </div>
     </div>
