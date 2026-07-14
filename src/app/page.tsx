@@ -7,6 +7,7 @@ import { useI18n } from "@/hooks/use-i18n";
 import { AuthModal } from "@/components/site/AuthModal";
 import { Reveal } from "@/components/site/Reveal";
 import { ClientOnly } from "@/components/site/ClientOnly";
+import { FEATURE_VISUALS } from "@/components/site/FeatureVisuals";
 import { ArrowRightIcon, ArrowUpRightIcon } from "@/components/site/icons";
 
 export default function Home() {
@@ -102,6 +103,9 @@ export default function Home() {
       {/* Progression */}
       <ProgressionSection />
 
+      {/* Economy */}
+      <EconomySection />
+
       {/* Explore cards */}
       <section className="py-20 md:py-28 border-t border-border">
         <div className="mx-auto max-w-6xl px-5 sm:px-6">
@@ -191,21 +195,27 @@ function FeaturesSection() {
         </Reveal>
 
         <div className="mt-14 grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-border rounded-2xl overflow-hidden border border-border">
-          {t.features.items.map((item, i) => (
-            <Reveal key={i} delay={Math.min(i * 0.04, 0.2)}>
-              <div className="bg-card p-5 sm:p-6 group hover:bg-secondary/30 transition-colors h-full">
-                <p className="font-mono text-[10px] uppercase tracking-wider text-sage font-semibold">
-                  {item.eyebrow}
-                </p>
-                <h3 className="mt-2 font-display text-lg font-medium text-foreground leading-tight">
-                  {item.title}
-                </h3>
-                <p className="mt-2 text-sm text-muted-foreground text-pretty leading-relaxed">
-                  {item.body}
-                </p>
-              </div>
-            </Reveal>
-          ))}
+          {t.features.items.map((item, i) => {
+            const Visual = FEATURE_VISUALS[i] ?? (() => null);
+            return (
+              <Reveal key={i} delay={Math.min(i * 0.04, 0.2)}>
+                <div className="bg-card p-5 sm:p-6 group hover:bg-secondary/30 transition-colors h-full">
+                  <p className="font-mono text-[10px] uppercase tracking-wider text-sage font-semibold">
+                    {item.eyebrow}
+                  </p>
+                  <h3 className="mt-2 font-display text-lg font-medium text-foreground leading-tight">
+                    {item.title}
+                  </h3>
+                  <p className="mt-2 text-sm text-muted-foreground text-pretty leading-relaxed">
+                    {item.body}
+                  </p>
+                  <ClientOnly>
+                    <Visual />
+                  </ClientOnly>
+                </div>
+              </Reveal>
+            );
+          })}
         </div>
       </div>
     </section>
@@ -408,6 +418,96 @@ function ProgressionSection() {
               );
             })}
           </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── Economy section (loop + missions preview) ──────────────────────── */
+
+function EconomySection() {
+  const { t } = useI18n();
+  const e = t.economy;
+  return (
+    <section className="py-20 md:py-28 border-t border-border">
+      <div className="mx-auto max-w-6xl px-5 sm:px-6">
+        <Reveal>
+          <div className="max-w-3xl">
+            <div className="flex items-center gap-3 text-muted-foreground">
+              <span className="font-mono text-xs marker-num">{e.number}</span>
+              <span className="h-px w-8 bg-border" />
+              <span className="font-mono text-xs uppercase tracking-[0.18em] text-sage font-semibold">
+                {e.eyebrow}
+              </span>
+            </div>
+            <h2 className="mt-5 font-display text-4xl sm:text-5xl lg:text-[3.5rem] font-medium tracking-tight text-foreground text-balance leading-[1.05]">
+              {e.title}{" "}
+              <em className="font-normal text-sage">{e.highlight}</em>
+            </h2>
+            <p className="mt-5 text-base sm:text-lg text-muted-foreground text-pretty leading-relaxed max-w-2xl">
+              {e.description}
+            </p>
+          </div>
+        </Reveal>
+
+        <div className="mt-14 grid lg:grid-cols-[1.3fr_1fr] gap-6 items-start">
+          {/* Loop diagram */}
+          <Reveal delay={0.05}>
+            <div className="card-hairline rounded-2xl p-6 sm:p-8">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                {e.loop.map((step, i) => (
+                  <div key={i} className="relative">
+                    {/* Arrow connector */}
+                    {i < e.loop.length - 1 && (
+                      <span className="hidden sm:block absolute top-6 -right-3 text-muted-foreground/40 font-display text-lg z-10">
+                        →
+                      </span>
+                    )}
+                    <div className="text-center">
+                      <div className="text-3xl mb-2">{step.emoji}</div>
+                      <p className="font-display text-sm font-medium text-foreground">{step.label}</p>
+                      <p className="mt-0.5 text-[11px] text-muted-foreground text-pretty">{step.sub}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              {/* Circular arrow on mobile */}
+              <div className="sm:hidden mt-4 text-center text-muted-foreground/40 font-display text-lg">↻</div>
+            </div>
+          </Reveal>
+
+          {/* Missions preview */}
+          <Reveal delay={0.1}>
+            <div className="card-hairline rounded-2xl p-6">
+              <div className="flex items-baseline justify-between mb-4">
+                <div>
+                  <p className="font-display text-lg font-medium text-foreground">{e.missions.title}</p>
+                  <p className="mt-0.5 text-xs text-muted-foreground">{e.missions.subtitle}</p>
+                </div>
+              </div>
+              <div className="space-y-3">
+                {e.missions.items.map((m, i) => (
+                  <div key={i} className="flex items-center gap-3">
+                    <span
+                      className={`grid place-items-center h-7 w-7 rounded-full shrink-0 text-xs ${
+                        m.done ? "bg-sage text-white" : "bg-secondary text-muted-foreground"
+                      }`}
+                    >
+                      {m.done ? "✓" : i + 1}
+                    </span>
+                    <div className="flex-1 min-w-0">
+                      <p className={`text-sm ${m.done ? "text-muted-foreground line-through" : "text-foreground"}`}>
+                        {m.title}
+                      </p>
+                      <p className="font-mono text-[10px] text-muted-foreground tabular">{m.progress}</p>
+                    </div>
+                    <span className="text-[11px] text-sage font-medium shrink-0">{m.reward}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </Reveal>
         </div>
       </div>
     </section>

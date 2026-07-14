@@ -491,6 +491,16 @@ export const en = {
     },
     finalButton: "Add DaisyFlower to Discord",
     finalNote: "Free · open source · MIT · made with care",
+    checklist: {
+      title: "Server setup checklist",
+      subtitle: "Make sure your server is ready for the bot",
+      items: [
+        { label: "Bot has permission to read messages", hint: "Required for commands to work" },
+        { label: "Bot can send messages in your channel", hint: "Needed to show garden panels" },
+        { label: "Bot can use slash commands", hint: "Applications Commands scope is enabled" },
+        { label: "Channel allows application commands", hint: "Check channel permissions if /start doesn't respond" },
+      ],
+    },
   },
   footer: {
     tagline:
@@ -555,6 +565,29 @@ export const en = {
       { level: "7", title: "Decorations", emoji: "🎃", unlocks: ["Garden decorations", "Cosmetic themes", "Scarecrow & gnome"] },
       { level: "10", title: "Advanced mastery", emoji: "👑", unlocks: ["Rare seed category", "Advanced mutations", "Profile cards"] },
     ],
+  },
+  economy: {
+    number: "05",
+    eyebrow: "Economy",
+    title: "Plant, harvest,",
+    highlight: "earn, repeat.",
+    description:
+      "A simple loop that stays satisfying. Sell flowers for Daisies, spend them on better seeds, complete missions for XP, level up to unlock more.",
+    loop: [
+      { emoji: "🌱", label: "Plant", sub: "Buy seeds with Daisies" },
+      { emoji: "🌻", label: "Harvest", sub: "Get flowers + XP" },
+      { emoji: "🪙", label: "Sell", sub: "Earn Daisies back" },
+      { emoji: "📈", label: "Level up", sub: "Unlock new content" },
+    ],
+    missions: {
+      title: "Daily missions",
+      subtitle: "Gentle direction, every day",
+      items: [
+        { title: "Harvest 3 flowers", reward: "+50 Daisies", progress: "2 / 3" },
+        { title: "Water your garden", reward: "+15 XP", progress: "1 / 1", done: true },
+        { title: "Check the weather", reward: "+10 Daisies", progress: "0 / 1" },
+      ],
+    },
   },
   commands: {
     number: "06",

@@ -493,6 +493,16 @@ export const ptBR: Translation = {
     },
     finalButton: "Adicionar DaisyFlower ao Discord",
     finalNote: "Grátis · código aberto · MIT · feito com carinho",
+    checklist: {
+      title: "Checklist de configuração do servidor",
+      subtitle: "Garanta que seu servidor está pronto para o bot",
+      items: [
+        { label: "Bot tem permissão para ler mensagens", hint: "Necessário para comandos funcionarem" },
+        { label: "Bot pode enviar mensagens no seu canal", hint: "Necessário para mostrar painéis do jardim" },
+        { label: "Bot pode usar slash commands", hint: "Escopo Applications Commands está ativado" },
+        { label: "Canal permite comandos de aplicação", hint: "Verifique permissões do canal se /start não responder" },
+      ],
+    },
   },
   footer: {
     tagline:
@@ -557,6 +567,29 @@ export const ptBR: Translation = {
       { level: "7", title: "Decorações", emoji: "🎃", unlocks: ["Decorações de jardim", "Temas cosméticos", "Espantalho e gnomo"] },
       { level: "10", title: "Maestria avançada", emoji: "👑", unlocks: ["Categoria de sementes raras", "Mutações avançadas", "Cards de perfil"] },
     ],
+  },
+  economy: {
+    number: "05",
+    eyebrow: "Economia",
+    title: "Plante, colha,",
+    highlight: "ganhe, repita.",
+    description:
+      "Um ciclo simples que continua satisfatório. Venda flores por Daisies, gaste em sementes melhores, complete missões por XP, suba de nível para desbloquear mais.",
+    loop: [
+      { emoji: "🌱", label: "Plantar", sub: "Compre sementes com Daisies" },
+      { emoji: "🌻", label: "Colher", sub: "Ganhe flores + XP" },
+      { emoji: "🪙", label: "Vender", sub: "Ganhe Daisies de volta" },
+      { emoji: "📈", label: "Subir nível", sub: "Desbloqueie conteúdo novo" },
+    ],
+    missions: {
+      title: "Missões diárias",
+      subtitle: "Direção gentil, todo dia",
+      items: [
+        { title: "Colha 3 flores", reward: "+50 Daisies", progress: "2 / 3" },
+        { title: "Rege seu jardim", reward: "+15 XP", progress: "1 / 1", done: true },
+        { title: "Verifique o clima", reward: "+10 Daisies", progress: "0 / 1" },
+      ],
+    },
   },
   commands: {
     number: "06",

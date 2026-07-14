@@ -4,7 +4,7 @@ import Link from "next/link";
 import { PageHeader } from "@/components/site/PageHeader";
 import { Reveal } from "@/components/site/Reveal";
 import { useI18n } from "@/hooks/use-i18n";
-import { ArrowRightIcon, TerminalIcon, SproutIcon } from "@/components/site/icons";
+import { ArrowRightIcon, TerminalIcon, SproutIcon, CheckIcon } from "@/components/site/icons";
 
 export default function GetStartedPage() {
   const { t } = useI18n();
@@ -65,6 +65,31 @@ export default function GetStartedPage() {
                   </div>
                 ))}
               </div>
+            </div>
+          </Reveal>
+
+          {/* Server setup checklist */}
+          <Reveal delay={0.15}>
+            <div className="rounded-xl border border-border bg-card p-6 sm:p-8">
+              <h3 className="font-display text-lg font-medium text-foreground">
+                {t.getStarted.checklist.title}
+              </h3>
+              <p className="mt-1 text-sm text-muted-foreground text-pretty">
+                {t.getStarted.checklist.subtitle}
+              </p>
+              <ul className="mt-5 space-y-3">
+                {t.getStarted.checklist.items.map((item, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <span className="grid place-items-center h-5 w-5 rounded-full border-2 border-sage/40 shrink-0 mt-0.5">
+                      <CheckIcon size={11} className="text-sage" />
+                    </span>
+                    <div>
+                      <p className="text-sm font-medium text-foreground">{item.label}</p>
+                      <p className="text-xs text-muted-foreground text-pretty">{item.hint}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
             </div>
           </Reveal>
 
