@@ -1,105 +1,115 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { GAMEPLAY_LOOP } from "@/lib/daisy-data";
-import { SectionHeader } from "./Features";
+import { SectionHeading } from "./Features";
+
+const LOOP = [
+  {
+    n: "01",
+    emoji: "🌱",
+    title: "Plant",
+    body: "Pick a slot, choose a seed from your bag, confirm. The bot checks humidity, ownership, and weather effects before you commit.",
+    detail: "/plant · Garden → Plant",
+  },
+  {
+    n: "02",
+    emoji: "🌧️",
+    title: "Grow",
+    body: "Plants grow in real time using weather history and hydration. You don't need to keep the bot open — return whenever you like.",
+    detail: "computed on demand",
+  },
+  {
+    n: "03",
+    emoji: "💧",
+    title: "Care",
+    body: "Water plants to protect them from wilting. The UI warns you when hydration is low or a plant is at risk — never a silent failure.",
+    detail: "/water · Garden → Water",
+  },
+  {
+    n: "04",
+    emoji: "🌻",
+    title: "Harvest",
+    body: "Collect mature plants for flowers, crops, XP, and possible mutation discoveries. The reward screen always shows exactly what changed.",
+    detail: "/harvest · Garden → Harvest",
+  },
+  {
+    n: "05",
+    emoji: "🪙",
+    title: "Earn",
+    body: "Sell harvest goods for Daisies, complete missions for XP, and unlock new seeds, tools, and upgrades at the shop.",
+    detail: "/wallet · /shop",
+  },
+  {
+    n: "06",
+    emoji: "✨",
+    title: "Expand",
+    body: "Upgrade your garden with more slots, better humidity, decorations, and rare mutation seeds. Build your botanical collection over weeks.",
+    detail: "/upgrade · /collection",
+  },
+];
 
 export function GameplayLoop() {
   return (
-    <section
-      id="loop"
-      className="relative py-20 md:py-28 scroll-mt-16 bg-garden-soft overflow-hidden"
-    >
-      {/* Decorative top wave */}
-      <div className="absolute top-0 inset-x-0 -translate-y-px" aria-hidden>
-        <svg viewBox="0 0 1440 80" preserveAspectRatio="none" className="w-full h-12 md:h-16">
-          <path
-            d="M0,40 C240,80 480,0 720,40 C960,80 1200,10 1440,40 L1440,0 L0,0 Z"
-            fill="var(--background)"
-          />
-        </svg>
-      </div>
+    <section id="loop" className="py-24 md:py-32 scroll-mt-16 border-t border-border bg-paper-warm relative overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 bg-paper-grain opacity-40" aria-hidden />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <SectionHeader
-          eyebrow="The core loop"
+        <SectionHeading
+          number="02"
+          eyebrow="Gameplay"
           title={
             <>
-              Six actions. <span className="text-primary">One satisfying cycle.</span>
+              Six steps,
+              <br className="hidden sm:block" /> <em className="font-normal text-sage">one quiet loop.</em>
             </>
           }
-          description="DaisyFlower is designed for short sessions and long-term progression. Plant in seconds, return later to harvest, and let the deterministic simulation handle the in-between."
+          description="Designed for short sessions and long-term progression. Plant in seconds, return later to harvest, and let the deterministic simulation handle the in-between."
         />
 
-        {/* Loop diagram */}
-        <div className="mt-14 relative">
-          {/* Connector line on desktop */}
-          <div
-            className="hidden lg:block absolute top-12 left-[12%] right-[12%] h-0.5 border-t-2 border-dashed border-primary/25"
-            aria-hidden
-          />
-
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-5 relative">
-            {GAMEPLAY_LOOP.map((step, i) => (
-              <motion.div
-                key={step.title}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.45, delay: i * 0.08 }}
-                className="relative"
-              >
-                <div className="card-garden card-garden-hover rounded-2xl p-5 text-center h-full">
-                  {/* Step circle */}
-                  <div className="relative mx-auto w-16 h-16">
-                    <div className="absolute inset-0 rounded-full bg-primary/10" />
-                    <div className="absolute inset-1.5 rounded-full bg-card border border-border grid place-items-center text-3xl shadow-sm">
-                      <span aria-hidden>{step.emoji}</span>
-                    </div>
-                    {/* Step number */}
-                    <span className="absolute -top-1 -right-1 grid place-items-center h-6 w-6 rounded-full bg-primary text-primary-foreground text-xs font-bold shadow-md">
-                      {i + 1}
-                    </span>
-                  </div>
-
-                  <h3 className="mt-4 font-display text-lg font-bold text-foreground">
-                    {step.title}
-                  </h3>
-                  <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground text-pretty">
-                    {step.description}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+        <div className="mt-16 grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-border rounded-2xl overflow-hidden border border-border">
+          {LOOP.map((step, i) => (
+            <motion.div
+              key={step.n}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.5, delay: Math.min(i * 0.06, 0.3) }}
+              className="bg-card p-6 sm:p-7 group hover:bg-secondary/30 transition-colors"
+            >
+              <div className="flex items-start justify-between">
+                <span className="font-display text-3xl font-semibold text-foreground/15 marker-num group-hover:text-sage/30 transition-colors">
+                  {step.n}
+                </span>
+                <span className="text-3xl" aria-hidden>
+                  {step.emoji}
+                </span>
+              </div>
+              <h3 className="mt-4 font-display text-xl font-semibold text-foreground">
+                {step.title}
+              </h3>
+              <p className="mt-2 text-sm text-muted-foreground text-pretty leading-relaxed">
+                {step.body}
+              </p>
+              <p className="mt-4 font-mono text-[11px] text-sage">{step.detail}</p>
+            </motion.div>
+          ))}
         </div>
 
-        {/* Bottom note */}
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="mt-10 mx-auto max-w-2xl text-center"
+          className="mt-10 flex items-start gap-3 max-w-2xl"
         >
-          <div className="rounded-2xl border border-primary/20 bg-primary/5 p-5">
-            <p className="text-sm text-foreground text-pretty">
-              <span className="font-semibold text-primary">Pro tip:</span> You don't need to keep
-              the bot open. Plants grow using weather history and timestamps — return whenever you
-              like and DaisyFlower computes the current state on demand.
-            </p>
-          </div>
+          <span className="text-xl shrink-0">💡</span>
+          <p className="text-sm text-muted-foreground text-pretty leading-relaxed">
+            <span className="font-medium text-foreground">You don't need to keep the bot open.</span>{" "}
+            Plants grow using weather history and timestamps — return whenever you like and
+            DaisyFlower computes the current state on demand. No notifications required, no
+            grinding, no FOMO.
+          </p>
         </motion.div>
-      </div>
-
-      {/* Decorative bottom wave */}
-      <div className="absolute bottom-0 inset-x-0 translate-y-px" aria-hidden>
-        <svg viewBox="0 0 1440 80" preserveAspectRatio="none" className="w-full h-12 md:h-16">
-          <path
-            d="M0,40 C240,0 480,80 720,40 C960,0 1200,70 1440,40 L1440,80 L0,80 Z"
-            fill="var(--background)"
-          />
-        </svg>
       </div>
     </section>
   );

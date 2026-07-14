@@ -2,43 +2,44 @@
 
 import { motion } from "framer-motion";
 import { TECH_STACK, DESIGN_PRINCIPLES } from "@/lib/daisy-data";
-import { SectionHeader } from "./Features";
+import { SectionHeading } from "./Features";
 
 export function TechStack() {
   return (
-    <section id="tech" className="py-20 md:py-28 scroll-mt-16">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <SectionHeader
-          eyebrow="Under the hood"
+    <section id="tech" className="py-24 md:py-32 scroll-mt-16 border-t border-border bg-paper-warm relative overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 bg-paper-grain opacity-40" aria-hidden />
+
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <SectionHeading
+          number="06"
+          eyebrow="Engineering"
           title={
             <>
-              A modular monolith, <span className="text-primary">layered by design</span>
+              A modular monolith,
+              <br className="hidden sm:block" /> <em className="font-normal text-sage">layered by design.</em>
             </>
           }
-          description="DaisyFlower is built with TypeScript end-to-end, Domain-Driven Design, and an event-driven domain layer. Commands receive input, viewers render UI, services own the rules, repositories persist, managers own infrastructure."
+          description="TypeScript end-to-end, Domain-Driven Design, and an event-driven domain layer. Commands receive input, viewers render UI, services own the rules, repositories persist, managers own infrastructure."
         />
 
-        <div className="mt-14 grid lg:grid-cols-3 gap-5 md:gap-6">
+        {/* Tech grid */}
+        <div className="mt-14 grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-border rounded-2xl overflow-hidden border border-border">
           {TECH_STACK.map((tech, i) => (
-            <motion.article
+            <motion.div
               key={tech.name}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.4, delay: i * 0.05 }}
-              className="card-garden card-garden-hover rounded-2xl p-5 border"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: i * 0.04 }}
+              className="bg-card p-5 sm:p-6 group hover:bg-secondary/30 transition-colors"
             >
-              <div className="flex items-center justify-between">
-                <span className="grid place-items-center h-12 w-12 rounded-xl bg-secondary text-2xl">
-                  {tech.emoji}
-                </span>
-                <span className="text-[11px] font-mono font-semibold text-primary bg-primary/10 px-2 py-1 rounded-md">
-                  {tech.version}
-                </span>
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-2xl">{tech.emoji}</span>
+                <span className="font-mono text-[10px] text-sage bg-sage/10 px-2 py-0.5 rounded">{tech.version}</span>
               </div>
-              <h3 className="mt-4 font-display text-lg font-bold text-foreground">{tech.name}</h3>
-              <p className="mt-1.5 text-sm text-muted-foreground text-pretty">{tech.role}</p>
-            </motion.article>
+              <h3 className="font-display text-base font-semibold text-foreground">{tech.name}</h3>
+              <p className="mt-1.5 text-sm text-muted-foreground text-pretty leading-relaxed">{tech.role}</p>
+            </motion.div>
           ))}
         </div>
 
@@ -48,55 +49,37 @@ export function TechStack() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="mt-12 card-garden rounded-3xl p-6 md:p-10 border"
+          className="mt-12 rounded-2xl border border-border bg-card p-6 sm:p-10"
         >
-          <h3 className="font-display text-xl md:text-2xl font-bold text-foreground text-center">
-            System architecture
-          </h3>
-          <p className="mt-2 text-sm text-muted-foreground text-center max-w-2xl mx-auto text-pretty">
-            Every layer has a single responsibility. Redis is an acceleration layer — gameplay
-            remains recoverable after Redis loss. MongoDB is the durable source of truth.
-          </p>
+          <div className="text-center mb-8">
+            <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-sage font-semibold">System architecture</p>
+            <h3 className="mt-2 font-display text-2xl font-semibold text-foreground">How a request flows</h3>
+            <p className="mt-2 text-sm text-muted-foreground max-w-2xl mx-auto text-pretty">
+              Every layer has a single responsibility. Redis is an acceleration layer — gameplay
+              remains recoverable after Redis loss. MongoDB is the durable source of truth.
+            </p>
+          </div>
 
-          <div className="mt-8 space-y-3 max-w-3xl mx-auto">
-            <ArchLayer
-              tone="leaf"
-              label="Discord Gateway"
-              sublabel="Slash commands · buttons · select menus · modals"
-            />
-            <ArchConnector />
-            <ArchLayer
-              tone="sun"
-              label="Handlers · Middlewares · Viewers"
-              sublabel="CommandHandler · InteractionHandler · Cooldown / Profile / Blacklist / Terms"
-            />
-            <ArchConnector />
-            <ArchLayer
-              tone="leaf"
-              label="Domain Services"
-              sublabel="GardenService · EconomyService · InventoryService · UserService · ShopManager"
-            />
-            <ArchConnector />
-            <ArchLayer
-              tone="sky"
-              label="Managers · Repositories"
-              sublabel="Database · Cache · Weather · GameData · i18n · LiveConfig"
-            />
-            <ArchConnector />
-            <ArchLayer
-              tone="rose"
-              label="EventBus · System Listeners"
-              sublabel="XPListener · MissionListener · LiveConfigListener"
-            />
+          <div className="max-w-2xl mx-auto space-y-2">
+            <ArchLayer n="1" label="Discord Gateway" sub="slash · buttons · menus · modals" tone="sage" />
+            <ArchArrow />
+            <ArchLayer n="2" label="Handlers · Middlewares · Viewers" sub="cooldown · profile · blacklist · terms" tone="gold" />
+            <ArchArrow />
+            <ArchLayer n="3" label="Domain Services" sub="Garden · Economy · Inventory · User · Shop" tone="sage" />
+            <ArchArrow />
+            <ArchLayer n="4" label="Managers · Repositories" sub="Database · Cache · Weather · GameData · i18n" tone="sky" />
+            <ArchArrow />
+            <ArchLayer n="5" label="EventBus · Listeners" sub="XP · Missions · LiveConfig" tone="terra" />
           </div>
         </motion.div>
 
         {/* Design principles */}
         <div className="mt-16">
-          <h3 className="text-center font-display text-2xl md:text-3xl font-bold text-foreground">
-            Design principles
-          </h3>
-          <div className="mt-8 grid sm:grid-cols-2 gap-5 max-w-4xl mx-auto">
+          <div className="text-center mb-8">
+            <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-sage font-semibold">Design principles</p>
+            <h3 className="mt-2 font-display text-2xl font-semibold text-foreground">How we think about the player</h3>
+          </div>
+          <div className="grid sm:grid-cols-2 gap-5 max-w-4xl mx-auto">
             {DESIGN_PRINCIPLES.map((p, i) => (
               <motion.div
                 key={p.title}
@@ -104,18 +87,15 @@ export function TechStack() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.05 }}
-                className="rounded-2xl border border-border bg-card/60 backdrop-blur-sm p-5"
+                className="rounded-2xl border border-border bg-card p-5"
               >
                 <div className="flex items-start gap-3">
-                  <span
-                    className="grid place-items-center h-8 w-8 shrink-0 rounded-lg bg-leaf-gradient text-primary-foreground font-display font-bold text-sm"
-                    aria-hidden
-                  >
-                    {i + 1}
+                  <span className="font-display text-xl font-semibold text-sage marker-num shrink-0">
+                    {String(i + 1).padStart(2, "0")}
                   </span>
                   <div>
-                    <h4 className="font-display text-base font-bold text-foreground">{p.title}</h4>
-                    <p className="mt-1 text-sm text-muted-foreground text-pretty">{p.description}</p>
+                    <h4 className="font-display text-base font-semibold text-foreground">{p.title}</h4>
+                    <p className="mt-1 text-sm text-muted-foreground text-pretty leading-relaxed">{p.description}</p>
                   </div>
                 </div>
               </motion.div>
@@ -128,45 +108,39 @@ export function TechStack() {
 }
 
 const TONES = {
-  leaf: { bg: "bg-leaf-gradient", text: "text-primary-foreground" },
-  sun: { bg: "bg-sun-gradient", text: "text-accent-foreground" },
-  sky: { bg: "bg-gradient-to-r from-sky-soft to-leaf-soft", text: "text-foreground" },
-  rose: { bg: "bg-gradient-to-r from-rose-petal to-sun-deep", text: "text-primary-foreground" },
+  sage: "border-sage/30 bg-sage/[0.06] text-sage-deep",
+  gold: "border-gold/30 bg-gold/[0.06] text-gold-deep",
+  sky: "border-sky-soft/40 bg-sky-soft/[0.08] text-foreground",
+  terra: "border-terra/30 bg-terra/[0.06] text-terra-deep",
 } as const;
 
 function ArchLayer({
-  tone,
+  n,
   label,
-  sublabel,
+  sub,
+  tone,
 }: {
-  tone: keyof typeof TONES;
+  n: string;
   label: string;
-  sublabel: string;
+  sub: string;
+  tone: keyof typeof TONES;
 }) {
-  const t = TONES[tone];
   return (
-    <div
-      className={
-        "rounded-2xl px-5 py-4 text-center shadow-sm " + t.bg + " " + t.text
-      }
-    >
-      <p className="font-display text-base md:text-lg font-bold">{label}</p>
-      <p className="mt-0.5 text-[11px] md:text-xs opacity-90 font-mono">{sublabel}</p>
+    <div className={`rounded-xl border px-5 py-3.5 flex items-center gap-4 ${TONES[tone]}`}>
+      <span className="font-display text-lg font-semibold marker-num shrink-0">{n}</span>
+      <div className="flex-1">
+        <p className="font-display text-sm font-semibold text-foreground">{label}</p>
+        <p className="font-mono text-[11px] text-muted-foreground">{sub}</p>
+      </div>
     </div>
   );
 }
 
-function ArchConnector() {
+function ArchArrow() {
   return (
     <div className="flex justify-center" aria-hidden>
-      <svg width="24" height="20" viewBox="0 0 24 20" fill="none">
-        <path
-          d="M12 0 V14 M6 10 L12 16 L18 10"
-          stroke="oklch(0.55 0.135 145 / 0.4)"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
+      <svg width="14" height="18" viewBox="0 0 14 18" fill="none">
+        <path d="M7 0 V12 M3 9 L7 14 L11 9" stroke="oklch(0.5 0.07 145 / 0.4)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     </div>
   );

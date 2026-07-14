@@ -1,274 +1,313 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Sprout, Sun, Cloud, Droplet } from "lucide-react";
-import { STATS } from "@/lib/daisy-data";
+import { ArrowRight, Sparkles } from "lucide-react";
+import { useAuth } from "@/hooks/use-auth";
+import { AuthModal } from "./AuthModal";
+import { useState } from "react";
 
 export function Hero() {
+  const { player, signIn } = useAuth();
+  const [authOpen, setAuthOpen] = useState(false);
+
   const scrollTo = (href: string) => {
     document.querySelector(href)?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   return (
-    <section
-      id="top"
-      className="relative pt-28 pb-20 md:pt-36 md:pb-28 overflow-hidden bg-garden-meadow"
-    >
-      {/* Decorative floating emojis */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
-        <span className="absolute top-32 left-[6%] text-5xl opacity-40 animate-float-slow">🌻</span>
-        <span className="absolute top-52 right-[10%] text-4xl opacity-30 animate-float-medium">🦋</span>
-        <span className="absolute bottom-24 left-[14%] text-4xl opacity-30 animate-drift">🌸</span>
-        <span className="absolute bottom-40 right-[20%] text-5xl opacity-25 animate-float-slow">🐝</span>
-        <span className="absolute top-1/2 left-[2%] text-3xl opacity-30 animate-float-medium">🌱</span>
-        <span className="absolute top-40 right-[3%] text-3xl opacity-25 animate-drift">🍃</span>
-      </div>
+    <section id="top" className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden bg-paper-warm">
+      {/* Subtle paper grain */}
+      <div className="pointer-events-none absolute inset-0 bg-paper-grain opacity-60" aria-hidden />
 
       {/* Soft sun glow */}
       <div
-        className="pointer-events-none absolute -top-20 -right-20 h-[28rem] w-[28rem] rounded-full opacity-50 blur-3xl"
-        style={{ background: "radial-gradient(circle, oklch(0.85 0.16 88 / 0.5), transparent 70%)" }}
+        className="pointer-events-none absolute -top-40 right-0 h-[36rem] w-[36rem] rounded-full blur-3xl opacity-40"
+        style={{ background: "radial-gradient(circle, oklch(0.82 0.12 85 / 0.45), transparent 70%)" }}
         aria-hidden
       />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
-          {/* Left column — copy */}
+        {/* Eyebrow */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="flex items-center gap-3 text-sm text-muted-foreground"
+        >
+          <span className="font-mono text-xs uppercase tracking-[0.18em] text-sage">v1.0 · in development</span>
+          <span className="h-px w-12 bg-border" />
+          <span className="hidden sm:inline">Open source · MIT</span>
+        </motion.div>
+
+        {/* Headline — editorial, asymmetric */}
+        <div className="mt-8 grid lg:grid-cols-12 gap-8 lg:gap-12 items-end">
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            className="text-center lg:text-left"
+            transition={{ duration: 0.6, delay: 0.05 }}
+            className="lg:col-span-8"
           >
-            <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
-              </span>
-              In active development · Open source · MIT
-            </span>
-
-            <h1 className="mt-5 font-display text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-balance leading-[1.05]">
-              The deterministic{" "}
-              <span className="relative inline-block">
-                <span className="bg-clip-text text-transparent bg-gradient-to-br from-primary via-leaf to-leaf-deep">
-                  gardening
-                </span>
-                <svg
-                  className="absolute -bottom-2 left-0 w-full"
-                  viewBox="0 0 200 12"
-                  preserveAspectRatio="none"
-                  aria-hidden
-                >
-                  <path
-                    d="M2 8 Q 50 1, 100 6 T 198 5"
-                    fill="none"
-                    stroke="oklch(0.85 0.16 88)"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </span>{" "}
-              simulator for Discord.
+            <h1 className="font-display text-[2.5rem] sm:text-6xl lg:text-7xl xl:text-8xl font-semibold tracking-tight leading-[0.95] text-balance">
+              A quiet garden,{" "}
+              <span className="italic font-normal text-sage">grown inside</span>{" "}
+              Discord.
             </h1>
-
-            <p className="mt-6 text-base sm:text-lg lg:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0 text-pretty">
-              DaisyFlower is a cozy, UI-first farm &amp; garden game. Plant seeds, react to weather,
-              harvest flowers, discover mutations, and grow your botanical collection — all through
-              buttons, menus, and guided panels inside Discord.
-            </p>
-
-            <div className="mt-8 flex flex-wrap items-center justify-center lg:justify-start gap-3">
-              <button
-                onClick={() => scrollTo("#start")}
-                className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20 hover:bg-primary/90 hover:shadow-xl hover:-translate-y-0.5 transition-all"
-              >
-                <Sprout className="h-4 w-4" />
-                Start your garden
-              </button>
-              <button
-                onClick={() => scrollTo("#features")}
-                className="inline-flex items-center gap-2 rounded-xl border border-border bg-card/60 backdrop-blur px-6 py-3 text-sm font-semibold text-foreground hover:border-primary/40 hover:bg-card transition-all"
-              >
-                Explore features
-                <span aria-hidden>→</span>
-              </button>
-            </div>
-
-            {/* Stats */}
-            <dl className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl mx-auto lg:mx-0">
-              {STATS.map((s) => (
-                <div
-                  key={s.label}
-                  className="rounded-xl border border-border bg-card/60 backdrop-blur-sm px-3 py-3 text-center lg:text-left"
-                >
-                  <dt className="text-xs text-muted-foreground flex items-center gap-1 justify-center lg:justify-start">
-                    <span aria-hidden>{s.emoji}</span>
-                    {s.label}
-                  </dt>
-                  <dd className="mt-1 font-display text-2xl font-bold text-foreground">{s.value}</dd>
-                </div>
-              ))}
-            </dl>
           </motion.div>
 
-          {/* Right column — garden card mockup */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.15, ease: "easeOut" }}
-            className="relative mx-auto w-full max-w-md lg:max-w-none"
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.15 }}
+            className="lg:col-span-4 lg:pb-3"
           >
-            <div className="relative">
-              {/* Glow behind card */}
-              <div
-                className="absolute -inset-4 rounded-3xl opacity-40 blur-2xl"
-                style={{
-                  background:
-                    "linear-gradient(135deg, oklch(0.55 0.135 145 / 0.4), oklch(0.85 0.16 88 / 0.3))",
-                }}
-                aria-hidden
-              />
+            <p className="text-base lg:text-lg text-muted-foreground text-pretty leading-relaxed max-w-md">
+              DaisyFlower is a cozy, deterministic gardening simulator. Plant seeds, react to the
+              weather, harvest rare mutations — through buttons, menus, and panels. No timers, no
+              grinding, no spam.
+            </p>
 
-              {/* The garden card */}
-              <div className="relative card-garden rounded-3xl p-5 sm:p-6 overflow-hidden">
-                {/* Card header */}
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="grid place-items-center h-9 w-9 rounded-xl bg-leaf-gradient text-white text-lg">
-                      🌼
-                    </span>
-                    <div>
-                      <p className="font-display font-bold text-foreground leading-tight">
-                        Daisy Garden
-                      </p>
-                      <p className="text-[11px] text-muted-foreground">Player · Level 3</p>
-                    </div>
-                  </div>
-                  <span className="inline-flex items-center gap-1 rounded-full bg-accent/30 px-2.5 py-1 text-[11px] font-semibold text-accent-foreground">
-                    <Sun className="h-3 w-3" /> Sunny
-                  </span>
-                </div>
-
-                {/* Weather strip */}
-                <div className="mt-4 rounded-2xl bg-secondary/60 p-3">
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="text-muted-foreground">Weather</span>
-                    <span className="font-medium text-foreground">☀️ Faster growth · drains water 2×</span>
-                  </div>
-                  <div className="mt-2 flex items-center justify-between text-xs">
-                    <span className="text-muted-foreground flex items-center gap-1">
-                      <Droplet className="h-3 w-3" /> Humidity
-                    </span>
-                    <span className="font-medium text-foreground">50%</span>
-                  </div>
-                  <div className="mt-1.5 h-1.5 w-full rounded-full bg-background overflow-hidden">
-                    <div className="h-full w-1/2 bg-sky-soft rounded-full" />
-                  </div>
-                </div>
-
-                {/* Slots */}
-                <div className="mt-4 grid grid-cols-3 gap-2">
-                  <Slot emoji="🌻" label="Sunflower" progress={72} status="Growing" />
-                  <Slot emoji="🌹" label="Red Rose" progress={45} status="Growing" />
-                  <Slot emoji="🌱" label="Empty" progress={0} status="Plant" empty />
-                  <Slot emoji="🤍" label="White Rose" progress={90} status="Almost" />
-                  <Slot emoji="🌻" label="Sunflower" progress={100} status="Ready" ready />
-                  <Slot emoji="🌱" label="Empty" progress={0} status="Plant" empty />
-                </div>
-
-                {/* Action buttons */}
-                <div className="mt-4 grid grid-cols-3 gap-2">
-                  <ActionBtn emoji="🌱" label="Plant" primary />
-                  <ActionBtn emoji="🌻" label="Harvest" />
-                  <ActionBtn emoji="💧" label="Water" />
-                </div>
-
-                {/* Recommended action */}
-                <div className="mt-3 rounded-xl border border-primary/20 bg-primary/5 px-3 py-2 text-xs text-foreground">
-                  <span className="font-semibold text-primary">Recommended:</span> Harvest your ready Sunflower 🌻
-                </div>
-              </div>
-
-              {/* Floating weather icons */}
-              <motion.div
-                className="absolute -top-6 -left-6 grid place-items-center h-12 w-12 rounded-2xl bg-card border border-border shadow-lg text-2xl"
-                animate={{ y: [0, -8, 0] }}
-                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                aria-hidden
+            <div className="mt-6 flex flex-wrap items-center gap-3">
+              {player ? (
+                <button
+                  onClick={() => scrollTo("#dashboard")}
+                  className="group inline-flex items-center gap-2 rounded-lg bg-foreground text-background px-5 py-2.5 text-sm font-semibold hover:bg-foreground/90 transition-colors"
+                >
+                  Open your dashboard
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                </button>
+              ) : (
+                <button
+                  onClick={() => setAuthOpen(true)}
+                  className="group inline-flex items-center gap-2 rounded-lg bg-foreground text-background px-5 py-2.5 text-sm font-semibold hover:bg-foreground/90 transition-colors"
+                >
+                  Sign in to your garden
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                </button>
+              )}
+              <button
+                onClick={() => scrollTo("#features")}
+                className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-medium text-foreground hover:bg-secondary transition-colors"
               >
-                ☀️
-              </motion.div>
-              <motion.div
-                className="absolute -bottom-5 -right-5 grid place-items-center h-14 w-14 rounded-2xl bg-card border border-border shadow-lg text-3xl"
-                animate={{ y: [0, -6, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-                aria-hidden
-              >
-                <Cloud className="h-7 w-7 text-sky-soft" />
-              </motion.div>
+                See how it works
+              </button>
             </div>
           </motion.div>
         </div>
+
+        {/* Garden preview mockup */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-16 lg:mt-24"
+        >
+          <GardenPreview />
+        </motion.div>
+
+        {/* Footnote stats — editorial style */}
+        <motion.dl
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.6 }}
+          className="mt-16 grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-5 max-w-3xl"
+        >
+          {[
+            { v: "12+", l: "Slash commands live" },
+            { v: "4", l: "Weather states" },
+            { v: "2", l: "Languages" },
+            { v: "0", l: "Per-plant timers" },
+          ].map((s) => (
+            <div key={s.l} className="border-l-2 border-border pl-3">
+              <dt className="font-display text-3xl font-semibold text-foreground marker-num">{s.v}</dt>
+              <dd className="mt-0.5 text-xs text-muted-foreground">{s.l}</dd>
+            </div>
+          ))}
+        </motion.dl>
       </div>
 
-      {/* Bottom wave divider */}
-      <div className="absolute bottom-0 inset-x-0" aria-hidden>
-        <svg viewBox="0 0 1440 100" preserveAspectRatio="none" className="w-full h-12 md:h-20">
-          <path
-            d="M0,60 C240,100 480,20 720,50 C960,80 1200,30 1440,70 L1440,100 L0,100 Z"
-            fill="var(--background)"
-          />
-        </svg>
-      </div>
+      <AuthModal open={authOpen} onOpenChange={setAuthOpen} onAuthenticated={signIn} />
     </section>
   );
 }
 
-function Slot({
+function GardenPreview() {
+  return (
+    <div className="relative">
+      {/* Frame chrome — looks like an app window */}
+      <div className="rounded-2xl border border-border bg-card overflow-hidden shadow-xl shadow-foreground/[0.04]">
+        {/* Window header */}
+        <div className="flex items-center justify-between px-4 py-2.5 border-b border-border bg-secondary/40">
+          <div className="flex items-center gap-1.5">
+            <span className="h-2.5 w-2.5 rounded-full bg-terra/60" />
+            <span className="h-2.5 w-2.5 rounded-full bg-gold/60" />
+            <span className="h-2.5 w-2.5 rounded-full bg-sage/60" />
+          </div>
+          <span className="font-mono text-[11px] text-muted-foreground">
+            discord · #daisy-garden
+          </span>
+          <span className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+            <span className="h-1.5 w-1.5 rounded-full bg-sage animate-pulse-dot" />
+            live
+          </span>
+        </div>
+
+        {/* Garden panel — Discord Components v2 style */}
+        <div className="grid lg:grid-cols-[1.5fr_1fr]">
+          {/* Main panel */}
+          <div className="p-5 sm:p-6 border-b lg:border-b-0 lg:border-r border-border">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="font-display text-lg font-semibold text-foreground">My Garden</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  3 plants · 1 ready to harvest
+                </p>
+              </div>
+              <WeatherPill />
+            </div>
+
+            {/* Slots grid */}
+            <div className="mt-5 grid grid-cols-3 gap-2.5">
+              <GardenSlot emoji="🌻" name="Sunflower" progress={72} />
+              <GardenSlot emoji="🌹" name="Red Rose" progress={45} />
+              <GardenSlot emoji="🤍" name="White Rose" progress={90} />
+              <GardenSlot emoji="🌻" name="Sunflower" progress={100} ready />
+              <GardenSlot emoji="🌱" empty label="Empty slot" />
+              <GardenSlot emoji="🌱" empty label="Empty slot" />
+            </div>
+
+            {/* Action row */}
+            <div className="mt-4 flex flex-wrap gap-2">
+              <MockButton primary>🌱 Plant</MockButton>
+              <MockButton>🌻 Harvest</MockButton>
+              <MockButton>💧 Water</MockButton>
+              <MockButton>🛒 Shop</MockButton>
+            </div>
+
+            {/* Recommended */}
+            <div className="mt-3 rounded-lg bg-sage/[0.06] border border-sage/20 px-3 py-2 text-xs">
+              <span className="font-semibold text-sage">Next:</span>{" "}
+              <span className="text-foreground">Harvest your ready Sunflower.</span>
+            </div>
+          </div>
+
+          {/* Side panel */}
+          <div className="p-5 sm:p-6 bg-secondary/30">
+            <div className="flex items-center gap-3">
+              <span className="grid place-items-center h-10 w-10 rounded-full bg-sage/15 text-lg">
+                🌻
+              </span>
+              <div>
+                <p className="text-sm font-semibold text-foreground">petalkeeper</p>
+                <p className="text-[11px] text-muted-foreground">Level 7 · Gardener</p>
+              </div>
+            </div>
+
+            {/* XP bar */}
+            <div className="mt-4">
+              <div className="flex items-center justify-between text-[11px] text-muted-foreground mb-1.5">
+                <span>XP to Level 8</span>
+                <span className="font-mono">2,140 / 3,000</span>
+              </div>
+              <div className="h-1.5 w-full rounded-full bg-secondary overflow-hidden">
+                <div className="h-full w-[71%] rounded-full bg-gradient-to-r from-sage to-sage-deep" />
+              </div>
+            </div>
+
+            {/* Wallet */}
+            <div className="mt-5 grid grid-cols-2 gap-2">
+              <div className="rounded-lg border border-border bg-card p-2.5">
+                <p className="text-[10px] uppercase tracking-wider text-muted-foreground">Daisies</p>
+                <p className="font-display text-lg font-semibold text-foreground mt-0.5">1,240</p>
+              </div>
+              <div className="rounded-lg border border-border bg-card p-2.5">
+                <p className="text-[10px] uppercase tracking-wider text-muted-foreground">Collection</p>
+                <p className="font-display text-lg font-semibold text-foreground mt-0.5">8 / 24</p>
+              </div>
+            </div>
+
+            {/* Mission preview */}
+            <div className="mt-4 rounded-lg border border-border bg-card p-3">
+              <div className="flex items-center justify-between">
+                <p className="text-[11px] font-semibold text-foreground flex items-center gap-1">
+                  <Sparkles className="h-3 w-3 text-gold" /> Daily mission
+                </p>
+                <span className="text-[10px] text-muted-foreground font-mono">2/3</span>
+              </div>
+              <p className="mt-1 text-xs text-muted-foreground">Harvest 3 flowers</p>
+              <div className="mt-2 h-1 w-full rounded-full bg-secondary overflow-hidden">
+                <div className="h-full w-2/3 rounded-full bg-gold" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Floating callout */}
+      <motion.div
+        className="absolute -top-4 -right-2 sm:right-6 hidden sm:flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1.5 shadow-lg"
+        animate={{ y: [0, -6, 0] }}
+        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <span className="h-1.5 w-1.5 rounded-full bg-sage animate-pulse-dot" />
+        <span className="text-[11px] font-medium text-foreground">No timers running</span>
+      </motion.div>
+    </div>
+  );
+}
+
+function WeatherPill() {
+  return (
+    <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1.5">
+      <span className="text-base leading-none">☀️</span>
+      <div className="text-left">
+        <p className="text-[11px] font-semibold text-foreground leading-none">Sunny</p>
+        <p className="text-[10px] text-muted-foreground leading-none mt-0.5">×1.5 growth</p>
+      </div>
+    </div>
+  );
+}
+
+function GardenSlot({
   emoji,
-  label,
+  name,
   progress,
-  status,
-  empty,
   ready,
+  empty,
+  label,
 }: {
   emoji: string;
-  label: string;
-  progress: number;
-  status: string;
-  empty?: boolean;
+  name?: string;
+  progress?: number;
   ready?: boolean;
+  empty?: boolean;
+  label?: string;
 }) {
+  if (empty) {
+    return (
+      <div className="rounded-lg border border-dashed border-border bg-background/40 px-2.5 py-2.5 text-center">
+        <p className="text-base opacity-40">{emoji}</p>
+        <p className="mt-1 text-[10px] text-muted-foreground truncate">{label}</p>
+      </div>
+    );
+  }
   return (
     <div
       className={
-        "rounded-xl border p-2.5 transition-all " +
-        (empty
-          ? "border-dashed border-border bg-background/40"
-          : ready
-            ? "border-primary/40 bg-primary/5 shadow-sm"
-            : "border-border bg-background/60")
+        "rounded-lg border px-2.5 py-2.5 " +
+        (ready ? "border-sage/40 bg-sage/[0.06]" : "border-border bg-background/60")
       }
     >
       <div className="flex items-center justify-between">
-        <span className="text-lg leading-none" aria-hidden>
-          {emoji}
-        </span>
-        <span
-          className={
-            "text-[9px] font-semibold uppercase tracking-wide " +
-            (ready ? "text-primary" : empty ? "text-muted-foreground/70" : "text-muted-foreground")
-          }
-        >
-          {status}
-        </span>
+        <span className="text-base leading-none">{emoji}</span>
+        {ready && (
+          <span className="text-[9px] font-bold uppercase tracking-wide text-sage">Ready</span>
+        )}
       </div>
-      <p className="mt-1 text-[10px] font-medium text-foreground truncate">{label}</p>
-      {!empty && (
-        <div className="mt-1.5 h-1 w-full rounded-full bg-secondary overflow-hidden">
+      <p className="mt-1 text-[10px] font-medium text-foreground truncate">{name}</p>
+      {!ready && progress !== undefined && (
+        <div className="mt-1.5 h-0.5 w-full rounded-full bg-secondary overflow-hidden">
           <div
-            className={"h-full rounded-full " + (ready ? "bg-primary" : "bg-leaf-soft")}
+            className="h-full rounded-full bg-sage-soft"
             style={{ width: `${progress}%` }}
           />
         </div>
@@ -277,26 +316,23 @@ function Slot({
   );
 }
 
-function ActionBtn({
-  emoji,
-  label,
+function MockButton({
+  children,
   primary,
 }: {
-  emoji: string;
-  label: string;
+  children: React.ReactNode;
   primary?: boolean;
 }) {
   return (
-    <div
+    <span
       className={
-        "flex items-center justify-center gap-1.5 rounded-lg py-2 text-xs font-semibold transition-colors " +
+        "inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold transition-colors " +
         (primary
-          ? "bg-primary text-primary-foreground shadow-sm"
-          : "bg-secondary text-secondary-foreground hover:bg-secondary/80")
+          ? "bg-sage text-white hover:bg-sage-deep"
+          : "bg-secondary text-secondary-foreground hover:bg-secondary/70")
       }
     >
-      <span aria-hidden>{emoji}</span>
-      {label}
-    </div>
+      {children}
+    </span>
   );
 }

@@ -1,39 +1,44 @@
 import type { Metadata } from "next";
-import { Nunito, Fraunces } from "next/font/google";
+import { Inter, Fraunces, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 
-const nunito = Nunito({
-  variable: "--font-nunito",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700", "800"],
+  weight: ["300", "400", "500", "600", "700"],
   display: "swap",
 });
 
 const fraunces = Fraunces({
   variable: "--font-fraunces",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
+  display: "swap",
+  axes: ["SOFT", "WONK"],
+});
+
+const jetbrains = JetBrains_Mono({
+  variable: "--font-jetbrains",
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "DaisyFlower — The deterministic gardening simulator for Discord",
+  title: "DaisyFlower — A gardening simulator for Discord",
   description:
-    "DaisyFlower is a cozy, UI-first gardening game for Discord. Plant seeds, react to weather, harvest flowers, discover mutations, and grow your botanical collection — all through buttons, menus, and guided panels.",
+    "DaisyFlower is a cozy, UI-first gardening game for Discord. Plant seeds, react to weather, harvest flowers, discover mutations, and grow your botanical collection.",
   keywords: [
     "DaisyFlower",
     "Discord bot",
     "gardening game",
     "farm simulator",
     "Discord game",
-    "TypeScript bot",
     "cozy game",
-    "deterministic simulation",
   ],
   authors: [{ name: "DaisyFlower Project" }],
   openGraph: {
-    title: "DaisyFlower — The deterministic gardening simulator for Discord",
+    title: "DaisyFlower — A gardening simulator for Discord",
     description:
       "Plant seeds, care for your garden, react to weather, harvest flowers, and discover rare mutations — all inside Discord.",
     siteName: "DaisyFlower",
@@ -55,7 +60,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${nunito.variable} ${fraunces.variable} font-sans antialiased bg-background text-foreground`}
+        className={`${inter.variable} ${fraunces.variable} ${jetbrains.variable} font-sans antialiased bg-background text-foreground`}
       >
         {children}
         <Toaster />
