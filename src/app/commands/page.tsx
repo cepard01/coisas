@@ -68,6 +68,7 @@ export default function CommandsPage() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder={t.commands.searchPlaceholder}
+                aria-label={t.commands.searchPlaceholder}
                 className="w-full rounded-lg border border-border bg-card pl-11 pr-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-sage/40 transition-colors"
               />
             </div>

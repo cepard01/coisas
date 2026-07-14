@@ -67,6 +67,27 @@ export const ptBR: Translation = {
           "Conecte com Discord e veja seu jardim no navegador — plantas, carteira, missões e coleção.",
         cta: "Ver painel",
       },
+      {
+        emoji: "⌨️",
+        title: "Comandos",
+        description:
+          "Cada slash command numa olhada. Busque, filtre por categoria, encontre o que precisa.",
+        cta: "Ver comandos",
+      },
+      {
+        emoji: "📈",
+        title: "Progressão",
+        description:
+          "O que desbloqueia em cada nível — sementes, ferramentas, decorações, mutações, cards de perfil.",
+        cta: "Ver níveis",
+      },
+      {
+        emoji: "❓",
+        title: "Perguntas",
+        description:
+          "É grátis? Como adiciono? Vou perder minhas plantas? Respostas para as dúvidas comuns.",
+        cta: "Ler FAQ",
+      },
     ],
   },
   finalCta: {
@@ -156,9 +177,9 @@ export const ptBR: Translation = {
       gardenTitle: "🌼 Meu Jardim",
       gardenSubtitle: "4 plantas · 2 prontas para colher · umidade 50%",
       slots: [
-        { emoji: "🌻", status: "crescendo 72%" },
-        { emoji: "🌹", status: "crescendo 45%" },
-        { emoji: "🌻", status: "pronta!" },
+        { emoji: "🌻", status: "crescendo 72%", ready: false },
+        { emoji: "🌹", status: "crescendo 45%", ready: false },
+        { emoji: "🌻", status: "pronta!", ready: true },
       ],
       buttons: { plant: "🌱 Plantar", harvest: "🌻 Colher", water: "💧 Regar", shop: "🛒 Loja" },
       tip: "Dica: Colha seu girassol pronto 🌻",
@@ -576,5 +597,12 @@ export const ptBR: Translation = {
     title: "Quatro céus, quatro estratégias.",
     description:
       "O clima muda a cada 4 horas. Cada tipo muda como seu jardim se comporta — adapte-se ou espere passar.",
+  },
+  notFound: {
+    code: "404",
+    title: "Esta página",
+    highlight: "ainda não floresceu.",
+    body: "A página que você procura não existe — ou talvez nunca tenha sido plantada. Vamos voltar para o jardim.",
+    backHome: "Voltar ao início",
   },
 };

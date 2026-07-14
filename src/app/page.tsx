@@ -6,6 +6,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { useI18n } from "@/hooks/use-i18n";
 import { AuthModal } from "@/components/site/AuthModal";
 import { Reveal } from "@/components/site/Reveal";
+import { ClientOnly } from "@/components/site/ClientOnly";
 import { ArrowRightIcon, ArrowUpRightIcon } from "@/components/site/icons";
 
 export default function Home() {
@@ -56,7 +57,9 @@ export default function Home() {
           </div>
 
           <div className="mt-16 lg:mt-20">
-            <GardenIllustration />
+            <ClientOnly fallback={<IllustrationFallback />}>
+              <GardenIllustration />
+            </ClientOnly>
 
             <dl className="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-x-8 gap-y-5 max-w-3xl">
               {t.hero.stats.map((s, i) => (
@@ -113,9 +116,9 @@ export default function Home() {
 
           <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {t.explore.cards.map((card, i) => (
-              <Reveal key={i} delay={i * 0.06}>
+              <Reveal key={i} delay={i * 0.05}>
                 <Link
-                  href={["/how-it-works", "/plants", "/panel"][i]}
+                  href={["/how-it-works", "/plants", "/panel", "/commands", "/#progression", "/faq"][i]}
                   className="group block card-hairline card-hairline-hover rounded-xl p-6 h-full"
                 >
                   <div className="text-3xl mb-4">{card.emoji}</div>
@@ -345,7 +348,7 @@ function PlantPreview() {
 function ProgressionSection() {
   const { t } = useI18n();
   return (
-    <section className="py-20 md:py-28 border-t border-border bg-background">
+    <section id="progression" className="py-20 md:py-28 border-t border-border bg-background scroll-mt-16">
       <div className="mx-auto max-w-6xl px-5 sm:px-6">
         <Reveal>
           <div className="max-w-3xl">
@@ -412,6 +415,12 @@ function ProgressionSection() {
 }
 
 /* ── Garden illustration SVG ────────────────────────────────────────── */
+
+function IllustrationFallback() {
+  return (
+    <div className="relative w-full overflow-hidden rounded-xl border border-border bg-card h-[280px] sm:h-[350px]" />
+  );
+}
 
 function GardenIllustration() {
   const { t } = useI18n();

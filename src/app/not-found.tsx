@@ -13,15 +13,14 @@ export default function NotFound() {
         <DaisyMark size={48} className="text-terra mx-auto opacity-40" />
 
         <p className="mt-8 font-mono text-[11px] uppercase tracking-[0.18em] text-sage font-semibold">
-          404
+          {t.notFound.code}
         </p>
         <h1 className="mt-3 font-display text-4xl sm:text-5xl font-medium tracking-tight text-foreground text-balance leading-[1.05]">
-          This page{" "}
-          <em className="font-normal text-sage">hasn't bloomed yet.</em>
+          {t.notFound.title}{" "}
+          <em className="font-normal text-sage">{t.notFound.highlight}</em>
         </h1>
         <p className="mt-5 text-base text-muted-foreground text-pretty leading-relaxed">
-          The page you're looking for doesn't exist — or maybe it was never planted. Let's get you
-          back to the garden.
+          {t.notFound.body}
         </p>
 
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
@@ -29,7 +28,7 @@ export default function NotFound() {
             href="/"
             className="group inline-flex items-center gap-2 rounded-lg bg-foreground text-background px-5 py-2.5 text-sm font-medium hover:bg-foreground/90 transition-colors"
           >
-            {t.nav.signIn === "Sign in" ? "Back to home" : "Voltar ao início"}
+            {t.notFound.backHome}
             <ArrowRightIcon size={15} className="transition-transform group-hover:translate-x-0.5" />
           </Link>
           <Link

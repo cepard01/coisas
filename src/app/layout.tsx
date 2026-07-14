@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { I18nProvider } from "@/hooks/use-i18n";
+import { LangUpdater } from "@/components/site/LangUpdater";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -66,6 +67,7 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <I18nProvider>
+          <LangUpdater />
           <div className="min-h-screen flex flex-col">
             <Navbar />
             <main className="flex-1">{children}</main>

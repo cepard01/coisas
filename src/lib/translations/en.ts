@@ -65,6 +65,27 @@ export const en = {
           "Connect with Discord and see your garden in the browser — plants, wallet, missions, collection.",
         cta: "Open dashboard",
       },
+      {
+        emoji: "⌨️",
+        title: "Commands",
+        description:
+          "Every slash command at a glance. Search, filter by category, find what you need.",
+        cta: "See commands",
+      },
+      {
+        emoji: "📈",
+        title: "Progression",
+        description:
+          "What unlocks at each level — seeds, tools, decorations, mutations, profile cards.",
+        cta: "See levels",
+      },
+      {
+        emoji: "❓",
+        title: "FAQ",
+        description:
+          "Is it free? How do I add it? Will I lose my plants? Answers to the common questions.",
+        cta: "Read FAQ",
+      },
     ],
   },
   finalCta: {
@@ -154,9 +175,9 @@ export const en = {
       gardenTitle: "🌼 My Garden",
       gardenSubtitle: "4 plants · 2 ready to harvest · humidity 50%",
       slots: [
-        { emoji: "🌻", status: "growing 72%" },
-        { emoji: "🌹", status: "growing 45%" },
-        { emoji: "🌻", status: "ready!" },
+        { emoji: "🌻", status: "growing 72%", ready: false },
+        { emoji: "🌹", status: "growing 45%", ready: false },
+        { emoji: "🌻", status: "ready!", ready: true },
       ],
       buttons: { plant: "🌱 Plant", harvest: "🌻 Harvest", water: "💧 Water", shop: "🛒 Shop" },
       tip: "Tip: Harvest your ready Sunflower 🌻",
@@ -574,6 +595,13 @@ export const en = {
     title: "Four skies, four strategies.",
     description:
       "Weather rotates every 4 hours. Each type changes how your garden behaves — adapt or wait it out.",
+  },
+  notFound: {
+    code: "404",
+    title: "This page",
+    highlight: "hasn't bloomed yet.",
+    body: "The page you're looking for doesn't exist — or maybe it was never planted. Let's get you back to the garden.",
+    backHome: "Back to home",
   },
 };
 

@@ -181,7 +181,7 @@ function DiscordMockup() {
                   key={i}
                   className={cn(
                     "rounded p-2 text-center",
-                    slot.status.includes("ready") || slot.status.includes("pronta")
+                    slot.ready
                       ? "bg-sage/15 border border-sage/30"
                       : "bg-black/20"
                   )}
@@ -189,9 +189,7 @@ function DiscordMockup() {
                   <div className="text-lg">{slot.emoji}</div>
                   <p className={cn(
                     "text-[10px] mt-0.5",
-                    slot.status.includes("ready") || slot.status.includes("pronta")
-                      ? "text-sage font-medium"
-                      : "text-paper/60"
+                    slot.ready ? "text-sage font-medium" : "text-paper/60"
                   )}>{slot.status}</p>
                 </div>
               ))}
