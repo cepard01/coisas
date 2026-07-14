@@ -97,6 +97,39 @@ export const ptBR: Translation = {
       "Leva 30 segundos. Sem cadastro, sem download. Adicione o bot e digite /start.",
     button: "Começar agora",
   },
+  community: {
+    number: "07",
+    eyebrow: "Comunidade",
+    title: "Um canto tranquilo da",
+    highlight: "internet.",
+    description:
+      "Sem ranking, sem FOMO, sem pressão. Só uma pequena comunidade de gente que gosta de jogos lentos e ver coisas crescerem.",
+    stats: [
+      { value: "120+", label: "jardins plantados" },
+      { value: "1.400", label: "flores colhidas" },
+      { value: "38", label: "mutações raras encontradas" },
+      { value: "0", label: "anúncios, nunca" },
+    ],
+    quotes: [
+      { text: "É o único bot que eu realmente espero conferir. Planto antes do trabalho e colho no almoço.", author: "marina", role: "joga desde v0.3" },
+      { text: "Achei uma Rosa Rosa no dia 4. Pareceu uma descoberta de verdade, não um drop aleatório.", author: "k3v", role: "caçador de mutações" },
+      { text: "Finalmente um jogo de Discord que não me spamma. Eu confiro quando quero, ele espera.", author: "jules", role: "jardineiro casual" },
+    ],
+  },
+  updates: {
+    number: "08",
+    eyebrow: "Atualizações recentes",
+    title: "O que há de novo",
+    highlight: "no jardim.",
+    description: "Changelog honesto — sem spin de marketing. Só o que mudou, o que foi corrigido, o que vem aí.",
+    items: [
+      { version: "0.4.2", date: "2 semanas atrás", tag: "fixed", title: "Recompensas de colheita corrigidas", body: "Sementes agora mapeiam corretamente para itens de flor. Antes algumas colheitas falhavam silenciosamente." },
+      { version: "0.4.1", date: "1 mês atrás", tag: "added", title: "Mutação Rosa Rosa", body: "Plante Rosa Vermelha + Branca lado a lado. 30% de chance de híbrida rara." },
+      { version: "0.4.0", date: "2 meses atrás", tag: "changed", title: "Reformulação do sistema de clima", body: "Ciclo de 4 horas com previsão de 5 passos. Tempestades agora abrem chances de mutação." },
+    ],
+    tagLabels: { fixed: "Corrigido", added: "Adicionado", changed: "Mudado", wip: "Em progresso" },
+    viewAll: "Ver changelog completo",
+  },
   features: {
     number: "01",
     eyebrow: "Recursos",

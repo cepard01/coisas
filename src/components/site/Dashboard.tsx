@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { useI18n } from "@/hooks/use-i18n";
 import {
   SproutIcon,
@@ -132,6 +132,33 @@ function MiniStat({ icon: Icon, label, value }: { icon: React.ElementType; label
 function GardenTab() {
   const { t } = useI18n();
   const g = t.panel.dashboard.garden;
+
+  // Live countdown: simulate plants growing in real time.
+  // Progress increases visibly every 2 seconds for demo purposes.
+  const [tick, setTick] = useState(0);
+  useEffect(() => {
+    const interval = setInterval(() => setTick((v) => v + 1), 2000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Compute live progress for each slot
+  const liveSlots = useMemo(() => {
+    return g.slots.map((slot, i) => {
+      const increment = tick * (0.3 + i * 0.1);
+      const progress = Math.min(slot.progress + increment, 99);
+      const remaining = Math.max(0, 100 - progress);
+      const minutes = Math.max(1, Math.ceil(remaining * 0.2));
+      return { ...slot, liveProgress: progress, liveEta: `~${minutes}m` };
+    });
+  }, [g.slots, tick]);
+
+  // Next ready time (shortest remaining)
+  const nextReady = useMemo(() => {
+    const times = liveSlots.map((s) => Math.max(0, 100 - s.liveProgress));
+    const min = Math.min(...times);
+    return `~${Math.ceil(min * 0.2)}m`;
+  }, [liveSlots]);
+
   return (
     <div>
       <TabHeader
@@ -149,7 +176,7 @@ function GardenTab() {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mb-7">
         <MiniStat icon={SproutIcon} label={g.slotsUsed} value="4 / 6" />
         <MiniStat icon={DropletIcon} label={g.humidity} value="50%" />
-        <MiniStat icon={ClockIcon} label={g.nextReady} value="~18m" />
+        <MiniStat icon={ClockIcon} label={g.nextReady} value={nextReady} />
         <MiniStat icon={SparkIcon} label={g.mutationHint} value="✓" />
       </div>
 
@@ -157,13 +184,13 @@ function GardenTab() {
         {g.slotsLabel}
       </p>
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
-        {g.slots.map((slot, i) => (
+        {liveSlots.map((slot, i) => (
           <DashSlot
             key={i}
             emoji={slot.emoji}
             name={slot.name}
-            progress={slot.progress}
-            eta={slot.eta}
+            progress={slot.liveProgress}
+            eta={slot.liveEta}
           />
         ))}
         <DashSlot emoji={g.readySlot.emoji} name={g.readySlot.name} progress={100} ready />
@@ -245,6 +272,25 @@ function ActivityRow({ time, text, tone }: { time: string; text: string; tone: "
 function WalletTab() {
   const { t } = useI18n();
   const w = t.panel.dashboard.wallet;
+
+  // Animated balance: counts up from 0 to 1240 on mount
+  const [balance, setBalance] = useState(0);
+  useEffect(() => {
+    const target = 1240;
+    const duration = 1200;
+    const start = performance.now();
+    let raf: number;
+    const tick = (now: number) => {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setBalance(Math.round(target * eased));
+      if (progress < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
   return (
     <div>
       <TabHeader title={w.title} subtitle={w.subtitle} />
@@ -252,7 +298,9 @@ function WalletTab() {
       <div className="border-b border-border pb-6 mb-6">
         <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">{w.balance}</p>
         <div className="mt-1 flex items-baseline gap-3">
-          <p className="font-display text-5xl font-medium text-foreground marker-num tabular">1,240</p>
+          <p className="font-display text-5xl font-medium text-foreground marker-num tabular">
+            {balance.toLocaleString()}
+          </p>
           <span className="text-sm text-muted-foreground">{w.daisies}</span>
         </div>
         <p className="mt-2 text-xs text-sage flex items-center gap-1">

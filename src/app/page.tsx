@@ -141,6 +141,12 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Community */}
+      <CommunitySection />
+
+      {/* Recent updates */}
+      <UpdatesSection />
+
       {/* Final CTA */}
       <section className="py-20 md:py-28 border-t border-border bg-background">
         <div className="mx-auto max-w-3xl px-5 sm:px-6 text-center">
@@ -509,6 +515,156 @@ function EconomySection() {
             </div>
           </Reveal>
         </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── Community section (stats + quotes) ──────────────────────────────── */
+
+function CommunitySection() {
+  const { t } = useI18n();
+  const c = t.community;
+  return (
+    <section className="py-20 md:py-28 border-t border-border bg-background">
+      <div className="mx-auto max-w-6xl px-5 sm:px-6">
+        <Reveal>
+          <div className="max-w-3xl">
+            <div className="flex items-center gap-3 text-muted-foreground">
+              <span className="font-mono text-xs marker-num">{c.number}</span>
+              <span className="h-px w-8 bg-border" />
+              <span className="font-mono text-xs uppercase tracking-[0.18em] text-sage font-semibold">
+                {c.eyebrow}
+              </span>
+            </div>
+            <h2 className="mt-5 font-display text-4xl sm:text-5xl lg:text-[3.5rem] font-medium tracking-tight text-foreground text-balance leading-[1.05]">
+              {c.title}{" "}
+              <em className="font-normal text-sage">{c.highlight}</em>
+            </h2>
+            <p className="mt-5 text-base sm:text-lg text-muted-foreground text-pretty leading-relaxed max-w-2xl">
+              {c.description}
+            </p>
+          </div>
+        </Reveal>
+
+        {/* Stats strip */}
+        <Reveal delay={0.05}>
+          <div className="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-px bg-border rounded-2xl overflow-hidden border border-border">
+            {c.stats.map((s, i) => (
+              <div key={i} className="bg-card p-5 text-center">
+                <p className="font-display text-3xl sm:text-4xl font-medium text-foreground marker-num tabular">
+                  {s.value}
+                </p>
+                <p className="mt-1 text-xs text-muted-foreground text-pretty">{s.label}</p>
+              </div>
+            ))}
+          </div>
+        </Reveal>
+
+        {/* Quotes */}
+        <div className="mt-6 grid sm:grid-cols-3 gap-4">
+          {c.quotes.map((q, i) => (
+            <Reveal key={i} delay={i * 0.06}>
+              <figure className="card-hairline rounded-xl p-5 h-full flex flex-col">
+                <blockquote className="text-sm text-foreground text-pretty leading-relaxed flex-1">
+                  &ldquo;{q.text}&rdquo;
+                </blockquote>
+                <figcaption className="mt-4 pt-4 border-t border-border flex items-center gap-2.5">
+                  <span className="grid place-items-center h-8 w-8 rounded-full bg-sage/15 text-sage text-xs font-semibold">
+                    {q.author.charAt(0).toUpperCase()}
+                  </span>
+                  <div>
+                    <p className="text-xs font-medium text-foreground">@{q.author}</p>
+                    <p className="text-[10px] text-muted-foreground">{q.role}</p>
+                  </div>
+                </figcaption>
+              </figure>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── Recent updates section (changelog preview) ──────────────────────── */
+
+function UpdatesSection() {
+  const { t } = useI18n();
+  const u = t.updates;
+
+  const tagStyles: Record<string, string> = {
+    fixed: "bg-sage/15 text-sage",
+    added: "bg-gold/20 text-gold-deep",
+    changed: "bg-terra/15 text-terra-deep",
+    wip: "bg-secondary text-muted-foreground",
+  };
+
+  return (
+    <section className="py-20 md:py-28 border-t border-border">
+      <div className="mx-auto max-w-4xl px-5 sm:px-6">
+        <Reveal>
+          <div className="max-w-3xl">
+            <div className="flex items-center gap-3 text-muted-foreground">
+              <span className="font-mono text-xs marker-num">{u.number}</span>
+              <span className="h-px w-8 bg-border" />
+              <span className="font-mono text-xs uppercase tracking-[0.18em] text-sage font-semibold">
+                {u.eyebrow}
+              </span>
+            </div>
+            <h2 className="mt-5 font-display text-4xl sm:text-5xl lg:text-[3.5rem] font-medium tracking-tight text-foreground text-balance leading-[1.05]">
+              {u.title}{" "}
+              <em className="font-normal text-sage">{u.highlight}</em>
+            </h2>
+            <p className="mt-5 text-base sm:text-lg text-muted-foreground text-pretty leading-relaxed max-w-2xl">
+              {u.description}
+            </p>
+          </div>
+        </Reveal>
+
+        <div className="mt-12 space-y-4">
+          {u.items.map((item, i) => (
+            <Reveal key={i} delay={i * 0.05}>
+              <article className="card-hairline rounded-xl p-5 sm:p-6">
+                <div className="flex items-start justify-between gap-4 flex-wrap">
+                  <div className="flex items-center gap-3">
+                    <span
+                      className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide ${
+                        tagStyles[item.tag] ?? tagStyles.wip
+                      }`}
+                    >
+                      {u.tagLabels[item.tag as keyof typeof u.tagLabels] ?? item.tag}
+                    </span>
+                    <span className="font-mono text-sm font-semibold text-foreground">
+                      v{item.version}
+                    </span>
+                  </div>
+                  <span className="font-mono text-[11px] text-muted-foreground">{item.date}</span>
+                </div>
+                <h3 className="mt-3 font-display text-lg font-medium text-foreground">
+                  {item.title}
+                </h3>
+                <p className="mt-1.5 text-sm text-muted-foreground text-pretty leading-relaxed">
+                  {item.body}
+                </p>
+              </article>
+            </Reveal>
+          ))}
+        </div>
+
+        <Reveal delay={0.2}>
+          <div className="mt-8 text-center">
+            <a
+              href="https://github.com/cepard01/daisyflower/blob/main/docs/audit-roadmap.md"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-sage hover:underline"
+            >
+              {u.viewAll}
+              <ArrowUpRightIcon size={14} />
+            </a>
+          </div>
+        </Reveal>
       </div>
     </section>
   );

@@ -95,6 +95,39 @@ export const en = {
       "Takes 30 seconds. No signup, no download. Add the bot and type /start.",
     button: "Get started",
   },
+  community: {
+    number: "07",
+    eyebrow: "Community",
+    title: "A quiet corner of",
+    highlight: "the internet.",
+    description:
+      "No leaderboards, no FOMO, no pressure. Just a small community of people who like slow games and watching things grow.",
+    stats: [
+      { value: "120+", label: "gardens planted" },
+      { value: "1,400", label: "flowers harvested" },
+      { value: "38", label: "rare mutations found" },
+      { value: "0", label: "ads, ever" },
+    ],
+    quotes: [
+      { text: "It's the only bot I actually look forward to checking. I plant before work and harvest at lunch.", author: "marina", role: "player since v0.3" },
+      { text: "Found a Pink Rose on day 4. Felt like a real discovery, not a random drop.", author: "k3v", role: "mutation hunter" },
+      { text: "Finally a Discord game that doesn't spam me. I check it when I want, it waits.", author: "jules", role: "casual gardener" },
+    ],
+  },
+  updates: {
+    number: "08",
+    eyebrow: "Recent updates",
+    title: "What's new",
+    highlight: "in the garden.",
+    description: "Honest changelog — no marketing spin. Just what changed, what's fixed, what's coming.",
+    items: [
+      { version: "0.4.2", date: "2 weeks ago", tag: "fixed", title: "Harvest rewards fixed", body: "Seeds now correctly map to flower items. Previously some harvests silently failed." },
+      { version: "0.4.1", date: "1 month ago", tag: "added", title: "Pink Rose mutation", body: "Plant Red + White Rose side by side. 30% chance of a rare hybrid." },
+      { version: "0.4.0", date: "2 months ago", tag: "changed", title: "Weather system rework", body: "4-hour cycle with 5-step forecast. Storms now open mutation chances." },
+    ],
+    tagLabels: { fixed: "Fixed", added: "Added", changed: "Changed", wip: "In progress" },
+    viewAll: "View full changelog",
+  },
   features: {
     number: "01",
     eyebrow: "Features",
