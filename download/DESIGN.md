@@ -1,365 +1,487 @@
-# DaisyFlower Website — Design Document
+# DaisyFlower Website — Design System & Architecture
 
-> A calm garden simulator for Discord. This document defines the design system, architecture, and guidelines for the marketing site and web dashboard.
+> The marketing site and web dashboard for DaisyFlower, a calm garden simulator bot for Discord.
+> This document is the source of truth for every visual, structural, and behavioral decision.
 
 ---
 
 ## Table of Contents
 
-1. [Philosophy](#1-philosophy)
-2. [Design Tokens](#2-design-tokens)
-3. [Typography](#3-typography)
-4. [Color System](#4-color-system)
-5. [Spacing & Layout](#5-spacing--layout)
-6. [Iconography](#6-iconography)
-7. [Components](#7-components)
-8. [Page Architecture](#8-page-architecture)
-9. [Internationalization (i18n)](#9-internationalization-i18n)
-10. [Animation](#10-animation)
-11. [Accessibility](#11-accessibility)
-12. [File Structure](#12-file-structure)
-13. [Contribution Guidelines](#13-contribution-guidelines)
+1. [Project Overview](#1-project-overview)
+2. [Design Philosophy](#2-design-philosophy)
+3. [Technology Stack](#3-technology-stack)
+4. [Design Tokens (CSS Custom Properties)](#4-design-tokens-css-custom-properties)
+5. [Color System](#5-color-system)
+6. [Typography](#6-typography)
+7. [Iconography](#7-iconography)
+8. [Spacing, Layout & Grid](#8-spacing-layout--grid)
+9. [Component Library](#9-component-library)
+10. [Page Architecture & Routing](#10-page-architecture--routing)
+11. [Internationalization (i18n)](#11-internationalization-i18n)
+12. [Authentication (Mock)](#12-authentication-mock)
+13. [Animation & Motion](#13-animation--motion)
+14. [Accessibility](#14-accessibility)
+15. [Anti-Patterns (What We Avoid)](#15-anti-patterns-what-we-avoid)
+16. [File Structure](#16-file-structure)
+17. [Development Workflow](#17-development-workflow)
+18. [Contribution Checklist](#18-contribution-checklist)
 
 ---
 
-## 1. Philosophy
+## 1. Project Overview
 
-DaisyFlower is a calm game. The website should feel the same way.
+DaisyFlower is a Discord bot where players tend a virtual garden: plant seeds, react to weather,
+harvest flowers, discover rare mutations. The website serves two purposes:
 
-**Three principles:**
+1. **Marketing site** (`/`, `/how-it-works`, `/plants`, `/faq`, `/get-started`) — tells players
+   what the game is, how it works, and how to add the bot. User-facing, not technical.
 
-1. **Calm over clever.** No bouncy animations, no gradient explosions, no emoji-as-icon. The site should feel like a botanical journal — warm paper, ink text, hand-drawn marks.
+2. **Web dashboard** (`/panel`) — a mockup of a logged-in app area where players can see their
+   garden, wallet, missions, and collection in the browser. Separate from the landing page.
 
-2. **Honest voice.** Copy speaks directly to the player, not at them. No marketing superlatives. No jargon. "Plants grow even when you're away" — not "leveraging lazy deterministic simulation for optimal scalability."
-
-3. **Editorial, not generic.** Asymmetric layouts. Serif display type with italics. Section numbers like a magazine. Hairline borders instead of shadows. The goal: a site that looks like a person made it, not a template.
-
-**What we avoid (signals of generic AI-generated frontend):**
-- Emoji used as UI icons (🚀 ⚡ ✨ in buttons/nav) — use the custom SVG icon set instead
-- Repeated dot textures ("paper grain") — removed in favor of clean surfaces
-- Obvious gradients (sage → terra → gold bars) — use flat color or subtle single-hue washes
-- "Code editor" mockups with fake syntax highlighting — use real diagrams or prose
-- Shadow-heavy card stacks — use 1px hairline borders
+**Default language:** English. **Secondary language:** Português (pt-BR). Language switching is
+fluid (context-based, no page reload) and persists across sessions.
 
 ---
 
-## 2. Design Tokens
+## 2. Design Philosophy
 
-All tokens are defined as CSS custom properties in `src/app/globals.css` and mapped to Tailwind via `@theme inline`.
+The site should feel like a botanical journal — warm, quiet, hand-made.
+
+### Three Principles
+
+1. **Calm over clever.** Slow animations (never bouncy). Hairline borders instead of shadows.
+   Warm off-white paper instead of pure white. The site should lower your heart rate, not raise it.
+
+2. **Honest voice.** Copy speaks directly to the player. No marketing superlatives, no jargon.
+   "Plants grow even when you're away" — not "leveraging lazy deterministic simulation."
+
+3. **Editorial, not generic.** Asymmetric layouts. Serif display type with italics. Section numbers
+   like a magazine (`01`, `02`). Mono eyebrows with wide tracking. The goal: a site that looks
+   like a person made it.
+
+### Bot-Inspired Decisions
+
+The website mirrors the bot's personality:
+
+| Bot behavior | Website parallel |
+|---|---|
+| Bilingual (pt-BR + en-US) with auto-detection | i18n with fluid switching, EN default |
+| UI-first gameplay (panels, not commands) | Panel-based dashboard, not a command reference |
+| Deterministic simulation (timestamps, not timers) | SSR-safe rendering (no client-only state on first paint) |
+| Calm, cozy player experience | Calm design (no bouncy animations, no spam) |
+
+---
+
+## 3. Technology Stack
+
+| Layer | Technology | Version |
+|---|---|---|
+| Framework | Next.js (App Router) | 16.x |
+| Language | TypeScript | 5.x |
+| Styling | Tailwind CSS | 4.x |
+| UI primitives | shadcn/ui (New York) | — |
+| Animation | Framer Motion | 12.x |
+| Icons | Custom SVG set (hand-drawn) | — |
+| Fonts | next/font (Google Fonts) | — |
+
+**No external icon libraries** (no lucide-react in site components, no emoji-as-icon). All UI icons
+are custom SVGs in `src/components/site/icons.tsx`.
+
+---
+
+## 4. Design Tokens (CSS Custom Properties)
+
+All tokens live in `src/app/globals.css` under `:root` (light) and `.dark` (dark). They are mapped
+to Tailwind via `@theme inline` so you can use them as `bg-background`, `text-foreground`, etc.
 
 ### Border Radius
 
-| Token | Value | Usage |
-|-------|-------|-------|
-| `--radius` | `0.5rem` | Base — slightly tight, not bubbly |
-| `--radius-sm` | `calc(0.5rem - 4px)` | Small elements, chips |
-| `--radius-md` | `calc(0.5rem - 2px)` | Buttons, inputs |
-| `--radius-lg` | `0.5rem` | Cards, panels |
-| `--radius-xl` | `calc(0.5rem + 4px)` | Large containers |
-| `--radius-2xl` | `calc(0.5rem + 10px)` | Hero illustrations, modals |
+| Token | Value | Tailwind class | Usage |
+|---|---|---|---|
+| `--radius` | `0.5rem` (8px) | `rounded-lg` | Base — tight, not bubbly |
+| `--radius-sm` | `calc(r - 4px)` | `rounded-sm` | Chips, small elements |
+| `--radius-md` | `calc(r - 2px)` | `rounded-md` | Buttons, inputs |
+| `--radius-xl` | `calc(r + 4px)` | `rounded-xl` | Cards, panels |
+| `--radius-2xl` | `calc(r + 10px)` | `rounded-2xl` | Large containers, callouts |
 
 ### Letter Spacing
 
-| Context | Value | Reason |
-|---------|-------|--------|
-| Body text | `-0.011em` | Tighter, editorial feel |
-| Display headings | `-0.025em` | Aggressive tracking for large serif type |
+| Context | Value | Where |
+|---|---|---|
+| Body text | `-0.011em` | `body` in `globals.css` |
+| Display headings | `-0.025em` | `.font-display` class |
+| Eyebrow labels | `+0.18em` (tracking-wider) | Inline on `font-mono text-xs uppercase` |
+
+### Font Features
+
+```css
+font-feature-settings: "ss01", "cv01", "cv11";  /* body */
+font-feature-settings: "lnum", "tnum";           /* .marker-num — lining + tabular nums */
+font-variation-settings: "SOFT" 50, "WONK" 0;    /* Fraunces display */
+```
 
 ### Shadows
 
-Shadows are almost never used. Prefer `border: 1px solid var(--border)`. The only exception is modal/dropdown overlays, which use `shadow-lg` for depth separation.
+**Shadows are almost never used.** The only exception is modal/dropdown overlays (`shadow-lg`).
+Cards use `border: 1px solid var(--border)` instead. This is deliberate — shadows feel "material
+design," borders feel "editorial."
 
 ---
 
-## 3. Typography
-
-### Font Families
-
-| Role | Font | Weights | Usage |
-|------|------|---------|-------|
-| **Display** | Fraunces (variable, axes: SOFT, WONK) | 400–900 | Headlines, section titles, numbers, plant names |
-| **Body** | Inter | 300–700 | Paragraphs, buttons, UI labels |
-| **Mono** | JetBrains Mono | 400–600 | Code, timestamps, IDs, eyebrow labels |
-
-### Font Loading
-
-```ts
-// src/app/layout.tsx
-const inter = Inter({ variable: "--font-inter", subsets: ["latin"], weight: ["300","400","500","600","700"], display: "swap" });
-const fraunces = Fraunces({ variable: "--font-fraunces", subsets: ["latin"], display: "swap", axes: ["SOFT", "WONK"] });
-const jetbrains = JetBrains_Mono({ variable: "--font-jetbrains", subsets: ["latin"], weight: ["400","500","600"], display: "swap" });
-```
-
-### Type Scale
-
-| Element | Class | Size | Weight | Tracking |
-|---------|-------|------|--------|----------|
-| H1 (hero) | `font-display text-[2.75rem] sm:text-7xl lg:text-[5.5rem] xl:text-[6rem]` | 44→96px | 500 | -0.025em |
-| H2 (section) | `font-display text-4xl sm:text-5xl lg:text-[3.5rem]` | 36→56px | 500 | -0.025em |
-| H3 (card) | `font-display text-lg` | 18px | 500 | -0.025em |
-| Body | `text-base` | 16px | 400 | -0.011em |
-| Body large | `text-lg` | 18px | 400 | -0.011em |
-| Small | `text-sm` | 14px | 400 | -0.011em |
-| Eyebrow | `font-mono text-xs uppercase tracking-[0.18em]` | 12px | 600 | +0.18em |
-| Caption | `font-mono text-[11px]` | 11px | 400 | 0 |
-
-### Typographic Patterns
-
-- **Italic emphasis** for highlighted words in headings: `<em className="font-normal text-sage">word</em>`
-- **Section numbers** in monospace, dimmed: `01`, `02`, etc.
-- **Eyebrow labels** above headings: monospace, uppercase, wide tracking, sage color
-- **Tabular numbers** (`tabular` class) for data, stats, prices
-
----
-
-## 4. Color System
+## 5. Color System
 
 ### Light Theme (default)
 
+All values in OKLCH for perceptual uniformity.
+
 | Token | OKLCH | Hex approx | Role |
-|-------|-------|------------|------|
-| `--background` | `oklch(0.985 0.006 75)` | `#FAF8F4` | Warm off-white, like uncoated paper |
-| `--foreground` | `oklch(0.21 0.012 75)` | `#1F1D1A` | Near-black with warm undertone |
-| `--card` | `oklch(0.995 0.004 75)` | `#FEFDFB` | Slightly lighter than background |
-| `--primary` (sage) | `oklch(0.46 0.06 145)` | `#4A6B57` | Muted natural green |
-| `--accent` (terra) | `oklch(0.68 0.1 45)` | `#C97B5A` | Earthy terracotta |
-| `--gold` | `oklch(0.8 0.1 85)` | `#E8C766` | Sunflower gold |
+|---|---|---|---|
+| `--background` | `oklch(0.985 0.006 75)` | `#FAF8F4` | Warm off-white (uncoated paper) |
+| `--foreground` | `oklch(0.21 0.012 75)` | `#1F1D1A` | Near-black, warm undertone |
+| `--card` | `oklch(0.995 0.004 75)` | `#FEFDFB` | Slightly lighter than bg |
+| `--primary` | `oklch(0.46 0.06 145)` | `#4A6B57` | Sage — primary actions |
+| `--secondary` | `oklch(0.955 0.008 75)` | `#F5F2EE` | Soft warm grey |
 | `--muted-foreground` | `oklch(0.48 0.012 75)` | `#6B6862` | Secondary text |
+| `--accent` | `oklch(0.68 0.1 45)` | `#C97B5A` | Terracotta — accent actions |
+| `--destructive` | `oklch(0.58 0.19 25)` | `#B84A3A` | Errors |
 | `--border` | `oklch(0.9 0.008 75)` | `#E5E1DA` | Hairline borders |
 
 ### Garden Palette (custom tokens)
 
-| Token | Usage |
-|-------|-------|
-| `--sage` | Primary actions, success states, "live" indicators |
-| `--sage-deep` | Hover states, dark accents on green |
-| `--sage-soft` | Progress bars, subtle green fills |
-| `--terra` | Accent actions, rare items, callouts |
-| `--terra-deep` | Terracotta text on light backgrounds |
-| `--gold` | Currency (Daisies), sunny weather, highlights |
-| `--gold-deep` | Gold text, sun indicators |
-| `--ink` | Dark panels (Discord mockups), inverted sections |
-| `--paper` | Alias for background in dark mockups |
+These are project-specific colors used via Tailwind classes like `text-sage`, `bg-terra/10`, etc.
 
-### Dark Theme
-
-Dark mode is defined but the site defaults to light. The palette shifts to cool greens with the same hue family:
-
-```css
-.dark {
-  --background: oklch(0.155 0.008 150);
-  --foreground: oklch(0.94 0.006 75);
-  --primary: oklch(0.66 0.07 145);
-  /* ... see globals.css for full dark theme */
-}
-```
+| Token | Light OKLCH | Dark OKLCH | Semantic role |
+|---|---|---|---|
+| `--sage` | `0.46 0.06 145` | `0.66 0.07 145` | Primary, go, live, success |
+| `--sage-deep` | `0.33 0.04 150` | `0.42 0.05 150` | Hover states on green |
+| `--sage-soft` | `0.7 0.035 140` | `0.48 0.04 140` | Progress bars, subtle fills |
+| `--terra` | `0.68 0.1 45` | `0.72 0.12 45` | Accent, rare, special |
+| `--terra-deep` | `0.52 0.11 40` | `0.58 0.12 40` | Terracotta text |
+| `--gold` | `0.8 0.1 85` | `0.82 0.1 85` | Currency, sun, reward |
+| `--gold-deep` | `0.62 0.12 75` | `0.68 0.12 75` | Gold text |
+| `--clay` | `0.62 0.07 50` | `0.68 0.09 50` | Earthy neutral |
+| `--ink` | `0.21 0.012 75` | `0.155 0.008 150` | Dark panels (Discord mockups) |
+| `--paper` | `0.985 0.006 75` | `0.155 0.008 150` | Alias for bg in dark mockups |
 
 ### Color Usage Rules
 
-1. **Sage** = primary, go, live, success
-2. **Terra** = accent, rare, special, callout
-3. **Gold** = currency, sun, reward
-4. **Sky-soft** = water, rain, info
-5. **Ink** = Discord mockups, inverted CTAs
-6. Never use indigo or blue.
+| Color | Use for | Don't use for |
+|---|---|---|
+| **Sage** | Primary buttons, "live" dots, success, links | Error states |
+| **Terra** | Rare items, mutation callouts, accent CTAs | Primary actions |
+| **Gold** | Daisies (currency), sun weather, rewards | Body text |
+| **Sky-soft** | Water/humidity, rain, info | — |
+| **Ink** | Discord mockup backgrounds, inverted sections | Light mode backgrounds |
+
+**Never use indigo or blue.** The palette is deliberately warm and earthy.
+
+### Dark Theme
+
+Defined in `.dark` class. The palette shifts to cooler greens but keeps the same hue family. Dark
+mode is fully supported but the site defaults to light.
 
 ---
 
-## 5. Spacing & Layout
+## 6. Typography
 
-### Container
+### Font Families
 
-- Max width: `max-w-6xl` (72rem / 1152px) for standard sections
-- Max width: `max-w-3xl` (48rem) for prose-heavy sections (FAQ, manifestos)
-- Max width: `max-w-4xl` (56rem) for focused content (mutation diagrams)
-- Horizontal padding: `px-5 sm:px-6` on all containers
+| Role | Font | Variable | Weights | Usage |
+|---|---|---|---|---|
+| Display | Fraunces (variable) | `--font-fraunces` | 400–900 (variable) | Headlines, titles, plant names, stats |
+| Body | Inter | `--font-inter` | 300–700 | Paragraphs, buttons, UI labels |
+| Mono | JetBrains Mono | `--font-jetbrains` | 400–600 | Code, timestamps, eyebrow labels |
 
-### Vertical Rhythm
+### Font Loading (in `layout.tsx`)
 
-| Section type | Top/bottom padding |
-|--------------|-------------------|
-| Hero | `pt-32 pb-20 md:pt-40 md:pb-24` (extra top for fixed navbar) |
-| Standard section | `py-20 md:py-28` |
-| Dense section | `py-16 md:py-24` |
-| Inner page header | `pt-32 pb-12 md:pt-40 md:pb-16` |
+```ts
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
+  subsets: ["latin"],
+  display: "swap",
+  axes: ["SOFT", "WONK"],  // Note: axes require NO weight property
+});
+```
 
-### Grid
+**Important:** When using `axes`, you cannot specify `weight`. This is a Next.js font requirement.
 
-- Card grids: `grid sm:grid-cols-2 lg:grid-cols-3 gap-4`
-- Hairline-separated grids: `grid gap-px bg-border rounded-2xl overflow-hidden border border-border` (cards have `bg-card` to create 1px lines)
+### Type Scale
 
-### Navbar
+| Element | Classes | Size | Weight | Tracking |
+|---|---|---|---|---|
+| Hero H1 | `font-display text-[2.75rem] sm:text-7xl lg:text-[5.5rem] xl:text-[6rem]` | 44→96px | 500 | -0.025em |
+| Section H2 | `font-display text-4xl sm:text-5xl lg:text-[3.5rem]` | 36→56px | 500 | -0.025em |
+| Card H3 | `font-display text-lg` | 18px | 500 | -0.025em |
+| Body | `text-base` | 16px | 400 | -0.011em |
+| Body large | `text-lg sm:text-xl` | 18–20px | 400 | -0.011em |
+| Small | `text-sm` | 14px | 400 | -0.011em |
+| Eyebrow | `font-mono text-[11px] uppercase tracking-[0.18em]` | 11px | 600 | +0.18em |
+| Caption | `font-mono text-[11px]` | 11px | 400 | 0 |
+| Stat number | `font-display text-3xl marker-num tabular` | 30px | 500 | -0.025em |
 
-- Fixed, `h-16` (64px)
-- Transparent at top, `bg-background/85 backdrop-blur-xl` after scroll
-- Nav links centered absolutely (`absolute left-1/2 -translate-x-1/2`)
-- Active indicator: `motion.span` with `layoutId="nav-active"` for smooth sliding
+### Typographic Patterns
+
+**Italic highlight in headings:**
+```tsx
+<h2>{t.title} <em className="font-normal text-sage">{t.highlight}</em></h2>
+```
+
+**Section header with number + eyebrow:**
+```tsx
+<div className="flex items-center gap-3 text-muted-foreground">
+  <span className="font-mono text-xs marker-num">01</span>
+  <span className="h-px w-8 bg-border" />
+  <span className="font-mono text-xs uppercase tracking-[0.18em] text-sage font-semibold">Features</span>
+</div>
+```
+
+**Text balancing:** Use `text-balance` on headings, `text-pretty` on paragraphs.
 
 ---
 
-## 6. Iconography
+## 7. Iconography
 
-### Custom SVG Icon Set
+### Custom SVG Icon Set (`src/components/site/icons.tsx`)
 
-All UI icons are hand-drawn SVGs in `src/components/site/icons.tsx`. **Never use emoji as UI icons** (in buttons, nav, stats, tabs). Emoji are only used where they represent actual game content (🌻 sunflower, ☀️ weather, 🪙 currency).
+**All UI icons are hand-drawn SVGs.** No lucide-react, no emoji-as-icon.
 
-**Icon principles:**
-- 1.5px stroke width
-- `currentColor` inheritance
+**Design rules:**
 - 24×24 viewBox
-- Rounded line caps and joins
-- Available in `size` prop (default 16)
+- 1.5px stroke width
+- `stroke="currentColor"` (inherits text color)
+- Rounded line caps and joins (`strokeLinecap="round"`, `strokeLinejoin="round"`)
+- `size` prop (default 16)
 
-**Available icons:**
-`SproutIcon`, `SunIcon`, `CloudIcon`, `RainIcon`, `StormIcon`, `SnowIcon`, `DropletIcon`, `ClockIcon`, `SparkIcon`, `WalletIcon`, `ListIcon`, `BookIcon`, `BellIcon`, `GearIcon`, `ArrowRightIcon`, `ArrowUpRightIcon`, `CheckIcon`, `PlusIcon`, `MinusIcon`, `MenuIcon`, `CloseIcon`, `ChevronDownIcon`, `LockIcon`, `ShieldIcon`, `GithubIcon`, `TerminalIcon`, `TrendingIcon`, `DaisyMark`, `SprigDivider`
+**Available icons (28 total):**
+
+| Category | Icons |
+|---|---|
+| Botanical | `SproutIcon`, `SunIcon`, `CloudIcon`, `RainIcon`, `StormIcon`, `SnowIcon`, `DropletIcon`, `SparkIcon` |
+| UI | `WalletIcon`, `ListIcon`, `BookIcon`, `BellIcon`, `GearIcon`, `ClockIcon`, `TrendingIcon` |
+| Navigation | `ArrowRightIcon`, `ArrowUpRightIcon`, `ChevronDownIcon`, `MenuIcon`, `CloseIcon` |
+| Status | `CheckIcon`, `PlusIcon`, `MinusIcon`, `LockIcon`, `ShieldIcon` |
+| Brand | `GithubIcon`, `TerminalIcon`, `DaisyMark`, `SprigDivider` |
 
 ### DaisyMark (Logo)
 
-The DaisyFlower logo is a custom SVG: 8 petals (4 cardinal + 4 diagonal at 75% opacity) around a gold center. Used in navbar, footer, auth modal, and as the user avatar fallback.
+The DaisyFlower logo — 8 petals (4 cardinal + 4 diagonal at 75% opacity) around a gold center.
+Used in navbar, footer, auth modal, and as user avatar.
 
 ```tsx
 <DaisyMark size={26} className="text-terra" />
 ```
 
+### When to Use Emoji vs Icons
+
+- **Emoji** = game content (🌻 sunflower, ☀️ sunny weather, 🪙 Daisies). These represent actual
+  in-game items and are universal.
+- **SVG icons** = UI affordances (buttons, nav, stats, tabs). These should never be emoji.
+
 ---
 
-## 7. Components
+## 8. Spacing, Layout & Grid
 
-### Core Components
+### Container Widths
 
-| Component | File | Purpose |
-|-----------|------|---------|
-| `Navbar` | `Navbar.tsx` | Fixed top nav with active route indicator, language switcher, auth state |
-| `Footer` | `Footer.tsx` | Site footer with sitemap, persistent across pages |
-| `PageHeader` | `PageHeader.tsx` | Reusable header for inner pages (eyebrow + title + description) |
-| `Reveal` | `Reveal.tsx` | SSR-safe scroll animation wrapper |
-| `AuthModal` | `AuthModal.tsx` | Mock Discord login flow (3 steps: intro → connecting → done) |
-| `LanguageSwitcher` | `LanguageSwitcher.tsx` | Dropdown for EN / PT-BR |
-| `DashboardLayout` | `Dashboard.tsx` | The 4-tab dashboard (Garden, Wallet, Missions, Collection) |
-| `icons` | `icons.tsx` | Custom SVG icon set |
+| Max width | Tailwind | Usage |
+|---|---|---|
+| 1152px | `max-w-6xl` | Standard sections (hero, features, galleries) |
+| 768px | `max-w-3xl` | Prose-heavy (FAQ, manifestos, CTAs) |
+| 896px | `max-w-4xl` | Focused content (mutation diagrams, mockups) |
+| 1024px | `max-w-5xl` | Get-started page |
 
-### Card Pattern
+**Horizontal padding:** `px-5 sm:px-6` on all containers.
 
+### Vertical Rhythm
+
+| Context | Padding |
+|---|---|
+| Hero (top of page) | `pt-32 pb-20 md:pt-40 md:pb-24` (extra top for fixed navbar) |
+| Standard section | `py-20 md:py-28` |
+| Dense section | `py-16 md:py-24` |
+| Inner page header | `pt-32 pb-12 md:pt-40 md:pb-16` |
+
+### Grid Patterns
+
+**Card grid (standard):**
+```tsx
+<div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+```
+
+**Hairline-separated grid (no gap, 1px borders):**
+```tsx
+<div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-border rounded-2xl overflow-hidden border border-border">
+  <div className="bg-card p-5">...</div>
+</div>
+```
+
+### Navbar Layout
+
+- Fixed, height 64px (`h-16`)
+- Transparent at scroll top, `bg-background/85 backdrop-blur-xl` after 8px scroll
+- Three-zone layout: logo (left), nav links (centered absolutely), actions (right)
+- Active route indicator: `motion.span` with `layoutId="nav-active"` (slides between links)
+
+### Sticky Footer
+
+```tsx
+<div className="min-h-screen flex flex-col">
+  <Navbar />
+  <main className="flex-1">{children}</main>
+  <Footer />
+</div>
+```
+
+---
+
+## 9. Component Library
+
+### Core Components (`src/components/site/`)
+
+| Component | File | Description |
+|---|---|---|
+| `Navbar` | `Navbar.tsx` | Fixed nav with route-aware active indicator, language switcher, auth state, mobile menu |
+| `Footer` | `Footer.tsx` | Sitemap in 3 columns, persistent across all pages |
+| `PageHeader` | `PageHeader.tsx` | Reusable header for inner pages (section number + eyebrow + title + description) |
+| `Reveal` | `Reveal.tsx` | SSR-safe scroll animation wrapper (uses `initial={false}` + `whileInView`) |
+| `AuthModal` | `AuthModal.tsx` | 3-step mock Discord login (intro → connecting → done) |
+| `LanguageSwitcher` | `LanguageSwitcher.tsx` | Dropdown for EN / PT-BR with flags |
+| `DashboardLayout` | `Dashboard.tsx` | 4-tab dashboard (Garden, Wallet, Missions, Collection) — exported for reuse |
+| `icons` | `icons.tsx` | 28 custom SVG icons + DaisyMark logo |
+
+### Reusable Patterns
+
+**Hairline card:**
 ```tsx
 <div className="card-hairline card-hairline-hover rounded-xl p-5">
   {/* content */}
 </div>
 ```
+- `.card-hairline`: 1px border, `bg-card`, 180ms transition on border-color
+- `.card-hairline-hover:hover`: border darkens to `sage/30`
 
-- `card-hairline`: 1px border, no shadow, subtle background
-- `card-hairline-hover`: border darkens on hover (no transform, no shadow)
-
-### Button Patterns
-
+**Primary button:**
 ```tsx
-// Primary (solid)
-<button className="rounded-lg bg-foreground text-background px-5 py-2.5 text-sm font-medium hover:bg-foreground/90 transition-colors">
-
-// Secondary (ghost)
-<button className="rounded-lg px-4 py-2.5 text-sm font-medium text-foreground hover:bg-secondary transition-colors">
-
-// Discord (branded)
-<button className="rounded-xl bg-[#5865F2] hover:bg-[#4752c4] text-white px-5 py-3 text-sm font-semibold">
+className="rounded-lg bg-foreground text-background px-5 py-2.5 text-sm font-medium hover:bg-foreground/90 transition-colors"
 ```
 
-### Section Header Pattern
-
+**Ghost button:**
 ```tsx
-<div className="flex items-center gap-3 text-muted-foreground">
-  <span className="font-mono text-xs marker-num">01</span>
-  <span className="h-px w-8 bg-border" />
-  <span className="font-mono text-xs uppercase tracking-[0.18em] text-sage font-semibold">Eyebrow</span>
+className="rounded-lg px-4 py-2.5 text-sm font-medium text-foreground hover:bg-secondary transition-colors"
+```
+
+**Discord-branded button:**
+```tsx
+className="rounded-xl bg-[#5865F2] hover:bg-[#4752c4] text-white px-5 py-3 text-sm font-semibold"
+```
+
+**Discord mockup panel (dark):**
+```tsx
+<div className="bg-ink text-paper">
+  {/* window chrome with terra/gold/sage dots */}
+  {/* message area with bot response */}
 </div>
-<h2 className="mt-5 font-display text-4xl sm:text-5xl font-medium tracking-tight text-foreground text-balance leading-[1.05]">
-  Title with <em className="font-normal text-sage">italic highlight</em>
-</h2>
 ```
 
 ---
 
-## 8. Page Architecture
+## 10. Page Architecture & Routing
 
-### Routes
+### Route Map
 
-| Route | Type | Purpose |
-|-------|------|---------|
-| `/` | Landing | Hero, what is, features, how-it-works preview, plant preview, explore, CTA |
-| `/how-it-works` | Inner | Full guide: 3 steps, Discord mockup, weather, mutations |
-| `/plants` | Inner | Full plant gallery + mutation callout |
-| `/panel` | App | Dashboard (login-gated, separate from landing) |
-| `/faq` | Inner | 8 questions in accordion |
-| `/get-started` | Inner | Onboarding steps, starter kit, Discord preview, final CTA |
+| Route | Type | Sections | Auth |
+|---|---|---|---|
+| `/` | Landing | Hero → What is → Features → How-it-works preview → Plant preview → Explore cards → Final CTA | No |
+| `/how-it-works` | Inner | PageHeader → 3 steps → Discord mockup → Weather grid → Mutation diagram → CTA | No |
+| `/plants` | Inner | PageHeader → Plant gallery (5 cards) → Mutation callout → CTA | No |
+| `/panel` | App | PageHeader → Dashboard (login-gated) → "What you can do" grid | Mock |
+| `/faq` | Inner | PageHeader → Accordion (8 items) → "Still have questions" | No |
+| `/get-started` | Inner | PageHeader → 3 steps → Starter kit → Discord preview → Final CTA | No |
+| `/not-found` | Error | 404 with DaisyMark + back to home | No |
 
-### Layout Structure
+### Layout Hierarchy
 
 ```
-RootLayout (layout.tsx)
-├── I18nProvider (context for translations)
-│   ├── Navbar (fixed, persistent)
-│   ├── main (page content)
-│   └── Footer (persistent)
+RootLayout (src/app/layout.tsx)
+├── <html lang="en" suppressHydrationWarning>
+├── <body suppressHydrationWarning>
+│   └── I18nProvider (context)
+│       ├── <div className="min-h-screen flex flex-col">
+│       │   ├── Navbar (fixed, persistent)
+│       │   ├── <main className="flex-1"> (page content)
+│       │   └── Footer (persistent)
+│       └── Toaster
 ```
 
-- Navbar and Footer live in the root layout — they persist across all routes
-- Each page is a self-contained module with its own content
-- The dashboard (`/panel`) is intentionally separate from the landing — it's the "app" area
+**Navbar and Footer live in the root layout** — they persist across all route changes without
+re-mounting. This means the language switcher, auth state, and active-route indicator all survive
+navigation.
 
 ### Navigation
 
-- Uses `next/link` for client-side navigation (no full reload)
-- `usePathname()` tracks active route for navbar indicator
-- Mobile menu closes automatically on route change
-- Language persists across navigation via context
+- Uses `next/link` for client-side navigation (no full page reload)
+- `usePathname()` from `next/navigation` tracks the active route for the navbar indicator
+- Mobile menu closes automatically on route change (`useEffect` watching `pathname`)
+- User menu dropdown also closes on route change
+
+### Dashboard as Separate App Area
+
+The `/panel` route is intentionally separate from the landing page. It has:
+- Its own PageHeader
+- A login-gated state (blurred preview + "Connect to see" overlay when not authenticated)
+- The 4-tab `DashboardLayout` component
+- A "What you can do here" grid below
 
 ---
 
-## 9. Internationalization (i18n)
+## 11. Internationalization (i18n)
 
 ### Architecture
 
 ```
-I18nProvider (context)
-├── locale: "en" | "pt-BR"
-├── t: Translation object (all strings)
-├── setLocale(locale): switches language
-└── hydrated: boolean (SSR-safe)
+I18nProvider (src/hooks/use-i18n.tsx)
+├── locale: Locale ("en" | "pt-BR")
+├── t: Translation (the full string tree)
+├── setLocale(locale): switches language instantly
+└── hydrated: boolean (false on SSR + first client render, true after mount)
 ```
 
-### Default Language
+### Default Language: English
 
-**English is the default.** The server always renders English. On mount, the client checks `localStorage` for a saved preference and swaps if needed. This avoids hydration mismatches.
+The server always renders English. On mount, the client checks `localStorage` for a saved
+preference and swaps if needed. This prevents hydration mismatches.
 
-### Adding a Language
+```tsx
+// use-i18n.tsx — the hydration-safe pattern
+const [locale, setLocaleState] = useState<Locale>(DEFAULT_LOCALE); // "en"
+const [hydrated, setHydrated] = useState(false);
 
-1. Create `src/lib/translations/{code}.ts` — must match the `Translation` type from `en.ts`
-2. Register in `src/lib/translations/index.ts`:
-   ```ts
-   import { en, type Translation } from "./en";
-   import { ptBR } from "./pt-BR";
-   export const translations: Record<string, Translation> = { en, "pt-BR": ptBR };
-   ```
-3. Add to `LOCALES` in `src/lib/i18n-config.ts`:
-   ```ts
-   export const LOCALES = [
-     { code: "en", label: "English", flag: "🇬🇧" },
-     { code: "pt-BR", label: "Português", flag: "🇧🇷" },
-     // { code: "es", label: "Español", flag: "🇪🇸" },
-   ];
-   ```
+useEffect(() => {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved && saved in translations) setLocaleState(saved);
+  setHydrated(true);
+}, []);
+```
+
+### Translation Files
+
+| File | Language | Role |
+|---|---|---|
+| `src/lib/translations/en.ts` | English | Default. Defines the `Translation` type. |
+| `src/lib/translations/pt-BR.ts` | Português | Must match the `Translation` type exactly. |
+| `src/lib/translations/index.ts` | Registry | Imports both, exports `translations` record. |
+| `src/lib/i18n-config.ts` | Config | `LOCALES` array, `DEFAULT_LOCALE`. |
 
 ### Translation Structure
 
-The `Translation` type is defined by `en.ts` and covers:
-- `nav`, `hero`, `whatIs`, `explore`, `finalCta`
-- `features` (6 items)
-- `howItWorks` (steps, discord mockup, weather, mutations)
-- `plants` (5 items + callout)
-- `panel` (locked state, dashboard with 4 tabs)
-- `faq` (8 items)
-- `getStarted` (steps, kit, discord preview)
-- `footer`, `auth`, `userMenu`, `rarity`
+The `Translation` type covers every user-facing string:
+`nav`, `hero`, `whatIs`, `explore`, `finalCta`, `features` (6 items), `howItWorks` (steps, discord
+mockup, weather, mutations), `plants` (5 items + callout), `panel` (locked state, dashboard with
+4 tabs — garden/wallet/missions/collection), `faq` (8 items), `getStarted` (steps, kit, discord
+preview), `footer`, `auth`, `userMenu`, `rarity`.
 
-### Usage in Components
+### Usage
 
 ```tsx
 const { t } = useI18n();
@@ -368,173 +490,267 @@ return <h1>{t.hero.titleLine1} <em>{t.hero.titleHighlight}</em></h1>;
 
 ### Rules
 
-- **Never hardcode user-facing strings.** Always use `t.*`
-- Emoji and plant names that represent game content can stay as-is across languages (🌻 is 🌻 in every language)
-- Dynamic values use `.replace("{year}", String(year))` pattern
+1. **Never hardcode user-facing strings.** Always use `t.*`.
+2. **Plant names and emoji are game content** — they may differ per language (e.g. "Sunflower" vs
+   "Girassol") so they live in the translation files, not in a separate data file.
+3. **Dynamic values** use `.replace("{year}", String(year))` pattern (see footer copyright).
+
+### Adding a Language
+
+1. Create `src/lib/translations/{code}.ts` — copy `en.ts`, translate every string
+2. Register in `src/lib/translations/index.ts`
+3. Add to `LOCALES` in `src/lib/i18n-config.ts`
 
 ---
 
-## 10. Animation
+## 12. Authentication (Mock)
+
+### Architecture
+
+```
+useAuth (src/hooks/use-auth.ts)
+├── player: MockPlayer | null
+├── signIn(): sets player + saves to sessionStorage
+├── signOut(): clears player + sessionStorage
+└── hydrated: boolean (prevents hydration mismatch)
+```
+
+- Uses `sessionStorage` (not `localStorage`) so mock auth clears when the tab closes
+- `hydrated` flag prevents SSR/client mismatch — server always renders signed-out
+- The mock player is hardcoded: `petalkeeper`, Level 7
+
+### Auth Flow
+
+1. User clicks "Sign in" in navbar or "Sign in with Discord" on `/panel`
+2. `AuthModal` opens with 3 states:
+   - **intro**: benefits list + "Continue with Discord" button
+   - **connecting**: spinner (1.8s) with DaisyMark
+   - **done**: checkmark (1.2s) → auto-close + `onAuthenticated()` callback
+3. `signIn()` is called, `player` state updates, navbar swaps to `UserMenu`
+
+### AuthModal Implementation
+
+Uses a `key` prop trick to reset internal state when reopening:
+```tsx
+<AuthModalInner key={open ? "open" : "closed"} ... />
+```
+This avoids `setState` in `useEffect` for the step reset.
+
+---
+
+## 13. Animation & Motion
 
 ### Principles
 
-- **Slow and calm.** Never bouncy. Use `ease: [0.16, 1, 0.3, 1]` (ease-out-expo variant)
-- **SSR-safe.** Never use `initial={{ opacity: 0 }}` with `animate` — it causes hydration mismatches. Use `initial={false}` with `whileInView` instead.
-- **Subtle.** 6–8px movements, 0.5s duration, 0.05–0.2s delays
+1. **Slow and calm.** Duration 0.5s, easing `[0.16, 1, 0.3, 1]` (ease-out-expo). Never bouncy.
+2. **SSR-safe.** Never use `initial={{ opacity: 0 }}` with `animate` — it renders `opacity:0` in
+   SSR, causing hydration mismatch when the client animates to 1. Use `initial={false}` instead.
+3. **Subtle.** Movements are 6–16px. Delays are 0.05–0.2s.
 
 ### Reveal Component
 
-The `Reveal` wrapper is the standard way to animate content into view:
+The standard scroll-triggered animation:
 
+```tsx
+// src/components/site/Reveal.tsx
+<motion.div
+  initial={false}           // ← key: no opacity:0 in SSR
+  whileInView={{ opacity: 1, y: 0 }}
+  viewport={{ once: true, margin: "-60px" }}
+  transition={{ duration: 0.5, delay, ease: [0.16, 1, 0.3, 1] }}
+>
+```
+
+**Usage:**
 ```tsx
 <Reveal delay={0.1}>
   <Card />
 </Reveal>
 ```
 
-It uses `initial={false}` + `whileInView` so the server renders the element visible (no `opacity:0` inline style), and the animation only plays when scrolled into view on the client.
+### CSS Animations (in `globals.css`)
 
-### CSS Animations
+| Class | Duration | Easing | Usage |
+|---|---|---|---|
+| `animate-float-soft` | 7s | ease-in-out infinite | Floating elements (Pink Rose in mutation diagram) |
+| `animate-pulse-dot` | 2.4s | ease-in-out infinite | "Live" / "synced" status dots |
+| `animate-grow-up` | 0.7s | cubic-bezier(0.16,1,0.3,1) | One-time entrance (use sparingly) |
+| `animate-spin-slow` | 1s | linear infinite | Loading spinners |
+| `animate-draw-line` | 2s | ease-out | SVG line drawing |
 
-Defined in `globals.css`:
+### What NOT to Do
 
-| Class | Duration | Usage |
-|-------|----------|-------|
-| `animate-float-soft` | 7s | Floating elements (pink rose in mutation diagram) |
-| `animate-pulse-dot` | 2.4s | "Live" / "synced" status dots |
-| `animate-grow-up` | 0.7s | One-time entrance (use sparingly — can cause hydration issues) |
-| `animate-spin-slow` | 1s linear | Loading spinners |
-
-### What NOT to do
-
-- ❌ `initial={{ opacity: 0 }}` with `animate` (hydration mismatch)
-- ❌ Bouncy springs (`type: "spring"`)
-- ❌ Parallax or scroll-jacking
-- ❌ Auto-playing carousels
+- ❌ `initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}` (hydration mismatch)
+- ❌ `type: "spring"` or bouncy physics
+- ❌ Parallax, scroll-jacking, auto-playing carousels
+- ❌ `whileHover` with scale transforms (use color/border changes instead)
 
 ---
 
-## 11. Accessibility
+## 14. Accessibility
 
 ### Requirements
 
-- **Semantic HTML:** `header`, `main`, `section`, `nav`, `footer`, `h1`–`h3` hierarchy
-- **ARIA:** `aria-label` on icon-only buttons, `aria-expanded` on toggles, `role="dialog"` + `aria-modal` on modals
-- **Keyboard:** All interactive elements reachable via Tab, Escape closes modals
-- **Focus:** Visible focus rings (`outline-ring/50`)
-- **Color contrast:** All text meets WCAG AA (4.5:1 for body, 3:1 for large text)
+- **Semantic HTML:** `<header>`, `<main>`, `<section>`, `<nav>`, `<footer>`, `<h1>`–`<h3>` hierarchy
+- **ARIA:** `aria-label` on icon-only buttons, `aria-expanded` on toggles/menus, `role="dialog"` +
+  `aria-modal="true"` on modals
+- **Keyboard:** All interactive elements reachable via Tab, Escape closes modals/menus
+- **Focus:** Visible focus rings via `outline-ring/50` (from `@apply border-border outline-ring/50`)
+- **Color contrast:** All text meets WCAG AA (4.5:1 body, 3:1 large text)
 
 ### Patterns
 
-- Modal: traps scroll (`body.style.overflow = "hidden"`), closes on Escape, closes on backdrop click
-- Dropdown: closes on outside click, closes on Escape
-- Mobile menu: `aria-expanded` on toggle, closes on route change
-- Accordion: `aria-expanded` on trigger, animated height
+| Component | ARIA | Keyboard |
+|---|---|---|
+| Modal | `role="dialog"`, `aria-modal`, `aria-labelledby` | Escape closes, scroll locked |
+| Dropdown (lang/user menu) | `aria-expanded` on trigger | Outside click closes, Escape closes |
+| Mobile menu | `aria-expanded`, `aria-label` | — |
+| Accordion (FAQ) | `aria-expanded` on trigger | — |
+| Language switcher | `aria-label="Change language"` | — |
+
+### SSR Considerations
+
+- `suppressHydrationWarning` on `<html>` and `<body>` (needed for `lang` attribute and class
+  changes from i18n/auth)
+- Auth and i18n both use a `hydrated` flag pattern: server renders default state, client swaps
+  after mount
 
 ---
 
-## 12. File Structure
+## 15. Anti-Patterns (What We Avoid)
+
+These are signals of generic, AI-generated frontend. **Do not do these.**
+
+| Anti-pattern | Why | Do instead |
+|---|---|---|
+| Emoji as UI icons (🚀 ⚡ ✨ in buttons) | Looks unprofessional, inconsistent | Use custom SVG icon set |
+| "Paper grain" dot textures | Faded trend, looks AI-generated | Clean solid backgrounds |
+| Obvious multi-color gradients (`from-sage via-terra to-gold`) | Generic "pretty" gradient | Flat color or single-hue subtle wash |
+| Shadow-heavy card stacks | Material Design feel | 1px hairline borders |
+| "Code editor" mockups with fake syntax highlighting | Cliché dev-portfolio trope | Real diagrams or prose |
+| `initial={{ opacity: 0 }}` with `animate` | Causes hydration mismatch | `initial={false}` + `whileInView` |
+| Bouncy spring animations | Feels anxious, not calm | Slow ease-out-expo |
+| Hardcoded user-facing strings | Breaks i18n | Always use `t.*` from translations |
+| Indigo or blue colors | Wrong palette — site is warm/earthy | Sage, terra, gold, sky-soft |
+| Centered everything | Looks generic | Asymmetric, editorial layouts |
+| `lucide-react` icons in site components | External dependency, wrong style | Custom SVGs in `icons.tsx` |
+
+---
+
+## 16. File Structure
 
 ```
 src/
 ├── app/
-│   ├── layout.tsx          # Root layout (I18nProvider, Navbar, Footer)
-│   ├── page.tsx            # Landing page (/)
-│   ├── globals.css         # Design tokens, base styles, utilities
+│   ├── layout.tsx              # Root layout (I18nProvider, Navbar, Footer, fonts)
+│   ├── page.tsx                # Landing page (/)
+│   ├── globals.css             # Design tokens, base styles, utilities
+│   ├── not-found.tsx           # 404 page
 │   ├── how-it-works/
 │   │   └── page.tsx
 │   ├── plants/
 │   │   └── page.tsx
 │   ├── panel/
-│   │   └── page.tsx        # Dashboard (separate app area)
+│   │   └── page.tsx            # Dashboard (separate app area)
 │   ├── faq/
 │   │   └── page.tsx
-│   └── get-started/
-│       └── page.tsx
+│   ├── get-started/
+│   │   └── page.tsx
+│   └── api/
+│       └── route.ts            # API health check
 ├── components/
-│   ├── site/               # All DaisyFlower components
+│   ├── site/                   # DaisyFlower-specific components
 │   │   ├── Navbar.tsx
 │   │   ├── Footer.tsx
 │   │   ├── PageHeader.tsx
 │   │   ├── Reveal.tsx
 │   │   ├── AuthModal.tsx
 │   │   ├── LanguageSwitcher.tsx
-│   │   ├── Dashboard.tsx
-│   │   ├── icons.tsx       # Custom SVG icon set
-│   │   └── ... (section components used by pages)
-│   └── ui/                 # shadcn/ui primitives (not used much)
+│   │   ├── Dashboard.tsx       # DashboardLayout (exported, used by /panel)
+│   │   └── icons.tsx           # 28 custom SVG icons + DaisyMark
+│   └── ui/                     # shadcn/ui primitives (available but rarely used)
 ├── hooks/
-│   ├── use-i18n.tsx        # i18n context + hook
-│   ├── use-auth.ts         # Mock auth state
+│   ├── use-i18n.tsx            # I18nProvider + useI18n hook
+│   ├── use-auth.ts             # Mock auth with sessionStorage
 │   ├── use-mobile.ts
 │   └── use-toast.ts
 └── lib/
-    ├── i18n-config.ts      # Locale list, default locale
+    ├── i18n-config.ts          # LOCALES array, DEFAULT_LOCALE
     ├── translations/
-    │   ├── index.ts        # Registry
-    │   ├── en.ts           # English (default, defines Translation type)
-    │   └── pt-BR.ts        # Portuguese
-    ├── daisy-data.ts       # Static game data (plants, weather, etc.)
-    └── utils.ts            # cn() helper
+    │   ├── index.ts            # Registry
+    │   ├── en.ts               # English (default, defines Translation type)
+    │   └── pt-BR.ts            # Portuguese
+    ├── utils.ts                # cn() class merge helper
+    └── db.ts                   # Prisma client (unused by site, available)
 ```
+
+### What Was Removed (Cleanup Notes)
+
+- **`src/lib/daisy-data.ts`** — deleted. Was a legacy Portuguese-only data file that conflicted
+  with the i18n system. All data now lives in translation files.
+- **`src/components/site/Hero.tsx`, `FAQ.tsx`, `GetStarted.tsx`, `GardenGallery.tsx`,
+  `HowToPlay.tsx`** — deleted. Were orphaned components from the single-page era, no longer
+  imported by any route. All page content now lives directly in `src/app/*/page.tsx`.
 
 ---
 
-## 13. Contribution Guidelines
+## 17. Development Workflow
 
-### Before You Add a Feature
+### Commands
 
-1. **Read this document.** Especially the Philosophy and "what we avoid" sections.
-2. **Check the translation files.** Any user-facing string must go through `t.*`, not hardcoded.
-3. **Use the icon set.** If you need a new icon, add it to `icons.tsx` — don't use emoji or lucide for UI.
-4. **Test hydration.** If you use Framer Motion, use `initial={false}` + `whileInView`, never `initial={{ opacity: 0 }}` + `animate`.
+| Command | Purpose |
+|---|---|
+| `bun run dev` | Start dev server on port 3000 (automatic) |
+| `bun run lint` | ESLint check (must pass before commit) |
+| `bun run build` | Production build |
 
-### Code Style
+### Dev Server
 
-- TypeScript throughout, strict
-- `"use client"` directive on any component using hooks or browser APIs
-- `cn()` utility from `@/lib/utils` for conditional classes
-- Prefer `Link` from `next/link` over `<a>` for internal navigation
-- All new components go in `src/components/site/`
-
-### Design Review Checklist
-
-Before merging a visual change, verify:
-
-- [ ] No emoji used as UI icons
-- [ ] No hardcoded user-facing strings (all through `t.*`)
-- [ ] No `initial={{ opacity: 0 }}` with `animate` (use `Reveal` or `initial={false}`)
-- [ ] No indigo or blue colors
-- [ ] No shadow-heavy cards (use hairline borders)
-- [ ] Works in both English and Portuguese
-- [ ] Responsive at 390px, 768px, 1024px, 1440px
-- [ ] Lint passes (`bun run lint`)
+- Runs automatically on port 3000 — **do not run `bun run dev` manually**
+- Check `/home/z/my-project/dev.log` for errors
+- The user can only see the `/` route — all routes are accessible via navigation
 
 ### Adding a New Page
 
 1. Create `src/app/{route}/page.tsx`
-2. Add route to `NAV_LINKS` in `Navbar.tsx` (if it should appear in nav)
-3. Add all strings to both `en.ts` and `pt-BR.ts`
-4. Use `PageHeader` component for the header
-5. Add footer links if appropriate
-6. Test language switching on the new page
+2. Add `"use client"` directive (needed for `useI18n`)
+3. Add route to `NAV_LINKS` in `Navbar.tsx` (if it should appear in nav)
+4. Add all strings to BOTH `en.ts` and `pt-BR.ts`
+5. Use `PageHeader` component for the header
+6. Add footer links if appropriate
+7. Test language switching on the new page
+8. Test at 390px (mobile) and 1440px (desktop)
+
+### Adding a New Icon
+
+1. Add to `src/components/site/icons.tsx`
+2. Follow the `base()` helper pattern (1.5px stroke, 24×24 viewBox, `currentColor`)
+3. Export as named function
+
+### Adding a New Translation Key
+
+1. Add to `en.ts` first (this defines the type)
+2. Add the same key to `pt-BR.ts`
+3. TypeScript will error if `pt-BR.ts` doesn't match the type
 
 ---
 
-## Appendix: Bot-Inspired Decisions
+## 18. Contribution Checklist
 
-The website mirrors several decisions from the DaisyFlower bot itself:
+Before merging any visual change, verify:
 
-| Bot behavior | Website parallel |
-|--------------|------------------|
-| Bilingual (pt-BR + en-US) with auto-detection | i18n system with EN default, PT-BR available, fluid switching |
-| UI-first gameplay (panels, not commands) | Panel-based dashboard, not a command reference |
-| Deterministic simulation (timestamps, not timers) | SSR-safe rendering (no client-only state on first paint) |
-| Calm, cozy player experience | Calm, editorial design (no bouncy animations, no spam) |
-| Data-driven content (JSON files) | Translation files are data-driven (add a language = add a file) |
-
-The website should feel like an extension of the bot's personality — quiet, warm, and unhurried.
+- [ ] No hardcoded user-facing strings (all through `t.*`)
+- [ ] No emoji used as UI icons (use SVG icon set)
+- [ ] No `initial={{ opacity: 0 }}` with `animate` (use `Reveal` or `initial={false}`)
+- [ ] No indigo or blue colors
+- [ ] No shadow-heavy cards (use `card-hairline` + `border`)
+- [ ] Works in both English and Portuguese
+- [ ] Responsive at 390px, 768px, 1024px, 1440px
+- [ ] `bun run lint` passes with 0 errors
+- [ ] No orphaned files (if you remove a route, remove its components too)
+- [ ] Translation type matches (adding a key to `en.ts` requires adding to `pt-BR.ts`)
 
 ---
 
-*This document is a living reference. Update it when the design system evolves.*
+*This document is the source of truth. When the design system evolves, update this file first,
+then update the code to match.*

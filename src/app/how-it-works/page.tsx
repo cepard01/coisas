@@ -107,15 +107,27 @@ export default function HowItWorksPage() {
         <div className="mx-auto max-w-3xl px-5 sm:px-6 text-center">
           <Reveal>
             <h2 className="font-display text-3xl font-medium tracking-tight text-foreground text-balance">
-              {t.explore.cards[1].cta}
+              {t.finalCta.title}{" "}
+              <em className="font-normal text-sage">{t.finalCta.highlight}</em>
             </h2>
-            <Link
-              href="/plants"
-              className="group mt-6 inline-flex items-center gap-2 rounded-lg bg-foreground text-background px-5 py-2.5 text-sm font-medium hover:bg-foreground/90 transition-colors"
-            >
-              {t.explore.cards[1].cta}
-              <ArrowRightIcon size={15} className="transition-transform group-hover:translate-x-0.5" />
-            </Link>
+            <p className="mt-4 text-base text-muted-foreground text-pretty">
+              {t.finalCta.description}
+            </p>
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+              <Link
+                href="/plants"
+                className="group inline-flex items-center gap-2 rounded-lg bg-foreground text-background px-5 py-2.5 text-sm font-medium hover:bg-foreground/90 transition-colors"
+              >
+                {t.explore.cards[1].cta}
+                <ArrowRightIcon size={15} className="transition-transform group-hover:translate-x-0.5" />
+              </Link>
+              <Link
+                href="/get-started"
+                className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-medium text-foreground hover:bg-secondary transition-colors"
+              >
+                {t.nav.getStarted}
+              </Link>
+            </div>
           </Reveal>
         </div>
       </section>
