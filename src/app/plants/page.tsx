@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useMemo } from "react";
 import Link from "next/link";
 import { PageHeader } from "@/components/site/PageHeader";
 import { Reveal } from "@/components/site/Reveal";
@@ -7,8 +8,11 @@ import { useI18n } from "@/hooks/use-i18n";
 import { cn } from "@/lib/utils";
 import { ArrowRightIcon } from "@/components/site/icons";
 
+type RarityFilter = "all" | "Common" | "Uncommon" | "Rare";
+
 export default function PlantsPage() {
   const { t } = useI18n();
+  const [rarity, setRarity] = useState<RarityFilter>("all");
 
   const RARITY_STYLES: Record<string, string> = {
     Common: "text-muted-foreground",
@@ -24,6 +28,18 @@ export default function PlantsPage() {
     terra: "from-terra-deep/8",
     gold: "from-gold/12",
   } as const;
+
+  const filtered = useMemo(() => {
+    if (rarity === "all") return t.plants.items;
+    return t.plants.items.filter((p) => p.rarity === rarity);
+  }, [t.plants.items, rarity]);
+
+  const rarityFilters: { id: RarityFilter; label: string }[] = [
+    { id: "all", label: "All" },
+    { id: "Common", label: t.rarity.Common },
+    { id: "Uncommon", label: t.rarity.Uncommon },
+    { id: "Rare", label: t.rarity.Rare },
+  ];
 
   return (
     <>
@@ -42,8 +58,26 @@ export default function PlantsPage() {
       {/* Plant gallery */}
       <section className="py-16 md:py-24">
         <div className="mx-auto max-w-6xl px-5 sm:px-6">
+          {/* Rarity filter */}
+          <div className="flex flex-wrap gap-1.5 mb-8">
+            {rarityFilters.map((f) => (
+              <button
+                key={f.id}
+                onClick={() => setRarity(f.id)}
+                className={cn(
+                  "rounded-full border px-3.5 py-1.5 text-xs font-medium transition-all",
+                  rarity === f.id
+                    ? "border-foreground bg-foreground text-background"
+                    : "border-border bg-card text-muted-foreground hover:text-foreground hover:border-foreground/30"
+                )}
+              >
+                {f.label}
+              </button>
+            ))}
+          </div>
+
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {t.plants.items.map((plant, i) => (
+            {filtered.map((plant, i) => (
               <Reveal key={i} delay={i * 0.06}>
                 <div className="card-hairline card-hairline-hover rounded-xl overflow-hidden h-full flex flex-col">
                   <div className={cn("relative h-32 grid place-items-center bg-gradient-to-br to-transparent", COLOR_BG[plant.color])}>

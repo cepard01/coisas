@@ -671,4 +671,47 @@ export const ptBR: Translation = {
     body: "A página que você procura não existe — ou talvez nunca tenha sido plantada. Vamos voltar para o jardim.",
     backHome: "Voltar ao início",
   },
+  profile: {
+    number: "09",
+    eyebrow: "Perfil do jogador",
+    title: "Seu card,",
+    highlight: "seu jardim.",
+    description:
+      "Um perfil público mostra seu nível, badges, planta favorita e progresso de coleção. Customize seu título e mostre suas descobertas mais raras.",
+    stats: {
+      level: "Nível",
+      gardensPlanted: "Jardins plantados",
+      flowersHarvested: "Flores colhidas",
+      mutationsFound: "Mutações encontradas",
+      streak: "Dias seguidos",
+    },
+    badges: {
+      title: "Badges",
+      subtitle: "Ganhas jogando — sem compras, sem atalhos",
+      items: [
+        { emoji: "🌱", name: "Primeira Semente", desc: "Plantou sua primeira semente", earned: true },
+        { emoji: "🌻", name: "Fazendeiro de Girassol", desc: "Colheu 10 girassóis", earned: true },
+        { emoji: "🌸", name: "Descobridor de Mutação", desc: "Encontrou uma Rosa Rosa", earned: true },
+        { emoji: "💧", name: "Regador Dedicado", desc: "Regou 50 vezes", earned: true },
+        { emoji: "☀️", name: "Observador do Clima", desc: "Conferiu o clima 30 dias", earned: true },
+        { emoji: "🎃", name: "Decorador", desc: "Colocou uma decoração", earned: false },
+        { emoji: "👑", name: "Mestre Jardineiro", desc: "Alcance o nível 10", earned: false },
+        { emoji: "🏆", name: "Complecionista", desc: "Descubra todas as plantas", earned: false },
+      ],
+    },
+    favoritePlant: {
+      title: "Planta favorita",
+      subtitle: "Mostre seu orgulho e alegria",
+      empty: "Defina sua planta favorita da sua coleção",
+    },
+    recentAchievements: {
+      title: "Conquistas recentes",
+      subtitle: "Últimas badges que você ganhou",
+      items: [
+        { emoji: "🌸", name: "Descobridor de Mutação", time: "há 2 dias" },
+        { emoji: "💧", name: "Regador Dedicado", time: "há 1 semana" },
+        { emoji: "🌻", name: "Fazendeiro de Girassol", time: "há 2 semanas" },
+      ],
+    },
+  },
 };

@@ -669,6 +669,49 @@ export const en = {
     body: "The page you're looking for doesn't exist — or maybe it was never planted. Let's get you back to the garden.",
     backHome: "Back to home",
   },
+  profile: {
+    number: "09",
+    eyebrow: "Player profile",
+    title: "Your card,",
+    highlight: "your garden.",
+    description:
+      "A public profile shows your level, badges, favorite plant, and collection progress. Customize your title and show off your rarest discoveries.",
+    stats: {
+      level: "Level",
+      gardensPlanted: "Gardens planted",
+      flowersHarvested: "Flowers harvested",
+      mutationsFound: "Mutations found",
+      streak: "Day streak",
+    },
+    badges: {
+      title: "Badges",
+      subtitle: "Earned through gameplay — no purchases, no shortcuts",
+      items: [
+        { emoji: "🌱", name: "First Seed", desc: "Planted your first seed", earned: true },
+        { emoji: "🌻", name: "Sunflower Farmer", desc: "Harvested 10 sunflowers", earned: true },
+        { emoji: "🌸", name: "Mutation Discoverer", desc: "Found a Pink Rose", earned: true },
+        { emoji: "💧", name: "Dedicated Waterer", desc: "Watered 50 times", earned: true },
+        { emoji: "☀️", name: "Weather Watcher", desc: "Checked weather 30 days", earned: true },
+        { emoji: "🎃", name: "Decorator", desc: "Placed a decoration", earned: false },
+        { emoji: "👑", name: "Master Gardener", desc: "Reach level 10", earned: false },
+        { emoji: "🏆", name: "Completionist", desc: "Discover all plants", earned: false },
+      ],
+    },
+    favoritePlant: {
+      title: "Favorite plant",
+      subtitle: "Show off your pride and joy",
+      empty: "Set your favorite plant from your collection",
+    },
+    recentAchievements: {
+      title: "Recent achievements",
+      subtitle: "Latest badges you've earned",
+      items: [
+        { emoji: "🌸", name: "Mutation Discoverer", time: "2 days ago" },
+        { emoji: "💧", name: "Dedicated Waterer", time: "1 week ago" },
+        { emoji: "🌻", name: "Sunflower Farmer", time: "2 weeks ago" },
+      ],
+    },
+  },
 };
 
 export type Translation = typeof en;

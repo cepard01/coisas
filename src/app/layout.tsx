@@ -6,6 +6,7 @@ import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { I18nProvider } from "@/hooks/use-i18n";
 import { LangUpdater } from "@/components/site/LangUpdater";
+import { ThemeProvider } from "@/components/site/ThemeProvider";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -66,15 +67,17 @@ export default function RootLayout({
         className={`${inter.variable} ${fraunces.variable} ${jetbrains.variable} font-sans antialiased bg-background text-foreground`}
         suppressHydrationWarning
       >
-        <I18nProvider>
-          <LangUpdater />
-          <div className="min-h-screen flex flex-col">
-            <Navbar />
-            <main className="flex-1">{children}</main>
-            <Footer />
-          </div>
-          <Toaster />
-        </I18nProvider>
+        <ThemeProvider>
+          <I18nProvider>
+            <LangUpdater />
+            <div className="min-h-screen flex flex-col">
+              <Navbar />
+              <main className="flex-1">{children}</main>
+              <Footer />
+            </div>
+            <Toaster />
+          </I18nProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

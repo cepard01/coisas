@@ -9,6 +9,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { useI18n } from "@/hooks/use-i18n";
 import { AuthModal } from "./AuthModal";
 import { LanguageSwitcher } from "./LanguageSwitcher";
+import { ThemeToggle } from "./ThemeToggle";
 import {
   DaisyMark,
   MenuIcon,
@@ -89,6 +90,7 @@ export function Navbar() {
             </div>
 
             <div className="hidden md:flex items-center gap-1.5">
+              <ThemeToggle />
               <LanguageSwitcher compact />
               <a
                 href="https://github.com/cepard01/daisyflower"
@@ -165,6 +167,10 @@ export function Navbar() {
                 <div className="px-3 py-2 flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">Language</span>
                   <LanguageSwitcher />
+                </div>
+                <div className="px-3 py-2 flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">Theme</span>
+                  <ThemeToggle />
                 </div>
                 <div className="h-px bg-border my-2" />
                 {hydrated && player ? (
