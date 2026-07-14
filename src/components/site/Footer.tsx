@@ -53,6 +53,7 @@ export function Footer() {
               <FooterLink href="/how-it-works">{t.footer.links.howItWorks}</FooterLink>
               <FooterLink href="/plants">{t.footer.links.plants}</FooterLink>
               <FooterLink href="/panel">{t.footer.links.panel}</FooterLink>
+              <FooterLink href="/commands">{t.nav.commands}</FooterLink>
             </ul>
           </div>
           <div>

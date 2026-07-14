@@ -92,6 +92,49 @@ export default function PlantsPage() {
         </div>
       </section>
 
+      {/* Weather section */}
+      <section className="py-16 md:py-24 border-t border-border">
+        <div className="mx-auto max-w-6xl px-5 sm:px-6">
+          <Reveal>
+            <div className="max-w-3xl">
+              <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-sage font-semibold mb-4">
+                {t.weatherSection.eyebrow}
+              </p>
+              <h2 className="font-display text-3xl sm:text-4xl font-medium tracking-tight text-foreground text-balance leading-[1.05]">
+                {t.weatherSection.title}
+              </h2>
+              <p className="mt-4 text-base text-muted-foreground text-pretty leading-relaxed max-w-2xl">
+                {t.weatherSection.description}
+              </p>
+            </div>
+          </Reveal>
+
+          <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            {t.howItWorks.weather.items.map((w, i) => {
+              const WEATHER_COLOR = {
+                sun: "from-gold/15",
+                sky: "from-sky-soft/20",
+                terra: "from-terra-deep/12",
+                snow: "from-sky-soft/12",
+              } as const;
+              const colorKey = ["sun", "sky", "terra", "snow"][i] as keyof typeof WEATHER_COLOR;
+              return (
+                <Reveal key={i} delay={i * 0.05}>
+                  <div className={`card-hairline rounded-xl overflow-hidden bg-gradient-to-br ${WEATHER_COLOR[colorKey]} to-transparent`}>
+                    <div className="p-5">
+                      <div className="text-3xl mb-3">{w.emoji}</div>
+                      <h4 className="font-display text-base font-medium text-foreground">{w.name}</h4>
+                      <p className="mt-1.5 text-sm text-foreground/90">{w.effect}</p>
+                      <p className="mt-1 text-xs text-muted-foreground text-pretty">{w.advice}</p>
+                    </div>
+                  </div>
+                </Reveal>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
       {/* Mutation callout */}
       <section className="py-16 md:py-24 border-t border-border">
         <div className="mx-auto max-w-4xl px-5 sm:px-6">

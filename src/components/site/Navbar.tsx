@@ -29,6 +29,7 @@ export function Navbar() {
     { href: "/how-it-works", label: t.nav.howItWorks },
     { href: "/plants", label: t.nav.plants },
     { href: "/panel", label: t.nav.panel },
+    { href: "/commands", label: t.nav.commands },
     { href: "/faq", label: t.nav.faq },
   ];
 

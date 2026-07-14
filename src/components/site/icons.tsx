@@ -252,6 +252,15 @@ export function TrendingIcon(p: IconProps) {
   );
 }
 
+export function SearchIcon(p: IconProps) {
+  return (
+    <svg {...base(p)}>
+      <circle cx="11" cy="11" r="7" />
+      <path d="M16 16l4 4" />
+    </svg>
+  );
+}
+
 /* ── Botanical decorative icons (larger, for illustration) ──────────── */
 
 export function DaisyMark({ size = 32, ...props }: IconProps) {

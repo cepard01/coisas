@@ -96,6 +96,9 @@ export default function Home() {
       {/* Plant gallery preview */}
       <PlantPreview />
 
+      {/* Progression */}
+      <ProgressionSection />
+
       {/* Explore cards */}
       <section className="py-20 md:py-28 border-t border-border">
         <div className="mx-auto max-w-6xl px-5 sm:px-6">
@@ -332,6 +335,77 @@ function PlantPreview() {
             </Link>
           </div>
         </Reveal>
+      </div>
+    </section>
+  );
+}
+
+/* ── Progression section (levels and unlocks) ───────────────────────── */
+
+function ProgressionSection() {
+  const { t } = useI18n();
+  return (
+    <section className="py-20 md:py-28 border-t border-border bg-background">
+      <div className="mx-auto max-w-6xl px-5 sm:px-6">
+        <Reveal>
+          <div className="max-w-3xl">
+            <div className="flex items-center gap-3 text-muted-foreground">
+              <span className="font-mono text-xs marker-num">{t.progression.number}</span>
+              <span className="h-px w-8 bg-border" />
+              <span className="font-mono text-xs uppercase tracking-[0.18em] text-sage font-semibold">
+                {t.progression.eyebrow}
+              </span>
+            </div>
+            <h2 className="mt-5 font-display text-4xl sm:text-5xl lg:text-[3.5rem] font-medium tracking-tight text-foreground text-balance leading-[1.05]">
+              {t.progression.title}{" "}
+              <em className="font-normal text-sage">{t.progression.highlight}</em>
+            </h2>
+            <p className="mt-5 text-base sm:text-lg text-muted-foreground text-pretty leading-relaxed max-w-2xl">
+              {t.progression.description}
+            </p>
+          </div>
+        </Reveal>
+
+        <div className="mt-14 relative">
+          {/* Vertical line */}
+          <div className="absolute left-5 sm:left-1/2 top-0 bottom-0 w-px bg-border sm:-translate-x-1/2" aria-hidden />
+
+          <div className="space-y-6 sm:space-y-0">
+            {t.progression.levels.map((lvl, i) => {
+              const left = i % 2 === 0;
+              return (
+                <Reveal key={i} delay={i * 0.05}>
+                  <div className={`relative pl-14 sm:pl-0 sm:grid sm:grid-cols-2 sm:gap-8 sm:items-center ${left ? "" : "sm:[direction:rtl]"}`}>
+                    {/* Dot */}
+                    <div className="absolute left-0 sm:left-1/2 sm:-translate-x-1/2 top-1 z-10">
+                      <div className="grid place-items-center h-10 w-10 rounded-full bg-card border-2 border-sage shadow-sm">
+                        <span className="text-base">{lvl.emoji}</span>
+                      </div>
+                    </div>
+
+                    {/* Card */}
+                    <div className={`sm:[direction:ltr] ${left ? "sm:pr-8 sm:text-right" : "sm:pl-8"}`}>
+                      <div className="card-hairline rounded-xl p-5">
+                        <p className="font-mono text-[11px] uppercase tracking-wider text-sage font-semibold">
+                          {t.userMenu.level} {lvl.level}
+                        </p>
+                        <h3 className="mt-1 font-display text-lg font-medium text-foreground">{lvl.title}</h3>
+                        <ul className={`mt-3 space-y-1.5 text-sm text-muted-foreground ${left ? "sm:text-right" : ""}`}>
+                          {lvl.unlocks.map((u, j) => (
+                            <li key={j} className={`flex items-center gap-2 ${left ? "sm:flex-row-reverse" : ""}`}>
+                              <span className="text-sage shrink-0">·</span>
+                              <span>{u}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </Reveal>
+              );
+            })}
+          </div>
+        </div>
       </div>
     </section>
   );
