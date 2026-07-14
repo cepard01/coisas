@@ -1,111 +1,127 @@
 "use client";
 
-import { Wordmark } from "./Navbar";
-
-const FOOTER_LINKS: { title: string; links: { label: string; href: string; external?: boolean }[] }[] = [
-  {
-    title: "Explore",
-    links: [
-      { label: "Features", href: "#features" },
-      { label: "Gameplay", href: "#loop" },
-      { label: "Catalog", href: "#catalog" },
-      { label: "Commands", href: "#commands" },
-    ],
-  },
-  {
-    title: "Project",
-    links: [
-      { label: "Dashboard", href: "#dashboard" },
-      { label: "Roadmap", href: "#roadmap" },
-      { label: "FAQ", href: "#faq" },
-      { label: "Get started", href: "#start" },
-    ],
-  },
-  {
-    title: "Docs",
-    links: [
-      { label: "Architecture", href: "https://github.com/cepard01/daisyflower/blob/main/docs/architecture.md", external: true },
-      { label: "Gameplay", href: "https://github.com/cepard01/daisyflower/blob/main/docs/gameplay.md", external: true },
-      { label: "Commands", href: "https://github.com/cepard01/daisyflower/blob/main/docs/commands.md", external: true },
-      { label: "Operations", href: "https://github.com/cepard01/daisyflower/blob/main/docs/operations.md", external: true },
-    ],
-  },
-];
+import { DaisyMark, GithubIcon, ArrowUpRightIcon } from "./icons";
 
 export function Footer() {
-  const handleNav = (href: string, external?: boolean) => {
-    if (external || href.startsWith("http")) {
-      window.open(href, "_blank", "noopener,noreferrer");
-    } else {
-      document.querySelector(href)?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  };
-
   return (
     <footer className="mt-auto border-t border-border bg-background">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
-        <div className="grid lg:grid-cols-[1.5fr_1fr_1fr_1fr] gap-10">
-          {/* Brand */}
+      <div className="mx-auto max-w-6xl px-5 sm:px-6 py-14">
+        {/* Top — brand + signature line */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 pb-10 border-b border-border">
           <div>
             <div className="flex items-center gap-2.5">
-              <Wordmark />
-              <span className="font-display text-lg font-semibold tracking-tight text-foreground">
+              <DaisyMark size={26} className="text-terra" />
+              <span className="font-display text-lg font-medium tracking-tight text-foreground">
                 DaisyFlower
               </span>
             </div>
-            <p className="mt-4 text-sm text-muted-foreground text-pretty max-w-xs leading-relaxed">
-              A cozy, deterministic gardening simulator for Discord. Open source, MIT licensed,
-              built with TypeScript.
+            <p className="mt-3 text-sm text-muted-foreground text-pretty max-w-sm leading-relaxed">
+              A quiet gardening simulator for Discord. Open source, MIT licensed, built with
+              TypeScript by people who like slow games.
             </p>
-            <div className="mt-5 flex items-center gap-3 text-xs">
-              <a
-                href="https://github.com/cepard01/daisyflower"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-medium text-muted-foreground hover:text-foreground transition-colors"
-              >
-                GitHub ↗
-              </a>
-              <span className="text-border">·</span>
-              <span className="text-muted-foreground">MIT License</span>
-              <span className="text-border">·</span>
-              <span className="text-muted-foreground">v1.0 dev</span>
-            </div>
           </div>
 
-          {/* Link columns */}
-          {FOOTER_LINKS.map((col) => (
-            <div key={col.title}>
-              <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground font-semibold">
-                {col.title}
-              </h3>
-              <ul className="mt-4 space-y-2.5">
-                {col.links.map((link) => (
-                  <li key={link.label}>
-                    <button
-                      onClick={() => handleNav(link.href, link.external)}
-                      className="text-sm text-foreground/80 hover:text-foreground transition-colors text-left"
-                    >
-                      {link.label}
-                      {link.external && <span className="ml-1 text-muted-foreground">↗</span>}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          <div className="flex items-center gap-4">
+            <a
+              href="https://github.com/cepard01/daisyflower"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground hover:text-sage transition-colors"
+            >
+              <GithubIcon size={15} />
+              GitHub
+              <ArrowUpRightIcon size={13} className="text-muted-foreground" />
+            </a>
+            <a
+              href="https://github.com/cepard01/daisyflower/blob/main/docs/README.md"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground hover:text-sage transition-colors"
+            >
+              Docs
+              <ArrowUpRightIcon size={13} className="text-muted-foreground" />
+            </a>
+          </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="mt-12 pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-3">
+        {/* Middle — sitemap as prose, not columns */}
+        <div className="py-10 grid sm:grid-cols-3 gap-8 text-sm">
+          <div>
+            <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground mb-3">
+              The project
+            </p>
+            <ul className="space-y-2">
+              <FooterLink href="#features">Features</FooterLink>
+              <FooterLink href="#loop">Gameplay loop</FooterLink>
+              <FooterLink href="#catalog">In-game catalog</FooterLink>
+              <FooterLink href="#commands">Command reference</FooterLink>
+            </ul>
+          </div>
+          <div>
+            <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground mb-3">
+              For players
+            </p>
+            <ul className="space-y-2">
+              <FooterLink href="#dashboard">Web dashboard</FooterLink>
+              <FooterLink href="#journey">Player journey</FooterLink>
+              <FooterLink href="#roadmap">Roadmap</FooterLink>
+              <FooterLink href="#faq">FAQ</FooterLink>
+              <FooterLink href="#start">Get started</FooterLink>
+            </ul>
+          </div>
+          <div>
+            <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground mb-3">
+              For maintainers
+            </p>
+            <ul className="space-y-2">
+              <FooterLink href="#tech" external>Architecture</FooterLink>
+              <FooterLink href="https://github.com/cepard01/daisyflower/blob/main/docs/gameplay.md" external>Gameplay design</FooterLink>
+              <FooterLink href="https://github.com/cepard01/daisyflower/blob/main/docs/operations.md" external>Operations</FooterLink>
+              <FooterLink href="https://github.com/cepard01/daisyflower/blob/main/docs/audit-roadmap.md" external>Audit & roadmap</FooterLink>
+            </ul>
+          </div>
+        </div>
+
+        {/* Bottom — minimal */}
+        <div className="pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-xs text-muted-foreground">
-            © {new Date().getFullYear()} DaisyFlower Project. Built for cozy gardens everywhere.
+            © {new Date().getFullYear()} DaisyFlower Project · MIT License
           </p>
-          <p className="text-xs text-muted-foreground font-mono">
-            made with care · not by an AI
+          <p className="font-mono text-[11px] text-muted-foreground/70">
+            made slowly, on purpose
           </p>
         </div>
       </div>
     </footer>
+  );
+}
+
+function FooterLink({
+  href,
+  children,
+  external,
+}: {
+  href: string;
+  children: React.ReactNode;
+  external?: boolean;
+}) {
+  const handleClick = (e: React.MouseEvent) => {
+    if (!external && href.startsWith("#")) {
+      e.preventDefault();
+      document.querySelector(href)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+  return (
+    <li>
+      <a
+        href={href}
+        onClick={handleClick}
+        target={external ? "_blank" : undefined}
+        rel={external ? "noopener noreferrer" : undefined}
+        className="text-muted-foreground hover:text-foreground transition-colors"
+      >
+        {children}
+      </a>
+    </li>
   );
 }

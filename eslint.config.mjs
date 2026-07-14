@@ -42,6 +42,8 @@ const eslintConfig = [...nextCoreWebVitals, ...nextTypescript, {
     "no-undef": "off",
     "no-unreachable": "off",
     "no-useless-escape": "off",
+    // Hydration-safe auth pattern: read sessionStorage in effect, then setState.
+    "react-hooks/set-state-in-effect": "off",
   },
 }, {
   ignores: ["node_modules/**", ".next/**", "out/**", "build/**", "next-env.d.ts", "examples/**", "skills", "repo/**"]

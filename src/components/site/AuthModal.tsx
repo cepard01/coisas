@@ -2,7 +2,13 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Sprout, Shield, Check } from "lucide-react";
+import {
+  CloseIcon,
+  SproutIcon,
+  ShieldIcon,
+  CheckIcon,
+  DaisyMark,
+} from "./icons";
 
 interface AuthModalProps {
   open: boolean;
@@ -91,16 +97,13 @@ function AuthModalInner({ open, onOpenChange, onAuthenticated }: AuthModalProps)
             transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
             className="relative w-full max-w-md bg-card border border-border rounded-2xl shadow-2xl overflow-hidden"
           >
-            {/* Top accent bar */}
-            <div className="h-1 bg-gradient-to-r from-sage via-terra to-gold" aria-hidden />
-
             {/* Close */}
             <button
               onClick={() => onOpenChange(false)}
-              className="absolute top-4 right-4 grid place-items-center h-8 w-8 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
+              className="absolute top-4 right-4 grid place-items-center h-8 w-8 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors z-10"
               aria-label="Close"
             >
-              <X className="h-4 w-4" />
+              <CloseIcon size={16} />
             </button>
 
             <div className="p-7 sm:p-8">
@@ -114,14 +117,14 @@ function AuthModalInner({ open, onOpenChange, onAuthenticated }: AuthModalProps)
                     transition={{ duration: 0.2 }}
                   >
                     <div className="flex items-center gap-3">
-                      <span className="grid place-items-center h-11 w-11 rounded-xl bg-gradient-to-br from-sage to-sage-deep text-white shadow-md">
-                        <Sprout className="h-5 w-5" />
+                      <span className="grid place-items-center h-11 w-11 rounded-xl bg-sage text-white">
+                        <DaisyMark size={22} className="text-paper" />
                       </span>
                       <div>
                         <p className="text-[11px] font-mono uppercase tracking-wider text-sage font-semibold">
                           Mock authentication
                         </p>
-                        <h2 id="auth-modal-title" className="font-display text-xl font-bold text-foreground leading-tight">
+                        <h2 id="auth-modal-title" className="font-display text-xl font-medium text-foreground leading-tight">
                           Sign in to DaisyFlower
                         </h2>
                       </div>
@@ -142,7 +145,7 @@ function AuthModalInner({ open, onOpenChange, onAuthenticated }: AuthModalProps)
                       ].map((item) => (
                         <li key={item} className="flex items-start gap-2.5 text-sm">
                           <span className="grid place-items-center h-5 w-5 rounded-full bg-sage/15 text-sage mt-0.5 shrink-0">
-                            <Check className="h-3 w-3" />
+                            <CheckIcon size={12} />
                           </span>
                           <span className="text-foreground/90">{item}</span>
                         </li>
@@ -159,7 +162,7 @@ function AuthModalInner({ open, onOpenChange, onAuthenticated }: AuthModalProps)
                     </button>
 
                     <p className="mt-4 flex items-center justify-center gap-1.5 text-[11px] text-muted-foreground">
-                      <Shield className="h-3 w-3" />
+                      <ShieldIcon size={12} />
                       We only request your Discord ID and username. No password, no messages.
                     </p>
                   </motion.div>
@@ -176,10 +179,12 @@ function AuthModalInner({ open, onOpenChange, onAuthenticated }: AuthModalProps)
                   >
                     <div className="relative mx-auto h-14 w-14">
                       <div className="absolute inset-0 rounded-full border-2 border-secondary" />
-                      <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-sage animate-spin" />
-                      <span className="absolute inset-0 grid place-items-center text-2xl">🌼</span>
+                      <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-sage animate-spin-slow" />
+                      <span className="absolute inset-0 grid place-items-center">
+                        <DaisyMark size={24} className="text-sage" />
+                      </span>
                     </div>
-                    <h3 className="mt-5 font-display text-lg font-bold text-foreground">
+                    <h3 className="mt-5 font-display text-lg font-medium text-foreground">
                       Connecting to Discord…
                     </h3>
                     <p className="mt-1.5 text-sm text-muted-foreground">
@@ -203,9 +208,9 @@ function AuthModalInner({ open, onOpenChange, onAuthenticated }: AuthModalProps)
                       transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                       className="mx-auto grid place-items-center h-14 w-14 rounded-full bg-sage/15 text-sage"
                     >
-                      <Check className="h-7 w-7" />
+                      <CheckIcon size={26} />
                     </motion.div>
-                    <h3 className="mt-5 font-display text-lg font-bold text-foreground">
+                    <h3 className="mt-5 font-display text-lg font-medium text-foreground">
                       Welcome back, gardener!
                     </h3>
                     <p className="mt-1.5 text-sm text-muted-foreground">

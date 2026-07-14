@@ -29,7 +29,7 @@ export function PlayerJourney() {
             {JOURNEY_PHASES.map((phase, i) => (
               <motion.div
                 key={phase.level}
-                initial={{ opacity: 0, x: -20 }}
+                initial={false}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: "-80px" }}
                 transition={{ duration: 0.5, delay: i * 0.05 }}

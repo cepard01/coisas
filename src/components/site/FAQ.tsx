@@ -44,8 +44,7 @@ export function FAQ() {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="py-24 md:py-32 scroll-mt-16 border-t border-border bg-paper-warm relative overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 bg-paper-grain opacity-40" aria-hidden />
+    <section id="faq" className="py-24 md:py-32 scroll-mt-16 border-t border-border bg-background relative overflow-hidden">
 
       <div className="relative mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
         <div className="text-center">
@@ -82,7 +81,7 @@ export function FAQ() {
                 <AnimatePresence>
                   {isOpen && (
                     <motion.div
-                      initial={{ height: 0, opacity: 0 }}
+                      initial={false}
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}

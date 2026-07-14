@@ -90,7 +90,7 @@ export function Catalog() {
           <AnimatePresence mode="wait">
             <motion.div
               key={tab}
-              initial={{ opacity: 0, y: 12 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.25 }}
@@ -141,7 +141,7 @@ function SeedsPanel() {
   return (
     <CardGrid>
       {SEEDS.map((s) => (
-        <article key={s.id} className="card-editorial card-editorial-hover rounded-2xl p-5">
+        <article key={s.id} className="card-hairline card-hairline-hover rounded-2xl p-5">
           <div className="flex items-start justify-between gap-3">
             <div className="flex items-center gap-3">
               <span className="grid place-items-center h-12 w-12 rounded-xl bg-secondary text-2xl">{s.emoji}</span>
@@ -169,7 +169,7 @@ function FlowersPanel() {
   return (
     <CardGrid>
       {FLOWERS.map((f) => (
-        <article key={f.id} className="card-editorial card-editorial-hover rounded-2xl p-5">
+        <article key={f.id} className="card-hairline card-hairline-hover rounded-2xl p-5">
           <div className="flex items-start justify-between gap-3">
             <div className="flex items-center gap-3">
               <span className="grid place-items-center h-12 w-12 rounded-xl bg-terra/10 text-2xl">{f.emoji}</span>
@@ -198,7 +198,7 @@ function CropsPanel() {
   return (
     <CardGrid>
       {CROPS.map((c) => (
-        <article key={c.id} className="card-editorial card-editorial-hover rounded-2xl p-5">
+        <article key={c.id} className="card-hairline card-hairline-hover rounded-2xl p-5">
           <div className="flex items-start justify-between gap-3">
             <div className="flex items-center gap-3">
               <span className="grid place-items-center h-12 w-12 rounded-xl bg-gold/15 text-2xl">{c.emoji}</span>
@@ -233,7 +233,7 @@ function WeatherPanel() {
   return (
     <CardGrid>
       {WEATHER.map((w) => (
-        <article key={w.id} className="card-editorial card-editorial-hover rounded-2xl p-5 relative overflow-hidden">
+        <article key={w.id} className="card-hairline card-hairline-hover rounded-2xl p-5 relative overflow-hidden">
           <div className={cn("pointer-events-none absolute inset-0 bg-gradient-to-br to-transparent opacity-60", toneBg[w.tone])} aria-hidden />
           <div className="relative">
             <div className="flex items-start justify-between">
@@ -261,7 +261,7 @@ function MutationsPanel() {
   return (
     <div className="grid gap-4">
       {MUTATIONS.map((m) => (
-        <article key={m.id} className="card-editorial rounded-2xl p-6 sm:p-7">
+        <article key={m.id} className="card-hairline rounded-2xl p-6 sm:p-7">
           <div className="grid lg:grid-cols-[auto_1fr_auto] gap-6 items-center">
             <div className="flex items-center gap-3">
               {m.inputsEmojis.map((e, i) => (
@@ -300,7 +300,7 @@ function ItemsPanel() {
   return (
     <CardGrid>
       {ITEMS.map((it) => (
-        <article key={it.id} className="card-editorial card-editorial-hover rounded-2xl p-5">
+        <article key={it.id} className="card-hairline card-hairline-hover rounded-2xl p-5">
           <div className="flex items-start gap-3">
             <span className="grid place-items-center h-12 w-12 rounded-xl bg-secondary text-2xl">{it.emoji}</span>
             <div>
@@ -326,7 +326,7 @@ function DecorationsPanel() {
   return (
     <CardGrid>
       {DECORATIONS.map((d) => (
-        <article key={d.id} className="card-editorial card-editorial-hover rounded-2xl p-5">
+        <article key={d.id} className="card-hairline card-hairline-hover rounded-2xl p-5">
           <div className="flex items-start gap-3">
             <span className="grid place-items-center h-12 w-12 rounded-xl bg-gold/15 text-2xl">{d.emoji}</span>
             <div>

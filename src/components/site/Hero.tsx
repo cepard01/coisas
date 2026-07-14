@@ -1,87 +1,78 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { AuthModal } from "./AuthModal";
-import { useState } from "react";
+import { ArrowRightIcon, ArrowUpRightIcon } from "./icons";
 
 export function Hero() {
-  const { player, signIn } = useAuth();
+  const { player, signIn, hydrated } = useAuth();
   const [authOpen, setAuthOpen] = useState(false);
 
   const scrollTo = (href: string) => {
     document.querySelector(href)?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
+  // Avoid hydration mismatch: server always renders the signed-out CTA.
+  // Client swaps to dashboard CTA only after hydration confirms auth state.
+  const showDashboardCta = hydrated && player;
+
   return (
-    <section id="top" className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden bg-paper-warm">
-      {/* Subtle paper grain */}
-      <div className="pointer-events-none absolute inset-0 bg-paper-grain opacity-60" aria-hidden />
-
-      {/* Soft sun glow */}
-      <div
-        className="pointer-events-none absolute -top-40 right-0 h-[36rem] w-[36rem] rounded-full blur-3xl opacity-40"
-        style={{ background: "radial-gradient(circle, oklch(0.82 0.12 85 / 0.45), transparent 70%)" }}
-        aria-hidden
-      />
-
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <section id="top" className="relative pt-32 pb-20 md:pt-40 md:pb-24 overflow-hidden">
+      <div className="mx-auto max-w-6xl px-5 sm:px-6">
         {/* Eyebrow */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+        <div
           className="flex items-center gap-3 text-sm text-muted-foreground"
         >
-          <span className="font-mono text-xs uppercase tracking-[0.18em] text-sage">v1.0 · in development</span>
-          <span className="h-px w-12 bg-border" />
-          <span className="hidden sm:inline">Open source · MIT</span>
-        </motion.div>
-
-        {/* Headline — editorial, asymmetric */}
-        <div className="mt-8 grid lg:grid-cols-12 gap-8 lg:gap-12 items-end">
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.05 }}
-            className="lg:col-span-8"
+          <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-sage">
+            v1.0 · in development
+          </span>
+          <span className="h-px w-10 bg-border" />
+          <a
+            href="https://github.com/cepard01/daisyflower"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden sm:inline-flex items-center gap-1 text-xs hover:text-foreground transition-colors"
           >
-            <h1 className="font-display text-[2.5rem] sm:text-6xl lg:text-7xl xl:text-8xl font-semibold tracking-tight leading-[0.95] text-balance">
-              A quiet garden,{" "}
-              <span className="italic font-normal text-sage">grown inside</span>{" "}
-              Discord.
-            </h1>
-          </motion.div>
+            MIT · open source <ArrowUpRightIcon size={12} />
+          </a>
+        </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.15 }}
-            className="lg:col-span-4 lg:pb-3"
-          >
+        {/* Headline */}
+        <h1
+          className="mt-7 font-display text-[2.75rem] sm:text-7xl lg:text-[5.5rem] xl:text-[6rem] font-medium tracking-tight leading-[0.95] text-balance max-w-5xl"
+        >
+          A quiet garden,{" "}
+          <span className="italic font-normal text-sage">grown</span>
+          <br className="hidden sm:block" /> inside Discord.
+        </h1>
+
+        {/* Sub + CTA — asymmetric, sits under headline offset to the right */}
+        <div
+          className="mt-10 grid sm:grid-cols-2 gap-8 sm:gap-12 items-start"
+        >
+          <div className="sm:col-start-2">
             <p className="text-base lg:text-lg text-muted-foreground text-pretty leading-relaxed max-w-md">
-              DaisyFlower is a cozy, deterministic gardening simulator. Plant seeds, react to the
-              weather, harvest rare mutations — through buttons, menus, and panels. No timers, no
-              grinding, no spam.
+              DaisyFlower is a deterministic gardening simulator. Plant seeds, react to weather,
+              harvest rare mutations — through buttons and panels, not commands to memorize. No
+              timers, no grinding, no spam.
             </p>
-
             <div className="mt-6 flex flex-wrap items-center gap-3">
-              {player ? (
+              {showDashboardCta ? (
                 <button
                   onClick={() => scrollTo("#dashboard")}
-                  className="group inline-flex items-center gap-2 rounded-lg bg-foreground text-background px-5 py-2.5 text-sm font-semibold hover:bg-foreground/90 transition-colors"
+                  className="group inline-flex items-center gap-2 rounded-lg bg-foreground text-background px-5 py-2.5 text-sm font-medium hover:bg-foreground/90 transition-colors"
                 >
                   Open your dashboard
-                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                  <ArrowRightIcon size={15} className="transition-transform group-hover:translate-x-0.5" />
                 </button>
               ) : (
                 <button
                   onClick={() => setAuthOpen(true)}
-                  className="group inline-flex items-center gap-2 rounded-lg bg-foreground text-background px-5 py-2.5 text-sm font-semibold hover:bg-foreground/90 transition-colors"
+                  className="group inline-flex items-center gap-2 rounded-lg bg-foreground text-background px-5 py-2.5 text-sm font-medium hover:bg-foreground/90 transition-colors"
                 >
                   Sign in to your garden
-                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                  <ArrowRightIcon size={15} className="transition-transform group-hover:translate-x-0.5" />
                 </button>
               )}
               <button
@@ -91,38 +82,30 @@ export function Hero() {
                 See how it works
               </button>
             </div>
-          </motion.div>
+          </div>
         </div>
 
-        {/* Garden preview mockup */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-16 lg:mt-24"
-        >
-          <GardenPreview />
-        </motion.div>
+        {/* Illustration + stats row */}
+        <div className="mt-16 lg:mt-20">
+          <GardenIllustration />
 
-        {/* Footnote stats — editorial style */}
-        <motion.dl
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.6 }}
-          className="mt-16 grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-5 max-w-3xl"
-        >
-          {[
-            { v: "12+", l: "Slash commands live" },
-            { v: "4", l: "Weather states" },
-            { v: "2", l: "Languages" },
-            { v: "0", l: "Per-plant timers" },
-          ].map((s) => (
-            <div key={s.l} className="border-l-2 border-border pl-3">
-              <dt className="font-display text-3xl font-semibold text-foreground marker-num">{s.v}</dt>
-              <dd className="mt-0.5 text-xs text-muted-foreground">{s.l}</dd>
-            </div>
-          ))}
-        </motion.dl>
+          {/* Footnote stats — editorial, no boxes */}
+          <dl className="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-x-8 gap-y-5 max-w-3xl">
+            {[
+              { v: "12+", l: "Slash commands" },
+              { v: "4", l: "Weather states" },
+              { v: "2", l: "Languages" },
+              { v: "0", l: "Per-plant timers" },
+            ].map((s, i) => (
+              <div key={s.l} className={i > 0 ? "sm:border-l sm:border-border sm:pl-6" : ""}>
+                <dt className="font-display text-3xl font-medium text-foreground marker-num tabular">
+                  {s.v}
+                </dt>
+                <dd className="mt-0.5 text-xs text-muted-foreground">{s.l}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
       </div>
 
       <AuthModal open={authOpen} onOpenChange={setAuthOpen} onAuthenticated={signIn} />
@@ -130,209 +113,154 @@ export function Hero() {
   );
 }
 
-function GardenPreview() {
+/**
+ * Hand-drawn SVG illustration of a garden row —
+ * replaces the generic "Discord card mockup" with something more editorial.
+ */
+function GardenIllustration() {
   return (
-    <div className="relative">
-      {/* Frame chrome — looks like an app window */}
-      <div className="rounded-2xl border border-border bg-card overflow-hidden shadow-xl shadow-foreground/[0.04]">
-        {/* Window header */}
-        <div className="flex items-center justify-between px-4 py-2.5 border-b border-border bg-secondary/40">
-          <div className="flex items-center gap-1.5">
-            <span className="h-2.5 w-2.5 rounded-full bg-terra/60" />
-            <span className="h-2.5 w-2.5 rounded-full bg-gold/60" />
-            <span className="h-2.5 w-2.5 rounded-full bg-sage/60" />
-          </div>
-          <span className="font-mono text-[11px] text-muted-foreground">
-            discord · #daisy-garden
-          </span>
-          <span className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
-            <span className="h-1.5 w-1.5 rounded-full bg-sage animate-pulse-dot" />
-            live
-          </span>
-        </div>
+    <div className="relative w-full overflow-hidden rounded-xl border border-border bg-card">
+      {/* Sky gradient — very subtle */}
+      <div
+        className="absolute inset-0 opacity-50"
+        style={{
+          background:
+            "linear-gradient(to bottom, oklch(0.96 0.015 95) 0%, oklch(0.985 0.006 75) 60%)",
+        }}
+        aria-hidden
+      />
 
-        {/* Garden panel — Discord Components v2 style */}
-        <div className="grid lg:grid-cols-[1.5fr_1fr]">
-          {/* Main panel */}
-          <div className="p-5 sm:p-6 border-b lg:border-b-0 lg:border-r border-border">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="font-display text-lg font-semibold text-foreground">My Garden</h3>
-                <p className="text-xs text-muted-foreground mt-0.5">
-                  3 plants · 1 ready to harvest
-                </p>
-              </div>
-              <WeatherPill />
-            </div>
-
-            {/* Slots grid */}
-            <div className="mt-5 grid grid-cols-3 gap-2.5">
-              <GardenSlot emoji="🌻" name="Sunflower" progress={72} />
-              <GardenSlot emoji="🌹" name="Red Rose" progress={45} />
-              <GardenSlot emoji="🤍" name="White Rose" progress={90} />
-              <GardenSlot emoji="🌻" name="Sunflower" progress={100} ready />
-              <GardenSlot emoji="🌱" empty label="Empty slot" />
-              <GardenSlot emoji="🌱" empty label="Empty slot" />
-            </div>
-
-            {/* Action row */}
-            <div className="mt-4 flex flex-wrap gap-2">
-              <MockButton primary>🌱 Plant</MockButton>
-              <MockButton>🌻 Harvest</MockButton>
-              <MockButton>💧 Water</MockButton>
-              <MockButton>🛒 Shop</MockButton>
-            </div>
-
-            {/* Recommended */}
-            <div className="mt-3 rounded-lg bg-sage/[0.06] border border-sage/20 px-3 py-2 text-xs">
-              <span className="font-semibold text-sage">Next:</span>{" "}
-              <span className="text-foreground">Harvest your ready Sunflower.</span>
-            </div>
-          </div>
-
-          {/* Side panel */}
-          <div className="p-5 sm:p-6 bg-secondary/30">
-            <div className="flex items-center gap-3">
-              <span className="grid place-items-center h-10 w-10 rounded-full bg-sage/15 text-lg">
-                🌻
-              </span>
-              <div>
-                <p className="text-sm font-semibold text-foreground">petalkeeper</p>
-                <p className="text-[11px] text-muted-foreground">Level 7 · Gardener</p>
-              </div>
-            </div>
-
-            {/* XP bar */}
-            <div className="mt-4">
-              <div className="flex items-center justify-between text-[11px] text-muted-foreground mb-1.5">
-                <span>XP to Level 8</span>
-                <span className="font-mono">2,140 / 3,000</span>
-              </div>
-              <div className="h-1.5 w-full rounded-full bg-secondary overflow-hidden">
-                <div className="h-full w-[71%] rounded-full bg-gradient-to-r from-sage to-sage-deep" />
-              </div>
-            </div>
-
-            {/* Wallet */}
-            <div className="mt-5 grid grid-cols-2 gap-2">
-              <div className="rounded-lg border border-border bg-card p-2.5">
-                <p className="text-[10px] uppercase tracking-wider text-muted-foreground">Daisies</p>
-                <p className="font-display text-lg font-semibold text-foreground mt-0.5">1,240</p>
-              </div>
-              <div className="rounded-lg border border-border bg-card p-2.5">
-                <p className="text-[10px] uppercase tracking-wider text-muted-foreground">Collection</p>
-                <p className="font-display text-lg font-semibold text-foreground mt-0.5">8 / 24</p>
-              </div>
-            </div>
-
-            {/* Mission preview */}
-            <div className="mt-4 rounded-lg border border-border bg-card p-3">
-              <div className="flex items-center justify-between">
-                <p className="text-[11px] font-semibold text-foreground flex items-center gap-1">
-                  <Sparkles className="h-3 w-3 text-gold" /> Daily mission
-                </p>
-                <span className="text-[10px] text-muted-foreground font-mono">2/3</span>
-              </div>
-              <p className="mt-1 text-xs text-muted-foreground">Harvest 3 flowers</p>
-              <div className="mt-2 h-1 w-full rounded-full bg-secondary overflow-hidden">
-                <div className="h-full w-2/3 rounded-full bg-gold" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Floating callout */}
-      <motion.div
-        className="absolute -top-4 -right-2 sm:right-6 hidden sm:flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1.5 shadow-lg"
-        animate={{ y: [0, -6, 0] }}
-        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+      <svg
+        viewBox="0 0 800 280"
+        className="relative w-full h-auto block"
+        preserveAspectRatio="xMidYMid meet"
+        aria-label="Illustration of a garden row with sunflowers and roses at different growth stages"
       >
-        <span className="h-1.5 w-1.5 rounded-full bg-sage animate-pulse-dot" />
-        <span className="text-[11px] font-medium text-foreground">No timers running</span>
-      </motion.div>
-    </div>
-  );
-}
+        {/* Sun */}
+        <circle cx="700" cy="55" r="22" fill="oklch(0.8 0.1 85)" opacity="0.7" />
+        <circle cx="700" cy="55" r="14" fill="oklch(0.82 0.12 85)" />
 
-function WeatherPill() {
-  return (
-    <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1.5">
-      <span className="text-base leading-none">☀️</span>
-      <div className="text-left">
-        <p className="text-[11px] font-semibold text-foreground leading-none">Sunny</p>
-        <p className="text-[10px] text-muted-foreground leading-none mt-0.5">×1.5 growth</p>
+        {/* Soil strip */}
+        <path
+          d="M0 200 L800 200 L800 280 L0 280 Z"
+          fill="oklch(0.42 0.04 50)"
+          opacity="0.85"
+        />
+        <path
+          d="M0 200 Q 200 196 400 200 T 800 200"
+          stroke="oklch(0.3 0.04 50)"
+          strokeWidth="1.5"
+          fill="none"
+          opacity="0.4"
+        />
+
+        {/* Soil texture dots */}
+        <g fill="oklch(0.3 0.04 50)" opacity="0.35">
+          <circle cx="120" cy="225" r="1.5" />
+          <circle cx="280" cy="240" r="1" />
+          <circle cx="450" cy="218" r="1.5" />
+          <circle cx="620" cy="245" r="1" />
+          <circle cx="180" cy="255" r="1" />
+          <circle cx="540" cy="228" r="1.2" />
+          <circle cx="350" cy="260" r="1" />
+        </g>
+
+        {/* Plant 1 — Sunflower, growing (45%) */}
+        <g transform="translate(110, 200)">
+          <path d="M0 0 L0 -55" stroke="oklch(0.46 0.06 145)" strokeWidth="2.5" strokeLinecap="round" />
+          <ellipse cx="-8" cy="-30" rx="9" ry="4" fill="oklch(0.5 0.07 145)" transform="rotate(-30 -8 -30)" />
+          <ellipse cx="8" cy="-20" rx="9" ry="4" fill="oklch(0.5 0.07 145)" transform="rotate(30 8 -20)" />
+          {/* Bud — not yet bloomed */}
+          <circle cx="0" cy="-55" r="6" fill="oklch(0.55 0.08 145)" />
+        </g>
+
+        {/* Plant 2 — Sunflower, mature (ready) */}
+        <g transform="translate(250, 200)">
+          <path d="M0 0 L0 -95" stroke="oklch(0.42 0.06 145)" strokeWidth="3" strokeLinecap="round" />
+          <ellipse cx="-12" cy="-50" rx="14" ry="6" fill="oklch(0.46 0.07 145)" transform="rotate(-35 -12 -50)" />
+          <ellipse cx="12" cy="-35" rx="14" ry="6" fill="oklch(0.46 0.07 145)" transform="rotate(35 12 -35)" />
+          {/* Bloom */}
+          <g transform="translate(0, -95)">
+            {Array.from({ length: 10 }).map((_, i) => {
+              const a = (i / 10) * Math.PI * 2;
+              return (
+                <ellipse
+                  key={i}
+                  cx={Math.cos(a) * 13}
+                  cy={Math.sin(a) * 13}
+                  rx="6"
+                  ry="11"
+                  fill="oklch(0.82 0.12 85)"
+                  transform={`rotate(${(a * 180) / Math.PI} ${Math.cos(a) * 13} ${Math.sin(a) * 13})`}
+                />
+              );
+            })}
+            <circle cx="0" cy="0" r="8" fill="oklch(0.55 0.1 65)" />
+            <circle cx="0" cy="0" r="5" fill="oklch(0.45 0.1 60)" />
+          </g>
+        </g>
+
+        {/* Plant 3 — Rose bush, growing (70%) */}
+        <g transform="translate(400, 200)">
+          <path d="M0 0 L0 -70" stroke="oklch(0.42 0.06 145)" strokeWidth="2.5" strokeLinecap="round" />
+          <path d="M0 -40 L-15 -55" stroke="oklch(0.42 0.06 145)" strokeWidth="2" strokeLinecap="round" />
+          <path d="M0 -30 L15 -45" stroke="oklch(0.42 0.06 145)" strokeWidth="2" strokeLinecap="round" />
+          <ellipse cx="-15" cy="-55" rx="6" ry="3" fill="oklch(0.5 0.07 145)" transform="rotate(-40 -15 -55)" />
+          <ellipse cx="15" cy="-45" rx="6" ry="3" fill="oklch(0.5 0.07 145)" transform="rotate(40 15 -45)" />
+          {/* Rose bud — about to bloom */}
+          <circle cx="0" cy="-70" r="7" fill="oklch(0.62 0.16 15)" />
+          <path d="M-4 -73 Q 0 -78 4 -73" stroke="oklch(0.52 0.16 15)" strokeWidth="1.5" fill="none" />
+        </g>
+
+        {/* Plant 4 — White Rose, mature */}
+        <g transform="translate(550, 200)">
+          <path d="M0 0 L0 -85" stroke="oklch(0.42 0.06 145)" strokeWidth="3" strokeLinecap="round" />
+          <path d="M0 -45 L-18 -60" stroke="oklch(0.42 0.06 145)" strokeWidth="2" strokeLinecap="round" />
+          <path d="M0 -35 L18 -50" stroke="oklch(0.42 0.06 145)" strokeWidth="2" strokeLinecap="round" />
+          <ellipse cx="-18" cy="-60" rx="8" ry="4" fill="oklch(0.5 0.05 140)" transform="rotate(-40 -18 -60)" />
+          <ellipse cx="18" cy="-50" rx="8" ry="4" fill="oklch(0.5 0.05 140)" transform="rotate(40 18 -50)" />
+          {/* Bloom — layered petals */}
+          <g transform="translate(0, -85)">
+            <circle cx="-5" cy="-3" r="6" fill="oklch(0.94 0.01 75)" />
+            <circle cx="5" cy="-3" r="6" fill="oklch(0.94 0.01 75)" />
+            <circle cx="0" cy="3" r="6" fill="oklch(0.96 0.008 75)" />
+            <circle cx="0" cy="-2" r="5" fill="oklch(0.98 0.005 75)" />
+            <circle cx="0" cy="-2" r="2" fill="oklch(0.85 0.04 85)" opacity="0.5" />
+          </g>
+        </g>
+
+        {/* Plant 5 — empty slot (just soil mound) */}
+        <g transform="translate(690, 200)" opacity="0.5">
+          <ellipse cx="0" cy="0" rx="14" ry="4" fill="oklch(0.38 0.04 50)" />
+          <text x="0" y="-10" textAnchor="middle" fontSize="11" fill="oklch(0.48 0.012 75)" fontFamily="monospace">
+            empty
+          </text>
+        </g>
+
+        {/* Weather indicator in corner */}
+        <g transform="translate(40, 40)">
+          <text x="0" y="0" fontSize="10" fill="oklch(0.48 0.012 75)" fontFamily="monospace" letterSpacing="1">
+            NOW
+          </text>
+          <text x="0" y="18" fontSize="14" fill="oklch(0.21 0.012 75)" fontFamily="serif" fontWeight="600">
+            ☀ Sunny
+          </text>
+          <text x="0" y="34" fontSize="10" fill="oklch(0.48 0.012 75)" fontFamily="monospace">
+            ×1.5 growth · ×2.0 drain
+          </text>
+        </g>
+      </svg>
+
+      {/* Caption strip */}
+      <div className="relative flex items-center justify-between px-5 py-3 border-t border-border bg-background/50">
+        <p className="font-mono text-[11px] text-muted-foreground">
+          resolvePlantState() · 4 plants · 2 ready
+        </p>
+        <p className="font-mono text-[11px] text-sage flex items-center gap-1.5">
+          <span className="h-1.5 w-1.5 rounded-full bg-sage animate-pulse-dot" />
+          no timers running
+        </p>
       </div>
     </div>
-  );
-}
-
-function GardenSlot({
-  emoji,
-  name,
-  progress,
-  ready,
-  empty,
-  label,
-}: {
-  emoji: string;
-  name?: string;
-  progress?: number;
-  ready?: boolean;
-  empty?: boolean;
-  label?: string;
-}) {
-  if (empty) {
-    return (
-      <div className="rounded-lg border border-dashed border-border bg-background/40 px-2.5 py-2.5 text-center">
-        <p className="text-base opacity-40">{emoji}</p>
-        <p className="mt-1 text-[10px] text-muted-foreground truncate">{label}</p>
-      </div>
-    );
-  }
-  return (
-    <div
-      className={
-        "rounded-lg border px-2.5 py-2.5 " +
-        (ready ? "border-sage/40 bg-sage/[0.06]" : "border-border bg-background/60")
-      }
-    >
-      <div className="flex items-center justify-between">
-        <span className="text-base leading-none">{emoji}</span>
-        {ready && (
-          <span className="text-[9px] font-bold uppercase tracking-wide text-sage">Ready</span>
-        )}
-      </div>
-      <p className="mt-1 text-[10px] font-medium text-foreground truncate">{name}</p>
-      {!ready && progress !== undefined && (
-        <div className="mt-1.5 h-0.5 w-full rounded-full bg-secondary overflow-hidden">
-          <div
-            className="h-full rounded-full bg-sage-soft"
-            style={{ width: `${progress}%` }}
-          />
-        </div>
-      )}
-    </div>
-  );
-}
-
-function MockButton({
-  children,
-  primary,
-}: {
-  children: React.ReactNode;
-  primary?: boolean;
-}) {
-  return (
-    <span
-      className={
-        "inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold transition-colors " +
-        (primary
-          ? "bg-sage text-white hover:bg-sage-deep"
-          : "bg-secondary text-secondary-foreground hover:bg-secondary/70")
-      }
-    >
-      {children}
-    </span>
   );
 }

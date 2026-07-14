@@ -77,7 +77,7 @@ export function Commands() {
                 <motion.div
                   key={cmd.name}
                   layout
-                  initial={{ opacity: 0 }}
+                  initial={false}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.2, delay: Math.min(i * 0.02, 0.2) }}
                   className={cn(

@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { SectionHeading } from "./Features";
+import { RevealHidden } from "./Reveal";
 
 const LOOP = [
   {
@@ -50,8 +51,7 @@ const LOOP = [
 
 export function GameplayLoop() {
   return (
-    <section id="loop" className="py-24 md:py-32 scroll-mt-16 border-t border-border bg-paper-warm relative overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 bg-paper-grain opacity-40" aria-hidden />
+    <section id="loop" className="py-24 md:py-32 scroll-mt-16 border-t border-border bg-background relative overflow-hidden">
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeading
@@ -70,7 +70,7 @@ export function GameplayLoop() {
           {LOOP.map((step, i) => (
             <motion.div
               key={step.n}
-              initial={{ opacity: 0, y: 20 }}
+              initial={false}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.5, delay: Math.min(i * 0.06, 0.3) }}
@@ -95,12 +95,7 @@ export function GameplayLoop() {
           ))}
         </div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="mt-10 flex items-start gap-3 max-w-2xl"
+        <RevealHidden className="mt-10 flex items-start gap-3 max-w-2xl"
         >
           <span className="text-xl shrink-0">💡</span>
           <p className="text-sm text-muted-foreground text-pretty leading-relaxed">
@@ -109,7 +104,7 @@ export function GameplayLoop() {
             DaisyFlower computes the current state on demand. No notifications required, no
             grinding, no FOMO.
           </p>
-        </motion.div>
+        </RevealHidden>
       </div>
     </section>
   );

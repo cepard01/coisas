@@ -94,7 +94,7 @@ export function Roadmap() {
             return (
               <motion.div
                 key={phase.phase}
-                initial={{ opacity: 0, y: 20 }}
+                initial={false}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ duration: 0.5, delay: i * 0.08 }}

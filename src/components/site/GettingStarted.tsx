@@ -4,11 +4,11 @@ import { motion } from "framer-motion";
 import { ArrowRight, Terminal } from "lucide-react";
 import { START_STEPS } from "@/lib/daisy-data";
 import { SectionHeading } from "./Features";
+import { RevealHidden } from "./Reveal";
 
 export function GettingStarted() {
   return (
-    <section id="start" className="py-24 md:py-32 scroll-mt-16 border-t border-border bg-paper-warm relative overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 bg-paper-grain opacity-40" aria-hidden />
+    <section id="start" className="py-24 md:py-32 scroll-mt-16 border-t border-border bg-background relative overflow-hidden">
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeading
@@ -28,7 +28,7 @@ export function GettingStarted() {
           {START_STEPS.map((step, i) => (
             <motion.div
               key={step.step}
-              initial={{ opacity: 0, y: 20 }}
+              initial={false}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.5, delay: i * 0.08 }}
@@ -51,12 +51,7 @@ export function GettingStarted() {
         {/* Starter kit + command preview */}
         <div className="mt-12 grid lg:grid-cols-2 gap-5">
           {/* Starter kit */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="rounded-2xl border border-border bg-card p-6 sm:p-7"
+          <RevealHidden className="rounded-2xl border border-border bg-card p-6 sm:p-7"
           >
             <p className="font-mono text-[11px] uppercase tracking-wider text-sage font-semibold">
               Starter kit
@@ -81,15 +76,10 @@ export function GettingStarted() {
                 </div>
               ))}
             </div>
-          </motion.div>
+          </RevealHidden>
 
           {/* Command preview */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="rounded-2xl border border-border bg-ink text-paper p-6 sm:p-7 relative overflow-hidden"
+          <RevealHidden className="rounded-2xl border border-border bg-ink text-paper p-6 sm:p-7 relative overflow-hidden"
           >
             <div
               className="pointer-events-none absolute -top-12 -right-12 h-40 w-40 rounded-full blur-3xl opacity-40"
@@ -129,16 +119,11 @@ export function GettingStarted() {
                 </div>
               </div>
             </div>
-          </motion.div>
+          </RevealHidden>
         </div>
 
         {/* Final CTA */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="mt-12 text-center"
+        <RevealHidden className="mt-12 text-center"
         >
           <div className="inline-flex flex-wrap items-center justify-center gap-3">
             <a
@@ -163,7 +148,7 @@ export function GettingStarted() {
           <p className="mt-3 text-xs text-muted-foreground">
             Open source · MIT License · TypeScript · Discord.js v14 · MongoDB · Redis
           </p>
-        </motion.div>
+        </RevealHidden>
       </div>
     </section>
   );

@@ -1,18 +1,23 @@
 "use client";
 
-import { useState, useCallback, useSyncExternalStore } from "react";
+import { useState, useCallback, useEffect } from "react";
 
 /**
  * Mock authentication state for the DaisyFlower website.
  * Purely frontend — no real OAuth, no persistence beyond session.
  * Simulates a logged-in player so we can render dashboard-style UIs.
+ *
+ * To avoid SSR hydration mismatches, we always render as signed-out
+ * on the server and on the first client render, then flip to the
+ * real state in a layout effect. Consumers should gate auth-dependent
+ * UI behind the `hydrated` flag.
  */
 
 export interface MockPlayer {
   id: string;
   username: string;
   discriminator: string;
-  avatar: string; // emoji used as avatar for the mockup
+  avatar: string;
   level: number;
   joinedAt: string;
 }
@@ -28,67 +33,40 @@ const MOCK_PLAYER: MockPlayer = {
 
 const STORAGE_KEY = "daisyflower_mock_auth";
 
-// External store: shared across all hook consumers, hydrated once
-// from sessionStorage on first client read.
-let currentPlayer: MockPlayer | null = null;
-let initialized = false;
-const listeners = new Set<() => void>();
-
-function ensureInit() {
-  if (initialized) return;
-  initialized = true;
-  try {
-    const raw = sessionStorage.getItem(STORAGE_KEY);
-    if (raw) currentPlayer = JSON.parse(raw) as MockPlayer;
-  } catch {
-    // ignore
-  }
-}
-
-function writeStore(player: MockPlayer | null) {
-  currentPlayer = player;
-  try {
-    if (player) sessionStorage.setItem(STORAGE_KEY, JSON.stringify(player));
-    else sessionStorage.removeItem(STORAGE_KEY);
-  } catch {
-    // ignore
-  }
-  listeners.forEach((l) => l());
-}
-
-function subscribe(listener: () => void) {
-  listeners.add(listener);
-  return () => listeners.delete(listener);
-}
-
-function getSnapshot(): MockPlayer | null {
-  ensureInit();
-  return currentPlayer;
-}
-
 export function useAuth() {
-  // useSyncExternalStore handles SSR (returns server snapshot) and
-  // client hydration automatically, no useEffect needed.
-  const player = useSyncExternalStore(
-    subscribe,
-    getSnapshot,
-    () => null, // server snapshot — always null on first render
-  );
+  // Always start as null/false so the server and first client render match.
+  // The real state is loaded inside useEffect (client-only).
+  const [player, setPlayer] = useState<MockPlayer | null>(null);
+  const [hydrated, setHydrated] = useState(false);
 
-  // `hydrated` flips to true once we're on the client. We use a lazy
-  // initializer (runs only on client during first render) so there's
-  // no setState-in-effect.
-  const [hydrated] = useState(() => {
-    if (typeof window === "undefined") return false;
-    return true;
-  });
+  useEffect(() => {
+    let initial: MockPlayer | null = null;
+    try {
+      const raw = sessionStorage.getItem(STORAGE_KEY);
+      if (raw) initial = JSON.parse(raw) as MockPlayer;
+    } catch {
+      // ignore
+    }
+    if (initial) setPlayer(initial);
+    setHydrated(true);
+  }, []);
 
   const signIn = useCallback(() => {
-    writeStore(MOCK_PLAYER);
+    setPlayer(MOCK_PLAYER);
+    try {
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(MOCK_PLAYER));
+    } catch {
+      // ignore
+    }
   }, []);
 
   const signOut = useCallback(() => {
-    writeStore(null);
+    setPlayer(null);
+    try {
+      sessionStorage.removeItem(STORAGE_KEY);
+    } catch {
+      // ignore
+    }
   }, []);
 
   return { player, signIn, signOut, hydrated };

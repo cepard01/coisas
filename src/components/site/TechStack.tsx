@@ -3,11 +3,11 @@
 import { motion } from "framer-motion";
 import { TECH_STACK, DESIGN_PRINCIPLES } from "@/lib/daisy-data";
 import { SectionHeading } from "./Features";
+import { RevealHidden } from "./Reveal";
 
 export function TechStack() {
   return (
-    <section id="tech" className="py-24 md:py-32 scroll-mt-16 border-t border-border bg-paper-warm relative overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 bg-paper-grain opacity-40" aria-hidden />
+    <section id="tech" className="py-24 md:py-32 scroll-mt-16 border-t border-border bg-background relative overflow-hidden">
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeading
@@ -27,7 +27,7 @@ export function TechStack() {
           {TECH_STACK.map((tech, i) => (
             <motion.div
               key={tech.name}
-              initial={{ opacity: 0 }}
+              initial={false}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: i * 0.04 }}
@@ -44,12 +44,7 @@ export function TechStack() {
         </div>
 
         {/* Architecture diagram */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="mt-12 rounded-2xl border border-border bg-card p-6 sm:p-10"
+        <RevealHidden className="mt-12 rounded-2xl border border-border bg-card p-6 sm:p-10"
         >
           <div className="text-center mb-8">
             <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-sage font-semibold">System architecture</p>
@@ -71,7 +66,7 @@ export function TechStack() {
             <ArchArrow />
             <ArchLayer n="5" label="EventBus · Listeners" sub="XP · Missions · LiveConfig" tone="terra" />
           </div>
-        </motion.div>
+        </RevealHidden>
 
         {/* Design principles */}
         <div className="mt-16">
@@ -83,7 +78,7 @@ export function TechStack() {
             {DESIGN_PRINCIPLES.map((p, i) => (
               <motion.div
                 key={p.title}
-                initial={{ opacity: 0, y: 16 }}
+                initial={false}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.05 }}

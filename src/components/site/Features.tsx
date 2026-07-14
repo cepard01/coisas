@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { SunIcon, CloudIcon, DropletIcon, SparkIcon, ClockIcon } from "./icons";
 
 interface Feature {
   eyebrow: string;
@@ -11,19 +12,18 @@ interface Feature {
 
 export function Features() {
   return (
-    <section id="features" className="py-24 md:py-32 scroll-mt-16 border-t border-border">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Section header */}
+    <section id="features" className="py-24 md:py-32 border-t border-border">
+      <div className="mx-auto max-w-6xl px-5 sm:px-6">
         <SectionHeading
           number="01"
           eyebrow="Features"
           title={
             <>
-              Designed to feel like
+              Built to feel like
               <br className="hidden sm:block" /> <em className="font-normal text-sage">tending a real garden.</em>
             </>
           }
-          description="Every system in DaisyFlower exists to make the player feel calm, curious, and gently guided — never overwhelmed."
+          description="Every system exists to make the player feel calm, curious, and gently guided — never overwhelmed."
         />
 
         <div className="mt-20 space-y-24 md:space-y-32">
@@ -41,18 +41,16 @@ function FeatureRow({ feature, index }: { feature: Feature; index: number }) {
   return (
     <div className="grid lg:grid-cols-12 gap-8 lg:gap-16 items-center">
       <motion.div
-        initial={{ opacity: 0, x: reversed ? 30 : -30 }}
+        initial={false}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true, margin: "-100px" }}
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        className={
-          "lg:col-span-6 " + (reversed ? "lg:order-2" : "lg:order-1")
-        }
+        className={"lg:col-span-6 " + (reversed ? "lg:order-2" : "lg:order-1")}
       >
         <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-sage font-semibold">
           {feature.eyebrow}
         </span>
-        <h3 className="mt-3 font-display text-3xl sm:text-4xl font-semibold tracking-tight text-foreground text-balance leading-tight">
+        <h3 className="mt-3 font-display text-3xl sm:text-4xl font-medium tracking-tight text-foreground text-balance leading-[1.1]">
           {feature.title}
         </h3>
         <p className="mt-4 text-base text-muted-foreground text-pretty leading-relaxed max-w-md">
@@ -61,13 +59,11 @@ function FeatureRow({ feature, index }: { feature: Feature; index: number }) {
       </motion.div>
 
       <motion.div
-        initial={{ opacity: 0, x: reversed ? -30 : 30 }}
+        initial={false}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-        className={
-          "lg:col-span-6 " + (reversed ? "lg:order-1" : "lg:order-2")
-        }
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.08 }}
+        className={"lg:col-span-6 " + (reversed ? "lg:order-1" : "lg:order-2")}
       >
         {feature.visual}
       </motion.div>
@@ -95,7 +91,7 @@ export function SectionHeading({
           {eyebrow}
         </span>
       </div>
-      <h2 className="mt-5 font-display text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground text-balance leading-[1.05]">
+      <h2 className="mt-5 font-display text-4xl sm:text-5xl lg:text-[3.5rem] font-medium tracking-tight text-foreground text-balance leading-[1.05]">
         {title}
       </h2>
       {description && (
@@ -107,44 +103,53 @@ export function SectionHeading({
   );
 }
 
-/* ── Feature visuals ────────────────────────────────────────────────── */
+/* ── Feature visuals — hand-drawn SVG diagrams, not code mockups ────── */
 
 function LazySimVisual() {
   return (
-    <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
-      <div className="flex items-center justify-between mb-4">
+    <div className="rounded-xl border border-border bg-card p-6">
+      <div className="flex items-baseline justify-between mb-6">
         <span className="font-mono text-[11px] text-muted-foreground">resolvePlantState()</span>
-        <span className="text-[11px] text-sage font-medium flex items-center gap-1">
-          <span className="h-1.5 w-1.5 rounded-full bg-sage animate-pulse-dot" /> computed
+        <span className="font-mono text-[11px] text-sage flex items-center gap-1.5">
+          <span className="h-1.5 w-1.5 rounded-full bg-sage animate-pulse-dot" />
+          computed
         </span>
       </div>
-      {/* Timeline */}
-      <div className="space-y-3">
+
+      {/* Timeline — horizontal, minimal */}
+      <svg viewBox="0 0 400 120" className="w-full h-auto">
+        {/* Timeline line */}
+        <line x1="20" y1="60" x2="380" y2="60" stroke="oklch(0.9 0.008 75)" strokeWidth="1.5" />
+
+        {/* Markers */}
         {[
-          { t: "10:24", label: "plantedAt", value: "Sunflower seed", tone: "ink" },
-          { t: "10:54", label: "wateredAt", value: "Watering can +30%", tone: "sage" },
-          { t: "11:08", label: "weather", value: "Sunny ×1.5 growth", tone: "gold" },
-          { t: "11:32", label: "now", value: "72% grown · ~18m left", tone: "terra", live: true },
-        ].map((row) => (
-          <div key={row.label} className="flex items-center gap-3 text-sm">
-            <span className="font-mono text-[11px] text-muted-foreground w-12 shrink-0">{row.t}</span>
-            <span
-              className={
-                "h-2 w-2 rounded-full shrink-0 " +
-                (row.tone === "sage" ? "bg-sage" : row.tone === "gold" ? "bg-gold" : row.tone === "terra" ? "bg-terra" : "bg-ink/40")
-              }
-            />
-            <span className="font-mono text-xs text-muted-foreground w-24 shrink-0">{row.label}</span>
-            <span className="text-foreground text-sm flex-1 truncate">{row.value}</span>
-            {row.live && (
-              <span className="text-[10px] text-terra font-mono">● live</span>
-            )}
-          </div>
+          { x: 40, label: "planted", time: "10:24", color: "oklch(0.48 0.012 75)" },
+          { x: 140, label: "watered", time: "10:54", color: "oklch(0.46 0.06 145)" },
+          { x: 220, label: "sunny", time: "11:08", color: "oklch(0.8 0.1 85)" },
+          { x: 340, label: "now", time: "11:32", color: "oklch(0.68 0.1 45)" },
+        ].map((m) => (
+          <g key={m.label}>
+            <circle cx={m.x} cy="60" r="4" fill={m.color} />
+            <text x={m.x} y="40" textAnchor="middle" fontSize="10" fill="oklch(0.48 0.012 75)" fontFamily="monospace">
+              {m.time}
+            </text>
+            <text x={m.x} y="82" textAnchor="middle" fontSize="11" fill="oklch(0.21 0.012 75)" fontFamily="serif" fontStyle="italic">
+              {m.label}
+            </text>
+          </g>
         ))}
-      </div>
-      <div className="mt-5 rounded-lg bg-secondary/50 px-3 py-2.5">
-        <p className="text-[11px] text-muted-foreground font-mono">
-          {"// no setTimeout, no cron — state derived on demand"}
+
+        {/* "now" indicator — vertical line + label */}
+        <line x1="340" y1="20" x2="340" y2="100" stroke="oklch(0.68 0.1 45)" strokeWidth="1" strokeDasharray="2 3" opacity="0.5" />
+      </svg>
+
+      <div className="mt-5 flex items-baseline justify-between border-t border-border pt-4">
+        <div>
+          <p className="text-xs text-muted-foreground">Current state</p>
+          <p className="font-display text-lg text-foreground mt-0.5">72% grown · ~18m left</p>
+        </div>
+        <p className="font-mono text-[11px] text-muted-foreground text-right max-w-[180px]">
+          no setTimeout<br />no cron — derived on demand
         </p>
       </div>
     </div>
@@ -153,43 +158,48 @@ function LazySimVisual() {
 
 function WeatherVisual() {
   const days = [
-    { d: "Now", w: "☀️", n: "Sunny", active: true },
-    { d: "+4h", w: "🌧️", n: "Rain" },
-    { d: "+8h", w: "☀️", n: "Sunny" },
-    { d: "+12h", w: "⛈️", n: "Storm" },
-    { d: "+16h", w: "🌨️", n: "Snow" },
+    { d: "now", icon: SunIcon, n: "Sunny", active: true, color: "oklch(0.8 0.1 85)" },
+    { d: "+4h", icon: CloudIcon, n: "Cloudy", color: "oklch(0.6 0.02 220)" },
+    { d: "+8h", icon: SunIcon, n: "Sunny", color: "oklch(0.8 0.1 85)" },
+    { d: "+12h", icon: CloudIcon, n: "Rain", color: "oklch(0.55 0.04 220)" },
+    { d: "+16h", icon: CloudIcon, n: "Snow", color: "oklch(0.7 0.03 220)" },
   ];
   return (
-    <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
-      <div className="flex items-center justify-between mb-5">
+    <div className="rounded-xl border border-border bg-card p-6">
+      <div className="flex items-baseline justify-between mb-6">
         <span className="font-mono text-[11px] text-muted-foreground">weather.forecast</span>
-        <span className="text-[11px] text-muted-foreground">4-hour cycle</span>
+        <span className="font-mono text-[11px] text-muted-foreground">4-hour cycle</span>
       </div>
+
       <div className="grid grid-cols-5 gap-2">
-        {days.map((d) => (
-          <div
-            key={d.d}
-            className={
-              "rounded-xl border p-3 text-center " +
-              (d.active ? "border-gold/40 bg-gold/[0.08]" : "border-border bg-background/40")
-            }
-          >
-            <div className="text-2xl">{d.w}</div>
-            <p className="mt-1.5 text-[10px] font-mono text-muted-foreground">{d.d}</p>
-            <p className={"text-[11px] font-medium " + (d.active ? "text-gold-deep" : "text-foreground")}>
-              {d.n}
-            </p>
-          </div>
-        ))}
+        {days.map((d) => {
+          const Icon = d.icon;
+          return (
+            <div
+              key={d.d}
+              className={
+                "rounded-lg border p-3 text-center " +
+                (d.active ? "border-foreground/30 bg-secondary/40" : "border-border")
+              }
+            >
+              <Icon size={22} className="mx-auto" style={{ color: d.color }} />
+              <p className="mt-2 font-mono text-[10px] text-muted-foreground">{d.d}</p>
+              <p className={"text-[11px] mt-0.5 " + (d.active ? "text-foreground font-medium" : "text-muted-foreground")}>
+                {d.n}
+              </p>
+            </div>
+          );
+        })}
       </div>
-      <div className="mt-5 grid grid-cols-2 gap-3">
-        <div className="rounded-lg bg-secondary/50 px-3 py-2.5">
-          <p className="text-[10px] uppercase tracking-wider text-muted-foreground">Growth</p>
-          <p className="font-display text-lg font-semibold text-foreground">×1.5</p>
+
+      <div className="mt-5 grid grid-cols-2 gap-4 border-t border-border pt-4">
+        <div>
+          <p className="text-[10px] uppercase tracking-wider text-muted-foreground">Growth multiplier</p>
+          <p className="font-display text-2xl font-medium text-foreground mt-0.5 tabular">×1.5</p>
         </div>
-        <div className="rounded-lg bg-secondary/50 px-3 py-2.5">
+        <div>
           <p className="text-[10px] uppercase tracking-wider text-muted-foreground">Water drain</p>
-          <p className="font-display text-lg font-semibold text-foreground">×2.0</p>
+          <p className="font-display text-2xl font-medium text-foreground mt-0.5 tabular">×2.0</p>
         </div>
       </div>
     </div>
@@ -198,152 +208,195 @@ function WeatherVisual() {
 
 function MutationVisual() {
   return (
-    <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
-      <div className="flex items-center justify-between mb-5">
+    <div className="rounded-xl border border-border bg-card p-6">
+      <div className="flex items-baseline justify-between mb-6">
         <span className="font-mono text-[11px] text-muted-foreground">mutation.detect()</span>
-        <span className="inline-flex items-center gap-1 rounded-full bg-terra/15 px-2 py-0.5 text-[10px] font-semibold text-terra-deep">
-          30% chance
-        </span>
+        <span className="font-mono text-[11px] text-terra">30% chance</span>
       </div>
 
-      <div className="flex items-center justify-center gap-4 py-4">
-        <div className="flex flex-col items-center gap-2">
-          <span className="grid place-items-center h-16 w-16 rounded-2xl bg-rose-petal/10 text-3xl border border-border">🌹</span>
-          <span className="text-[11px] text-muted-foreground">Red Rose</span>
-        </div>
-        <span className="font-display text-2xl text-muted-foreground">+</span>
-        <div className="flex flex-col items-center gap-2">
-          <span className="grid place-items-center h-16 w-16 rounded-2xl bg-sage/10 text-3xl border border-border">🤍</span>
-          <span className="text-[11px] text-muted-foreground">White Rose</span>
-        </div>
-        <span className="font-display text-2xl text-muted-foreground">→</span>
-        <div className="flex flex-col items-center gap-2">
-          <span className="grid place-items-center h-16 w-16 rounded-2xl bg-gradient-to-br from-terra/15 to-gold/15 text-3xl border border-terra/30 animate-float-soft">🌸</span>
-          <span className="text-[11px] font-semibold text-terra-deep">Pink Rose</span>
-        </div>
-      </div>
+      {/* Diagram: two plants → rare hybrid */}
+      <svg viewBox="0 0 360 140" className="w-full h-auto">
+        {/* Red rose */}
+        <g transform="translate(40, 30)">
+          <circle cx="0" cy="20" r="18" fill="oklch(0.62 0.16 15)" />
+          <circle cx="-7" cy="15" r="11" fill="oklch(0.58 0.16 15)" />
+          <circle cx="7" cy="15" r="11" fill="oklch(0.65 0.17 15)" />
+          <circle cx="0" cy="10" r="9" fill="oklch(0.7 0.18 15)" />
+          <path d="M0 38 L0 90" stroke="oklch(0.42 0.06 145)" strokeWidth="2" strokeLinecap="round" />
+          <text x="0" y="115" textAnchor="middle" fontSize="11" fill="oklch(0.48 0.012 75)" fontFamily="serif" fontStyle="italic">
+            Red Rose
+          </text>
+        </g>
 
-      <div className="mt-4 rounded-lg bg-sage/[0.06] border border-sage/20 px-3 py-2.5">
-        <p className="text-xs text-foreground">
-          <span className="font-semibold text-sage">Hint:</span> These two roses may create a rare
-          color if grown side by side.
-        </p>
-      </div>
+        {/* Plus */}
+        <text x="110" y="75" textAnchor="middle" fontSize="24" fill="oklch(0.7 0.01 75)" fontFamily="serif">
+          +
+        </text>
+
+        {/* White rose */}
+        <g transform="translate(160, 30)">
+          <circle cx="0" cy="20" r="18" fill="oklch(0.94 0.01 75)" stroke="oklch(0.85 0.01 75)" strokeWidth="1" />
+          <circle cx="-7" cy="15" r="11" fill="oklch(0.92 0.008 75)" stroke="oklch(0.85 0.01 75)" strokeWidth="1" />
+          <circle cx="7" cy="15" r="11" fill="oklch(0.96 0.005 75)" stroke="oklch(0.85 0.01 75)" strokeWidth="1" />
+          <circle cx="0" cy="10" r="9" fill="oklch(0.98 0.004 75)" stroke="oklch(0.85 0.01 75)" strokeWidth="1" />
+          <path d="M0 38 L0 90" stroke="oklch(0.42 0.06 145)" strokeWidth="2" strokeLinecap="round" />
+          <text x="0" y="115" textAnchor="middle" fontSize="11" fill="oklch(0.48 0.012 75)" fontFamily="serif" fontStyle="italic">
+            White Rose
+          </text>
+        </g>
+
+        {/* Arrow */}
+        <g transform="translate(230, 50)">
+          <path d="M0 25 L40 25" stroke="oklch(0.68 0.1 45)" strokeWidth="1.5" strokeDasharray="3 3" />
+          <path d="M35 20 L40 25 L35 30" stroke="oklch(0.68 0.1 45)" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+        </g>
+
+        {/* Pink rose — rare hybrid */}
+        <g transform="translate(300, 30)" className="animate-float-soft" style={{ transformOrigin: "300px 50px" }}>
+          <circle cx="0" cy="20" r="18" fill="oklch(0.75 0.13 350)" />
+          <circle cx="-7" cy="15" r="11" fill="oklch(0.72 0.13 350)" />
+          <circle cx="7" cy="15" r="11" fill="oklch(0.78 0.12 350)" />
+          <circle cx="0" cy="10" r="9" fill="oklch(0.82 0.1 350)" />
+          <path d="M0 38 L0 90" stroke="oklch(0.42 0.06 145)" strokeWidth="2" strokeLinecap="round" />
+          <text x="0" y="115" textAnchor="middle" fontSize="11" fill="oklch(0.68 0.1 45)" fontFamily="serif" fontStyle="italic" fontWeight="600">
+            Pink Rose
+          </text>
+          {/* "rare" tag */}
+          <rect x="-18" y="-12" width="36" height="14" rx="7" fill="oklch(0.68 0.1 45)" />
+          <text x="0" y="-2" textAnchor="middle" fontSize="8" fill="white" fontFamily="monospace" letterSpacing="1">
+            RARE
+          </text>
+        </g>
+      </svg>
+
+      <p className="mt-4 text-xs text-muted-foreground text-pretty border-t border-border pt-4">
+        <span className="font-medium text-foreground">Hint appears</span> when compatible plants
+        are adjacent. Discovery is logged in the Collection Book — never a baffling surprise.
+      </p>
     </div>
   );
 }
 
 function UIVisual() {
   return (
-    <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
-      <div className="flex items-center justify-between mb-4">
+    <div className="rounded-xl border border-border bg-card p-6">
+      <div className="flex items-baseline justify-between mb-6">
         <span className="font-mono text-[11px] text-muted-foreground">viewer.render()</span>
-        <span className="text-[11px] text-muted-foreground">Components v2</span>
+        <span className="font-mono text-[11px] text-muted-foreground">Components v2</span>
       </div>
-      {/* Mock Discord panel */}
-      <div className="rounded-xl bg-ink p-4 text-paper">
-        <div className="flex items-center gap-2 mb-3">
-          <span className="grid place-items-center h-8 w-8 rounded-lg bg-gold text-ink text-sm">🌼</span>
+
+      {/* Minimal Discord-like panel — no fake chrome dots */}
+      <div className="rounded-lg mockup-dark p-4">
+        <div className="flex items-center gap-2.5 mb-3">
+          <DaisyMarkMini />
           <div>
-            <p className="text-sm font-semibold">DaisyFlower</p>
-            <p className="text-[10px] opacity-60">app command · just now</p>
+            <p className="text-sm font-semibold text-paper">DaisyFlower</p>
+            <p className="text-[10px] text-paper/50 font-mono">/garden · just now</p>
           </div>
         </div>
-        <p className="text-sm leading-relaxed">
-          🌻 <span className="font-semibold">Harvest complete!</span>
-          <br />
-          You received: <span className="text-gold">2 Sunflowers</span> and <span className="text-gold">10 XP</span>.
+        <p className="text-sm text-paper leading-relaxed">
+          Harvest complete. You received{" "}
+          <span className="text-gold font-medium">2 Sunflowers</span> and{" "}
+          <span className="text-gold font-medium">10 XP</span>.
         </p>
         <div className="mt-3 flex flex-wrap gap-1.5">
-          <span className="rounded-md bg-sage text-white px-2.5 py-1 text-[11px] font-semibold">🌱 Plant Again</span>
-          <span className="rounded-md bg-white/10 px-2.5 py-1 text-[11px]">🎒 Inventory</span>
-          <span className="rounded-md bg-white/10 px-2.5 py-1 text-[11px]">🛒 Shop</span>
+          <span className="rounded-md bg-sage text-white px-2.5 py-1 text-[11px] font-medium">
+            Plant Again
+          </span>
+          <span className="rounded-md bg-white/10 text-paper px-2.5 py-1 text-[11px]">Inventory</span>
+          <span className="rounded-md bg-white/10 text-paper px-2.5 py-1 text-[11px]">Shop</span>
         </div>
       </div>
+
       <div className="mt-4 grid grid-cols-3 gap-2 text-center">
-        <div className="rounded-lg bg-secondary/50 px-2 py-2">
-          <p className="font-display text-base font-semibold text-foreground">Btn</p>
-          <p className="text-[10px] text-muted-foreground">primary action</p>
-        </div>
-        <div className="rounded-lg bg-secondary/50 px-2 py-2">
-          <p className="font-display text-base font-semibold text-foreground">Menu</p>
-          <p className="text-[10px] text-muted-foreground">seed picker</p>
-        </div>
-        <div className="rounded-lg bg-secondary/50 px-2 py-2">
-          <p className="font-display text-base font-semibold text-foreground">Modal</p>
-          <p className="text-[10px] text-muted-foreground">custom qty</p>
-        </div>
+        {[
+          { label: "Buttons", sub: "primary action" },
+          { label: "Menus", sub: "seed picker" },
+          { label: "Modals", sub: "custom qty" },
+        ].map((it) => (
+          <div key={it.label} className="rounded-lg bg-secondary/40 px-2 py-2.5">
+            <p className="font-display text-sm font-medium text-foreground">{it.label}</p>
+            <p className="text-[10px] text-muted-foreground mt-0.5">{it.sub}</p>
+          </div>
+        ))}
       </div>
     </div>
   );
 }
 
+function DaisyMarkMini() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 36 36" fill="none">
+      <g fill="oklch(0.8 0.1 85)">
+        <ellipse cx="18" cy="7" rx="2.8" ry="5" />
+        <ellipse cx="18" cy="29" rx="2.8" ry="5" />
+        <ellipse cx="7" cy="18" rx="5" ry="2.8" />
+        <ellipse cx="29" cy="18" rx="5" ry="2.8" />
+      </g>
+      <circle cx="18" cy="18" r="4.5" fill="oklch(0.62 0.12 75)" />
+    </svg>
+  );
+}
+
 function I18nVisual() {
   return (
-    <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
-      <div className="flex items-center justify-between mb-5">
+    <div className="rounded-xl border border-border bg-card p-6">
+      <div className="flex items-baseline justify-between mb-6">
         <span className="font-mono text-[11px] text-muted-foreground">i18n.t('garden.title')</span>
-        <span className="text-[11px] text-muted-foreground">pt-BR · en-US</span>
+        <span className="font-mono text-[11px] text-muted-foreground">pt-BR · en-US</span>
       </div>
 
       <div className="space-y-2.5">
-        <div className="rounded-lg border border-border p-3">
-          <div className="flex items-center justify-between">
-            <span className="font-mono text-[11px] text-muted-foreground">en-US</span>
-            <span className="text-[10px] text-sage">default</span>
+        <div className="rounded-lg border border-border p-3 flex items-center justify-between">
+          <div>
+            <p className="font-mono text-[10px] text-muted-foreground">en-US</p>
+            <p className="mt-0.5 text-sm text-foreground">Your Garden — Sunny weather</p>
           </div>
-          <p className="mt-1 text-sm text-foreground">🌼 Your Garden — Sunny weather</p>
+          <span className="font-mono text-[10px] text-sage">default</span>
         </div>
-        <div className="rounded-lg border border-border p-3 bg-sage/[0.04]">
-          <div className="flex items-center justify-between">
-            <span className="font-mono text-[11px] text-muted-foreground">pt-BR</span>
-            <span className="text-[10px] text-sage">auto-detected</span>
+        <div className="rounded-lg border border-sage/30 bg-sage/[0.04] p-3 flex items-center justify-between">
+          <div>
+            <p className="font-mono text-[10px] text-muted-foreground">pt-BR</p>
+            <p className="mt-0.5 text-sm text-foreground">Seu Jardim — Clima ensolarado</p>
           </div>
-          <p className="mt-1 text-sm text-foreground">🌼 Seu Jardim — Clima ensolarado</p>
+          <span className="font-mono text-[10px] text-sage">auto-detected</span>
         </div>
       </div>
 
-      <div className="mt-5 rounded-lg bg-secondary/50 px-3 py-2.5">
-        <p className="text-[11px] text-muted-foreground font-mono">
-          {"// per-command JSON files · hot-reloadable · emoji packs"}
-        </p>
-      </div>
+      <p className="mt-5 text-xs text-muted-foreground text-pretty border-t border-border pt-4">
+        Per-command JSON files. Adding a language is a folder of translations — no code changes.
+      </p>
     </div>
   );
 }
 
 function ContentPackVisual() {
   return (
-    <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
-      <div className="flex items-center justify-between mb-5">
-        <span className="font-mono text-[11px] text-muted-foreground">/src/data/seeds.json</span>
-        <span className="text-[11px] text-sage">+1 file = +1 plant</span>
+    <div className="rounded-xl border border-border bg-card p-6">
+      <div className="flex items-baseline justify-between mb-6">
+        <span className="font-mono text-[11px] text-muted-foreground">src/data/seeds.json</span>
+        <span className="font-mono text-[11px] text-sage">+1 file = +1 plant</span>
       </div>
 
-      {/* Mock JSON editor */}
-      <pre className="rounded-lg bg-ink p-4 text-[11px] leading-relaxed font-mono overflow-x-auto scrollbar-soft">
-        <code className="text-paper">
-<span className="text-muted-foreground">{"{"}</span>{"\n"}
-{"  "}<span className="text-gold">"id"</span>: <span className="text-sage-soft">"seed_lavender"</span>,{"\n"}
-{"  "}<span className="text-gold">"name"</span>: <span className="text-sage-soft">"Lavender Seed"</span>,{"\n"}
-{"  "}<span className="text-gold">"emoji"</span>: <span className="text-sage-soft">"💜"</span>,{"\n"}
-{"  "}<span className="text-gold">"rarity"</span>: <span className="text-sage-soft">"uncommon"</span>,{"\n"}
-{"  "}<span className="text-gold">"growthTime"</span>: <span className="text-terra">180</span>,{"\n"}
-{"  "}<span className="text-gold">"requiredHumidity"</span>: <span className="text-terra">55</span>,{"\n"}
-{"  "}<span className="text-gold">"price"</span>: <span className="text-terra">150</span>{"\n"}
-<span className="text-muted-foreground">{"}"}</span>
-        </code>
-      </pre>
-
-      <div className="mt-4 grid grid-cols-4 gap-2">
-        {["🌻", "🌹", "🤍", "🌸"].map((e, i) => (
-          <div key={i} className="rounded-lg border border-border bg-background/40 py-3 text-center text-xl">
-            {e}
+      {/* File tree visualization */}
+      <div className="rounded-lg border border-border bg-secondary/30 p-4 font-mono text-[12px]">
+        <div className="text-muted-foreground">src/data/</div>
+        <div className="mt-1.5 space-y-0.5 pl-3">
+          <div className="text-foreground">seeds.json <span className="text-muted-foreground">— 4 entries</span></div>
+          <div className="text-foreground">flowers.json <span className="text-muted-foreground">— 2 entries</span></div>
+          <div className="text-foreground">weather.json <span className="text-muted-foreground">— 4 entries</span></div>
+          <div className="text-foreground">mutations.json <span className="text-muted-foreground">— 1 recipe</span></div>
+          <div className="text-foreground">items.json <span className="text-muted-foreground">— 2 entries</span></div>
+          <div className="text-foreground">decorations.json <span className="text-muted-foreground">— 2 entries</span></div>
+          <div className="mt-1.5 text-sage">
+            + lavender.json <span className="text-muted-foreground italic">{"// you add this"}</span>
           </div>
-        ))}
+        </div>
       </div>
-      <p className="mt-2 text-center text-[11px] text-muted-foreground">
-        Existing content keeps working. New entries appear automatically.
+
+      <p className="mt-5 text-xs text-muted-foreground text-pretty border-t border-border pt-4">
+        Seeds, weather, mutations, items, decorations — all data-driven. New content appears in
+        shop, autocomplete, and validation without touching core systems.
       </p>
     </div>
   );
@@ -359,31 +412,31 @@ const FEATURES: Feature[] = [
   {
     eyebrow: "Weather",
     title: "A living sky above every garden.",
-    body: "Weather rotates on a 4-hour cycle with a 5-step forecast. Sunny accelerates growth but drains water. Rain refills soil for free. Storms slow things down but open rare mutation chances. Snow hints at future winter plants. The UI explains every effect in plain language.",
+    body: "Weather rotates on a 4-hour cycle with a 5-step forecast. Sunny accelerates growth but drains water. Rain refills soil for free. Storms slow things down but open rare mutation chances. Snow hints at future winter plants.",
     visual: <WeatherVisual />,
   },
   {
     eyebrow: "Mutations",
     title: "Discovery, not random confusion.",
-    body: "Plant a Red Rose and a White Rose side by side. When both mature, there's a 30% chance one blooms as a rare Pink Rose. Hints appear when adjacency is right, and discoveries are recorded in the Collection Book — never a baffling surprise.",
+    body: "Plant a Red Rose and a White Rose side by side. When both mature, there's a 30% chance one blooms as a rare Pink Rose. Hints appear when adjacency is right, and discoveries are recorded in the Collection Book.",
     visual: <MutationVisual />,
   },
   {
     eyebrow: "Interface",
     title: "Panels, not commands to memorize.",
-    body: "Commands are entry points. The actual game lives in viewers — Discord Components v2 panels with buttons, select menus, and modals. Plant, water, harvest, buy, sell: all guided flows that explain themselves as you go.",
+    body: "Commands are entry points. The actual game lives in viewers — Discord Components v2 panels with buttons, select menus, and modals. Plant, water, harvest, buy, sell: all guided flows that explain themselves.",
     visual: <UIVisual />,
   },
   {
     eyebrow: "Languages",
     title: "Bilingual by design, not bolted on.",
-    body: "Built-in pt-BR and en-US locales with per-command translation files, Discord locale detection, user and guild language preferences, and swappable emoji packs. Adding a language is a folder of JSON — no code changes.",
+    body: "Built-in pt-BR and en-US locales with per-command translation files, Discord locale detection, user and guild language preferences. Adding a language is a folder of JSON — no code changes.",
     visual: <I18nVisual />,
   },
   {
     eyebrow: "Content",
     title: "New plants arrive as JSON files.",
-    body: "Seeds, flowers, crops, weather, mutations, items, decorations — all data-driven from src/data. Adding a new plant means adding a new object to a JSON file. No core system rewrites, no migrations, no downtime.",
+    body: "Seeds, flowers, crops, weather, mutations, items, decorations — all data-driven from src/data. Adding a plant means adding an object to a JSON file. No core rewrites, no migrations, no downtime.",
     visual: <ContentPackVisual />,
   },
 ];
