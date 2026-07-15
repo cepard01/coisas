@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useMemo } from "react";
 import { useI18n } from "@/hooks/use-i18n";
+import { useToast } from "./Toast";
 import {
   SproutIcon,
   WalletIcon,
@@ -149,6 +150,7 @@ function MiniStat({ icon: Icon, label, value }: { icon: React.ElementType; label
 
 function GardenTab() {
   const { t } = useI18n();
+  const { toast } = useToast();
   const g = t.panel.dashboard.garden;
 
   const [tick, setTick] = useState(0);
@@ -177,6 +179,7 @@ function GardenTab() {
   const handleHarvestAll = () => {
     setHarvested(true);
     setTimeout(() => setHarvested(false), 2000);
+    toast("Harvested 1 Sunflower · +400 🪙 +20 XP", "success");
   };
 
   return (
@@ -592,6 +595,7 @@ function CollectionTab() {
 
 function ShopTab() {
   const { t } = useI18n();
+  const { toast } = useToast();
   const s = t.panel.dashboard.shop;
   const [filter, setFilter] = useState<string>("all");
   const [bought, setBought] = useState<string | null>(null);
@@ -606,9 +610,10 @@ function ShopTab() {
 
   const filtered = filter === "all" ? s.items : s.items.filter((i) => i.category === filter);
 
-  const handleBuy = (name: string) => {
+  const handleBuy = (name: string, price: number) => {
     setBought(name);
     setTimeout(() => setBought(null), 1500);
+    toast(`Bought ${name} for ${price} Daisies`, "success");
   };
 
   return (
@@ -675,7 +680,7 @@ function ShopTab() {
                 <motion.button
                   whileHover={canAfford ? { scale: 1.05 } : {}}
                   whileTap={canAfford ? { scale: 0.95 } : {}}
-                  onClick={() => canAfford && handleBuy(item.name)}
+                  onClick={() => canAfford && handleBuy(item.name, item.price)}
                   disabled={!canAfford}
                   className={cn(
                     "mt-1 inline-flex items-center gap-1 rounded-md px-2 py-1 text-[11px] font-medium transition-colors",

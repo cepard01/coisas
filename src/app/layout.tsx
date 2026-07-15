@@ -9,6 +9,7 @@ import { LangUpdater } from "@/components/site/LangUpdater";
 import { ThemeProvider } from "@/components/site/ThemeProvider";
 import { ScrollProgress } from "@/components/site/Animations";
 import { CommandPalette } from "@/components/site/CommandPalette";
+import { ToastProvider } from "@/components/site/Toast";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -71,15 +72,17 @@ export default function RootLayout({
       >
         <ThemeProvider>
           <I18nProvider>
-            <LangUpdater />
-            <ScrollProgress />
-            <CommandPalette />
-            <div className="min-h-screen flex flex-col">
-              <Navbar />
-              <main className="flex-1">{children}</main>
-              <Footer />
-            </div>
-            <Toaster />
+            <ToastProvider>
+              <LangUpdater />
+              <ScrollProgress />
+              <CommandPalette />
+              <div className="min-h-screen flex flex-col">
+                <Navbar />
+                <main className="flex-1">{children}</main>
+                <Footer />
+              </div>
+              <Toaster />
+            </ToastProvider>
           </I18nProvider>
         </ThemeProvider>
       </body>

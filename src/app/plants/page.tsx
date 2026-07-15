@@ -7,12 +7,15 @@ import { Reveal } from "@/components/site/Reveal";
 import { useI18n } from "@/hooks/use-i18n";
 import { cn } from "@/lib/utils";
 import { ArrowRightIcon } from "@/components/site/icons";
+import { PlantModal, type PlantDetail } from "@/components/site/PlantModal";
 
 type RarityFilter = "all" | "Common" | "Uncommon" | "Rare";
 
 export default function PlantsPage() {
   const { t } = useI18n();
   const [rarity, setRarity] = useState<RarityFilter>("all");
+  const [selectedPlant, setSelectedPlant] = useState<PlantDetail | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const RARITY_STYLES: Record<string, string> = {
     Common: "text-muted-foreground",
@@ -40,6 +43,27 @@ export default function PlantsPage() {
     { id: "Uncommon", label: t.rarity.Uncommon },
     { id: "Rare", label: t.rarity.Rare },
   ];
+
+  const openPlant = (plant: typeof t.plants.items[number]) => {
+    setSelectedPlant({
+      emoji: plant.emoji,
+      name: plant.name,
+      rarity: plant.rarity,
+      rarityLabel: t.rarity[plant.rarity as keyof typeof t.rarity] ?? plant.rarity,
+      growTime: plant.growTime,
+      price: plant.price,
+      sellPrice: plant.sellPrice,
+      description: plant.description,
+      tip: plant.tip,
+      color: plant.color,
+      growsIn: t.plants.growsIn,
+      priceLabel: t.plants.price,
+      originLabel: t.plants.origin,
+      mutationLabel: t.plants.mutation,
+      sellsForLabel: t.plants.sellsFor,
+    });
+    setModalOpen(true);
+  };
 
   return (
     <>
@@ -79,7 +103,18 @@ export default function PlantsPage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {filtered.map((plant, i) => (
               <Reveal key={i} delay={i * 0.06}>
-                <div className="card-hairline card-hairline-hover rounded-xl overflow-hidden h-full flex flex-col">
+                <div
+                  className="card-hairline card-hairline-hover rounded-xl overflow-hidden h-full flex flex-col cursor-pointer"
+                  onClick={() => openPlant(plant)}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      openPlant(plant);
+                    }
+                  }}
+                >
                   <div className={cn("relative h-32 grid place-items-center bg-gradient-to-br to-transparent", COLOR_BG[plant.color])}>
                     <span className="text-5xl">{plant.emoji}</span>
                     <span className={cn("absolute top-3 right-3 font-mono text-[10px] uppercase tracking-wider font-semibold", RARITY_STYLES[plant.rarity])}>
@@ -213,6 +248,12 @@ export default function PlantsPage() {
           </Reveal>
         </div>
       </section>
+
+      <PlantModal
+        plant={selectedPlant}
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+      />
     </>
   );
 }
