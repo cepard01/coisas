@@ -6,6 +6,7 @@ import { Reveal } from "@/components/site/Reveal";
 import { useI18n } from "@/hooks/use-i18n";
 import { SearchIcon, CheckIcon } from "@/components/site/icons";
 import { cn } from "@/lib/utils";
+import { Breadcrumb } from "@/components/site/Breadcrumb";
 
 type Category = "all" | "core" | "economy" | "system";
 
@@ -63,6 +64,12 @@ export default function CommandsPage() {
 
   return (
     <>
+      <Breadcrumb
+        items={[
+          { label: "Home", href: "/" },
+          { label: t.nav.commands },
+        ]}
+      />
       <PageHeader
         number={t.commands.number}
         eyebrow={t.commands.eyebrow}

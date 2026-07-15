@@ -6,12 +6,19 @@ import { Reveal } from "@/components/site/Reveal";
 import { useI18n } from "@/hooks/use-i18n";
 import { ArrowRightIcon } from "@/components/site/icons";
 import { cn } from "@/lib/utils";
+import { Breadcrumb } from "@/components/site/Breadcrumb";
 
 export default function HowItWorksPage() {
   const { t } = useI18n();
 
   return (
     <>
+      <Breadcrumb
+        items={[
+          { label: "Home", href: "/" },
+          { label: t.nav.howItWorks },
+        ]}
+      />
       <PageHeader
         number={t.howItWorks.number}
         eyebrow={t.howItWorks.eyebrow}

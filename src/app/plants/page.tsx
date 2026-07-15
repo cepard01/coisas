@@ -8,6 +8,7 @@ import { useI18n } from "@/hooks/use-i18n";
 import { cn } from "@/lib/utils";
 import { ArrowRightIcon } from "@/components/site/icons";
 import { PlantModal, type PlantDetail } from "@/components/site/PlantModal";
+import { Breadcrumb } from "@/components/site/Breadcrumb";
 
 type RarityFilter = "all" | "Common" | "Uncommon" | "Rare";
 
@@ -67,6 +68,12 @@ export default function PlantsPage() {
 
   return (
     <>
+      <Breadcrumb
+        items={[
+          { label: "Home", href: "/" },
+          { label: t.nav.plants },
+        ]}
+      />
       <PageHeader
         number={t.plants.number}
         eyebrow={t.plants.eyebrow}

@@ -5,12 +5,19 @@ import { PageHeader } from "@/components/site/PageHeader";
 import { Reveal } from "@/components/site/Reveal";
 import { useI18n } from "@/hooks/use-i18n";
 import { ArrowRightIcon, TerminalIcon, SproutIcon, CheckIcon } from "@/components/site/icons";
+import { Breadcrumb } from "@/components/site/Breadcrumb";
 
 export default function GetStartedPage() {
   const { t } = useI18n();
 
   return (
     <>
+      <Breadcrumb
+        items={[
+          { label: "Home", href: "/" },
+          { label: t.nav.getStarted },
+        ]}
+      />
       <PageHeader
         number={t.getStarted.number}
         eyebrow={t.getStarted.eyebrow}

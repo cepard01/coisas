@@ -4,6 +4,7 @@ import { PageHeader } from "@/components/site/PageHeader";
 import { Reveal } from "@/components/site/Reveal";
 import { useI18n } from "@/hooks/use-i18n";
 import { cn } from "@/lib/utils";
+import { Breadcrumb } from "@/components/site/Breadcrumb";
 
 export default function ChangelogPage() {
   const { t } = useI18n();
@@ -18,6 +19,12 @@ export default function ChangelogPage() {
 
   return (
     <>
+      <Breadcrumb
+        items={[
+          { label: "Home", href: "/" },
+          { label: "Changelog" },
+        ]}
+      />
       <PageHeader
         number={c.number}
         eyebrow={c.eyebrow}

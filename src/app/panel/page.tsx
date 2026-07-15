@@ -8,6 +8,7 @@ import { PageHeader } from "@/components/site/PageHeader";
 import { Reveal } from "@/components/site/Reveal";
 import { DashboardLayout } from "@/components/site/Dashboard";
 import { LockIcon, ArrowUpRightIcon } from "@/components/site/icons";
+import { Breadcrumb } from "@/components/site/Breadcrumb";
 
 type Tab = "garden" | "wallet" | "missions" | "collection" | "shop" | "weather";
 
@@ -19,6 +20,12 @@ export default function PanelPage() {
 
   return (
     <>
+      <Breadcrumb
+        items={[
+          { label: "Home", href: "/" },
+          { label: t.nav.panel },
+        ]}
+      />
       <PageHeader
         number={t.panel.number}
         eyebrow={t.panel.eyebrow}

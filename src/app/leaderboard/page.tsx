@@ -5,6 +5,7 @@ import { PageHeader } from "@/components/site/PageHeader";
 import { Reveal } from "@/components/site/Reveal";
 import { useI18n } from "@/hooks/use-i18n";
 import { cn } from "@/lib/utils";
+import { Breadcrumb } from "@/components/site/Breadcrumb";
 
 type SortTab = "level" | "collection" | "mutations";
 
@@ -27,6 +28,12 @@ export default function LeaderboardPage() {
 
   return (
     <>
+      <Breadcrumb
+        items={[
+          { label: "Home", href: "/" },
+          { label: "Leaderboard" },
+        ]}
+      />
       <PageHeader
         number={lb.number}
         eyebrow={lb.eyebrow}

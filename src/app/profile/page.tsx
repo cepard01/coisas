@@ -8,6 +8,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { DaisyMark, ArrowRightIcon, LockIcon } from "@/components/site/icons";
 import { CountUp, AnimatedProgress, CardHover } from "@/components/site/Animations";
 import { cn } from "@/lib/utils";
+import { Breadcrumb } from "@/components/site/Breadcrumb";
 
 export default function ProfilePage() {
   const { t } = useI18n();
@@ -15,6 +16,12 @@ export default function ProfilePage() {
 
   return (
     <>
+      <Breadcrumb
+        items={[
+          { label: "Home", href: "/" },
+          { label: "Profile" },
+        ]}
+      />
       <PageHeader
         number={t.profile.number}
         eyebrow={t.profile.eyebrow}

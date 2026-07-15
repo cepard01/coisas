@@ -11,6 +11,7 @@ import { ClientOnly } from "@/components/site/ClientOnly";
 import { FEATURE_VISUALS } from "@/components/site/FeatureVisuals";
 import { CountUp, CardHover, FloatingElement, StaggerReveal, StaggerItem, AnimatedProgress } from "@/components/site/Animations";
 import { ArrowRightIcon, ArrowUpRightIcon } from "@/components/site/icons";
+import { cn } from "@/lib/utils";
 
 export default function Home() {
   const { signIn } = useAuth();
@@ -107,6 +108,9 @@ export default function Home() {
 
       {/* Economy */}
       <EconomySection />
+
+      {/* Achievements */}
+      <AchievementsSection />
 
       {/* Explore cards */}
       <section className="py-20 md:py-28 border-t border-border">
@@ -678,6 +682,86 @@ function UpdatesSection() {
             </a>
           </div>
         </Reveal>
+      </div>
+    </section>
+  );
+}
+
+/* ── Achievements section (badge grid) ──────────────────────────────── */
+
+function AchievementsSection() {
+  const { t } = useI18n();
+  const a = t.achievements;
+  const earnedCount = a.items.filter((i) => i.earned).length;
+
+  return (
+    <section className="py-20 md:py-28 border-t border-border bg-background">
+      <div className="mx-auto max-w-6xl px-5 sm:px-6">
+        <Reveal>
+          <div className="max-w-3xl">
+            <div className="flex items-center gap-3 text-muted-foreground">
+              <span className="font-mono text-xs marker-num">{a.number}</span>
+              <span className="h-px w-8 bg-border" />
+              <span className="font-mono text-xs uppercase tracking-[0.18em] text-sage font-semibold">
+                {a.eyebrow}
+              </span>
+            </div>
+            <h2 className="mt-5 font-display text-4xl sm:text-5xl lg:text-[3.5rem] font-medium tracking-tight text-foreground text-balance leading-[1.05]">
+              {a.title}{" "}
+              <em className="font-normal text-sage">{a.highlight}</em>
+            </h2>
+            <p className="mt-5 text-base sm:text-lg text-muted-foreground text-pretty leading-relaxed max-w-2xl">
+              {a.description}
+            </p>
+          </div>
+        </Reveal>
+
+        {/* Progress bar */}
+        <Reveal delay={0.05}>
+          <div className="mt-8 flex items-center gap-4 max-w-md">
+            <div className="flex-1 h-2 rounded-full bg-secondary overflow-hidden">
+              <motion.div
+                className="h-full rounded-full bg-gradient-to-r from-sage to-sage-deep"
+                initial={{ width: 0 }}
+                whileInView={{ width: `${(earnedCount / a.items.length) * 100}%` }}
+                viewport={{ once: true }}
+                transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              />
+            </div>
+            <span className="font-mono text-xs text-muted-foreground tabular shrink-0">
+              {earnedCount} / {a.items.length} {a.earnedLabel}
+            </span>
+          </div>
+        </Reveal>
+
+        {/* Badge grid */}
+        <StaggerReveal stagger={0.04} className="mt-10 grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-3">
+          {a.items.map((badge, i) => (
+            <StaggerItem key={i}>
+              <CardHover
+                className={cn(
+                  "rounded-xl border p-4 text-center h-full",
+                  badge.earned
+                    ? "border-border bg-card"
+                    : "border-dashed border-border bg-background/30"
+                )}
+              >
+                <div className={cn("text-3xl mb-2", !badge.earned && "grayscale opacity-30")}>
+                  {badge.earned ? badge.emoji : "🔒"}
+                </div>
+                <p className={cn("text-xs font-medium leading-tight", badge.earned ? "text-foreground" : "text-muted-foreground")}>
+                  {badge.name}
+                </p>
+                <p className="mt-1 text-[10px] text-muted-foreground text-pretty leading-tight">
+                  {badge.desc}
+                </p>
+                <p className={cn("mt-2 font-mono text-[9px] uppercase tracking-wider", badge.earned ? "text-sage" : "text-muted-foreground/50")}>
+                  {badge.earned ? a.earnedLabel : a.lockedLabel}
+                </p>
+              </CardHover>
+            </StaggerItem>
+          ))}
+        </StaggerReveal>
       </div>
     </section>
   );

@@ -10,6 +10,7 @@ import { ThemeProvider } from "@/components/site/ThemeProvider";
 import { ScrollProgress } from "@/components/site/Animations";
 import { CommandPalette } from "@/components/site/CommandPalette";
 import { ToastProvider } from "@/components/site/Toast";
+import { PageTransition } from "@/components/site/PageTransition";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -78,7 +79,9 @@ export default function RootLayout({
               <CommandPalette />
               <div className="min-h-screen flex flex-col">
                 <Navbar />
-                <main className="flex-1">{children}</main>
+                <main className="flex-1">
+                  <PageTransition>{children}</PageTransition>
+                </main>
                 <Footer />
               </div>
               <Toaster />
