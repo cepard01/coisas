@@ -90,6 +90,17 @@ export function Navbar() {
             </div>
 
             <div className="hidden md:flex items-center gap-1.5">
+              <button
+                onClick={() => {
+                  // Trigger Cmd+K programmatically
+                  window.dispatchEvent(new KeyboardEvent("keydown", { key: "k", metaKey: true }));
+                }}
+                className="grid place-items-center h-9 px-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
+                aria-label="Search (Cmd+K)"
+                title="Search (⌘K)"
+              >
+                <kbd className="font-mono text-[10px]">⌘K</kbd>
+              </button>
               <ThemeToggle />
               <LanguageSwitcher compact />
               <a
@@ -272,6 +283,20 @@ function UserMenu({
                   className="w-full text-left px-2.5 py-2 text-sm text-foreground hover:bg-secondary rounded-lg transition-colors block"
                 >
                   {t.userMenu.seePlants}
+                </Link>
+                <Link
+                  href="/profile"
+                  onClick={() => setOpen(false)}
+                  className="w-full text-left px-2.5 py-2 text-sm text-foreground hover:bg-secondary rounded-lg transition-colors block"
+                >
+                  Profile
+                </Link>
+                <Link
+                  href="/settings"
+                  onClick={() => setOpen(false)}
+                  className="w-full text-left px-2.5 py-2 text-sm text-foreground hover:bg-secondary rounded-lg transition-colors block"
+                >
+                  Settings
                 </Link>
                 <div className="h-px bg-border my-1.5" />
                 <button

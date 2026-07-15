@@ -63,6 +63,7 @@ export function Footer() {
             <ul className="space-y-2">
               <FooterLink href="/get-started">{t.footer.links.getStarted}</FooterLink>
               <FooterLink href="/faq">{t.footer.links.faq}</FooterLink>
+              <FooterLink href="/settings">Settings</FooterLink>
             </ul>
           </div>
           <div>

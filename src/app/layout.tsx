@@ -8,6 +8,7 @@ import { I18nProvider } from "@/hooks/use-i18n";
 import { LangUpdater } from "@/components/site/LangUpdater";
 import { ThemeProvider } from "@/components/site/ThemeProvider";
 import { ScrollProgress } from "@/components/site/Animations";
+import { CommandPalette } from "@/components/site/CommandPalette";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -72,6 +73,7 @@ export default function RootLayout({
           <I18nProvider>
             <LangUpdater />
             <ScrollProgress />
+            <CommandPalette />
             <div className="min-h-screen flex flex-col">
               <Navbar />
               <main className="flex-1">{children}</main>

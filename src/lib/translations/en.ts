@@ -750,6 +750,49 @@ export const en = {
       ],
     },
   },
+  settings: {
+    number: "10",
+    eyebrow: "Settings",
+    title: "Your preferences,",
+    highlight: "your way.",
+    description:
+      "Customize language, theme, and notification preferences. Changes save automatically and sync across the site.",
+    sections: {
+      language: {
+        title: "Language",
+        subtitle: "Choose your preferred language",
+        description: "The site and bot both support these languages.",
+      },
+      theme: {
+        title: "Appearance",
+        subtitle: "Light or dark mode",
+        description: "Defaults to light. Dark mode is gentler on the eyes at night.",
+      },
+      notifications: {
+        title: "Notifications",
+        subtitle: "What should we tell you about?",
+        description: "These are mock preferences — no real notifications are sent.",
+        items: [
+          { label: "Plant ready to harvest", desc: "When a plant finishes growing", enabled: true },
+          { label: "Daily mission reset", desc: "Reminder when new missions appear", enabled: true },
+          { label: "Weather change", desc: "When the weather rotates", enabled: false },
+          { label: "Rare mutation discovered", desc: "When you find a new mutation", enabled: true },
+          { label: "Weekly summary", desc: "A recap of your garden each week", enabled: false },
+        ],
+      },
+      privacy: {
+        title: "Privacy",
+        subtitle: "Control your data visibility",
+        description: "Your garden is private by default. You can make it visible to other players.",
+        items: [
+          { label: "Public garden", desc: "Let other players visit your garden", enabled: false },
+          { label: "Show in leaderboards", desc: "Appear in collection and level rankings", enabled: true },
+          { label: "Show online status", desc: "Display when you're active", enabled: false },
+        ],
+      },
+    },
+    saved: "Saved automatically",
+  },
 };
 
 export type Translation = typeof en;

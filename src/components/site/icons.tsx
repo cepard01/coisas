@@ -280,6 +280,14 @@ export function WeatherIcon(p: IconProps) {
   );
 }
 
+export function MoonIcon(p: IconProps) {
+  return (
+    <svg {...base(p)}>
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z" />
+    </svg>
+  );
+}
+
 /* ── Botanical decorative icons (larger, for illustration) ──────────── */
 
 export function DaisyMark({ size = 32, ...props }: IconProps) {

@@ -10,6 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/faq",
     "/get-started",
     "/profile",
+    "/settings",
   ];
 
   return routes.map((route) => ({

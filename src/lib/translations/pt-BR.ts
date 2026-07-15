@@ -752,4 +752,47 @@ export const ptBR: Translation = {
       ],
     },
   },
+  settings: {
+    number: "10",
+    eyebrow: "Configurações",
+    title: "Suas preferências,",
+    highlight: "do seu jeito.",
+    description:
+      "Customize idioma, tema e preferências de notificação. Mudanças salvam automaticamente e sincronizam pelo site.",
+    sections: {
+      language: {
+        title: "Idioma",
+        subtitle: "Escolha seu idioma preferido",
+        description: "O site e o bot suportam estes idiomas.",
+      },
+      theme: {
+        title: "Aparência",
+        subtitle: "Modo claro ou escuro",
+        description: "Padrão é claro. Modo escuro é mais gentil aos olhos à noite.",
+      },
+      notifications: {
+        title: "Notificações",
+        subtitle: "Sobre o que devemos te avisar?",
+        description: "Estas são preferências de demonstração — nenhuma notificação real é enviada.",
+        items: [
+          { label: "Planta pronta para colher", desc: "Quando uma planta termina de crescer", enabled: true },
+          { label: "Reset de missões diárias", desc: "Lembrete quando novas missões aparecem", enabled: true },
+          { label: "Mudança de clima", desc: "Quando o clima rotaciona", enabled: false },
+          { label: "Mutação rara descoberta", desc: "Quando você encontra uma nova mutação", enabled: true },
+          { label: "Resumo semanal", desc: "Um recap do seu jardim a cada semana", enabled: false },
+        ],
+      },
+      privacy: {
+        title: "Privacidade",
+        subtitle: "Controle a visibilidade dos seus dados",
+        description: "Seu jardim é privado por padrão. Você pode torná-lo visível para outros jogadores.",
+        items: [
+          { label: "Jardim público", desc: "Deixe outros jogadores visitarem seu jardim", enabled: false },
+          { label: "Mostrar em rankings", desc: "Aparecer em rankings de coleção e nível", enabled: true },
+          { label: "Mostrar status online", desc: "Exibir quando você está ativo", enabled: false },
+        ],
+      },
+    },
+    saved: "Salvo automaticamente",
+  },
 };
