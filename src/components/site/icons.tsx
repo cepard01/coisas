@@ -261,6 +261,25 @@ export function SearchIcon(p: IconProps) {
   );
 }
 
+export function ShopIcon(p: IconProps) {
+  return (
+    <svg {...base(p)}>
+      <path d="M4 7h16l-1 3H5L4 7Z" />
+      <path d="M5 10v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-9" />
+      <path d="M9 14h6" />
+    </svg>
+  );
+}
+
+export function WeatherIcon(p: IconProps) {
+  return (
+    <svg {...base(p)}>
+      <path d="M7 18a4 4 0 1 1 .5-7.97A5.5 5.5 0 0 1 18 11.5a3.5 3.5 0 0 1 0 7H7Z" />
+      <path d="M12 3v2M16 5l-1 1M8 5l1 1" />
+    </svg>
+  );
+}
+
 /* ── Botanical decorative icons (larger, for illustration) ──────────── */
 
 export function DaisyMark({ size = 32, ...props }: IconProps) {

@@ -9,7 +9,7 @@ import { Reveal } from "@/components/site/Reveal";
 import { DashboardLayout } from "@/components/site/Dashboard";
 import { LockIcon, ArrowUpRightIcon } from "@/components/site/icons";
 
-type Tab = "garden" | "wallet" | "missions" | "collection";
+type Tab = "garden" | "wallet" | "missions" | "collection" | "shop" | "weather";
 
 export default function PanelPage() {
   const { player, signIn, hydrated } = useAuth();
