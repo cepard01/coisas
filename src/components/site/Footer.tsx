@@ -1,12 +1,26 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { useI18n } from "@/hooks/use-i18n";
-import { DaisyMark, GithubIcon, ArrowUpRightIcon } from "./icons";
+import { useToast } from "./Toast";
+import { DaisyMark, GithubIcon, ArrowUpRightIcon, CheckIcon } from "./icons";
 
 export function Footer() {
   const { t } = useI18n();
+  const { toast } = useToast();
+  const [email, setEmail] = useState("");
+  const [subscribed, setSubscribed] = useState(false);
   const year = new Date().getFullYear();
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email.trim()) return;
+    setSubscribed(true);
+    toast(t.footer.newsletter.success, "success");
+    setEmail("");
+    setTimeout(() => setSubscribed(false), 3000);
+  };
 
   return (
     <footer className="mt-auto border-t border-border bg-background">
@@ -44,6 +58,44 @@ export function Footer() {
           </div>
         </div>
 
+        {/* Newsletter */}
+        <div className="py-10 border-b border-border">
+          <div className="max-w-md">
+            <h3 className="font-display text-lg font-medium text-foreground">
+              {t.footer.newsletter.title}
+            </h3>
+            <p className="mt-1.5 text-sm text-muted-foreground text-pretty">
+              {t.footer.newsletter.subtitle}
+            </p>
+            <form onSubmit={handleSubscribe} className="mt-4 flex gap-2">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder={t.footer.newsletter.placeholder}
+                aria-label={t.footer.newsletter.placeholder}
+                className="flex-1 rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-sage/40 transition-colors"
+              />
+              <button
+                type="submit"
+                className={`inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
+                  subscribed
+                    ? "bg-sage text-white"
+                    : "bg-foreground text-background hover:bg-foreground/90"
+                }`}
+              >
+                {subscribed ? (
+                  <>
+                    <CheckIcon size={14} /> ✓
+                  </>
+                ) : (
+                  t.footer.newsletter.button
+                )}
+              </button>
+            </form>
+          </div>
+        </div>
+
         <div className="py-10 grid sm:grid-cols-3 gap-8 text-sm">
           <div>
             <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground mb-3">
@@ -63,6 +115,8 @@ export function Footer() {
             <ul className="space-y-2">
               <FooterLink href="/get-started">{t.footer.links.getStarted}</FooterLink>
               <FooterLink href="/faq">{t.footer.links.faq}</FooterLink>
+              <FooterLink href="/leaderboard">Leaderboard</FooterLink>
+              <FooterLink href="/changelog">Changelog</FooterLink>
               <FooterLink href="/settings">Settings</FooterLink>
             </ul>
           </div>

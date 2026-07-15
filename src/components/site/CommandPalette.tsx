@@ -15,6 +15,8 @@ import {
   GithubIcon,
   ArrowRightIcon,
   DaisyMark,
+  GearIcon,
+  TrendingIcon,
 } from "./icons";
 import { cn } from "@/lib/utils";
 
@@ -43,6 +45,9 @@ export function CommandPalette() {
       { label: t.nav.faq, href: "/faq", icon: BookIcon, group: "navigate" },
       { label: t.nav.getStarted, href: "/get-started", icon: SproutIcon, group: "actions" },
       { label: "Profile", href: "/profile", icon: DaisyMark, group: "navigate" },
+      { label: "Settings", href: "/settings", icon: GearIcon, group: "navigate" },
+      { label: "Changelog", href: "/changelog", icon: ListIcon, group: "navigate" },
+      { label: "Leaderboard", href: "/leaderboard", icon: TrendingIcon, group: "navigate" },
       { label: "GitHub", href: "https://github.com/cepard01/daisyflower", icon: GithubIcon, group: "actions" },
     ];
   }, [t]);

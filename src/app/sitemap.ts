@@ -11,6 +11,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/get-started",
     "/profile",
     "/settings",
+    "/changelog",
+    "/leaderboard",
   ];
 
   return routes.map((route) => ({

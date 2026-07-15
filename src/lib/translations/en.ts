@@ -593,6 +593,13 @@ export const en = {
     },
     copyright: "© {year} DaisyFlower · MIT · free forever",
     signature: "made slowly, on purpose",
+    newsletter: {
+      title: "Garden notes",
+      subtitle: "Occasional updates about new plants, events, and features. No spam, ever.",
+      placeholder: "your@email.com",
+      button: "Subscribe",
+      success: "Subscribed! We'll be in touch.",
+    },
   },
   auth: {
     mockLabel: "Demo login",
@@ -792,6 +799,78 @@ export const en = {
       },
     },
     saved: "Saved automatically",
+  },
+  changelog: {
+    number: "11",
+    eyebrow: "Changelog",
+    title: "Every change,",
+    highlight: "documented.",
+    description:
+      "No marketing spin. Real version notes, real bugs fixed, real things still broken. The full history lives in the git log.",
+    entries: [
+      {
+        version: "0.4.2", date: "2 weeks ago", tag: "fixed",
+        title: "Harvest rewards fixed",
+        body: "Seeds now correctly map to flower items. Previously some harvests silently failed because crop_* IDs weren't registered.",
+        details: ["Fixed seed-to-flower mapping for all plant types", "Harvest now correctly grants flower items", "Inventory validation no longer rejects valid harvests"],
+      },
+      {
+        version: "0.4.1", date: "1 month ago", tag: "added",
+        title: "Pink Rose mutation",
+        body: "Plant Red + White Rose side by side. 30% chance of a rare hybrid when both mature.",
+        details: ["New mutation recipe: rose_pink_mutation", "Adjacency detection for mutation hints", "Collection book entry for Pink Rose", "30% success chance per harvest"],
+      },
+      {
+        version: "0.4.0", date: "2 months ago", tag: "changed",
+        title: "Weather system rework",
+        body: "4-hour cycle with 5-step forecast. Storms now open mutation chances. Rain refills soil for free.",
+        details: ["WeatherManager.init() called on startup", "5-step forecast queue in Redis", "Weather history journal in MongoDB", "Storm opens mutation chances"],
+      },
+      {
+        version: "0.3.5", date: "3 months ago", tag: "added",
+        title: "Shop with atomic transactions",
+        body: "Buy seeds, tools, and decorations. Currency deduction and item grant happen in a single MongoDB transaction.",
+        details: ["ShopManager with transaction support", "8 items across 4 categories", "Balance check before purchase", "Atomic currency + inventory update"],
+      },
+      {
+        version: "0.3.0", date: "4 months ago", tag: "changed",
+        title: "UI-first viewer architecture",
+        body: "All gameplay now happens through Discord Components v2 panels. Commands are just entry points.",
+        details: ["BaseViewer with customId protocol", "ViewerRegistry for routing", "Stateless UI reconstruction", "Ownership protection on all viewers"],
+      },
+      {
+        version: "0.2.0", date: "6 months ago", tag: "wip",
+        title: "Core game loop",
+        body: "Plant, grow, harvest, earn. The basic cycle works end-to-end. Still missing missions and collection book.",
+        details: ["GardenService with lazy state computation", "Planting flow with inventory consumption", "Harvest with XP and item rewards", "Weather integration in growth calculation"],
+      },
+    ],
+    tagLabels: { fixed: "Fixed", added: "Added", changed: "Changed", wip: "In progress" },
+    detailsLabel: "Details",
+  },
+  leaderboard: {
+    number: "12",
+    eyebrow: "Leaderboard",
+    title: "Top gardeners",
+    highlight: "this season.",
+    description:
+      "A friendly ranking — no cutthroat competition. Just a way to see who's been tending their garden well.",
+    tabs: { level: "By Level", collection: "By Collection", mutations: "By Mutations" },
+    yourRank: "Your rank",
+    rank: "Rank",
+    player: "Player",
+    score: "Score",
+    entries: [
+      { rank: 1, name: "bloomkeeper", level: 12, score: "8,420 XP", avatar: "🌹" },
+      { rank: 2, name: "petalwhisper", level: 11, score: "7,180 XP", avatar: "🌸" },
+      { rank: 3, name: "garden_gnomo", level: 10, score: "6,540 XP", avatar: "👺" },
+      { rank: 4, name: "sunbeam", level: 9, score: "5,890 XP", avatar: "🌻" },
+      { rank: 5, name: "rainwatcher", level: 9, score: "5,620 XP", avatar: "🌧️" },
+      { rank: 6, name: "petalkeeper", level: 7, score: "2,140 XP", avatar: "🌼", you: true },
+      { rank: 7, name: "slowgrower", level: 6, score: "1,890 XP", avatar: "🌱" },
+      { rank: 8, name: "harvest_moon", level: 5, score: "1,420 XP", avatar: "🌙" },
+    ],
+    privacyNote: "Only players who opted in to leaderboards appear here.",
   },
 };
 
