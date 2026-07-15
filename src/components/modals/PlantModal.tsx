@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect } from "react";
-import { CloseIcon } from "./icons";
+import { CloseIcon } from "@/components/icons";
 import { cn } from "@/lib/utils";
 
 export interface PlantDetail {

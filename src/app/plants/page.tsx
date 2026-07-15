@@ -2,13 +2,13 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
-import { PageHeader } from "@/components/site/PageHeader";
-import { Reveal } from "@/components/site/Reveal";
-import { useI18n } from "@/hooks/use-i18n";
+import { PageHeader } from "@/components/layout/PageHeader";
+import { Reveal } from "@/components/utils/Reveal";
+import { useI18n } from "@/components/providers/I18nProvider";
 import { cn } from "@/lib/utils";
-import { ArrowRightIcon } from "@/components/site/icons";
-import { PlantModal, type PlantDetail } from "@/components/site/PlantModal";
-import { Breadcrumb } from "@/components/site/Breadcrumb";
+import { ArrowRightIcon } from "@/components/icons";
+import { PlantModal, type PlantDetail } from "@/components/modals/PlantModal";
+import { Breadcrumb } from "@/components/layout/Breadcrumb";
 
 type RarityFilter = "all" | "Common" | "Uncommon" | "Rare";
 

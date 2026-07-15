@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useCallback, type ReactNode } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { CheckIcon, CloseIcon } from "./icons";
+import { CheckIcon, CloseIcon } from "@/components/icons";
 
 type ToastType = "success" | "info" | "error";
 

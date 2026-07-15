@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useI18n } from "@/hooks/use-i18n";
-import { useToast } from "./Toast";
-import { DaisyMark, GithubIcon, ArrowUpRightIcon, CheckIcon } from "./icons";
+import { useI18n } from "@/components/providers/I18nProvider";
+import { useToast } from "@/components/providers/Toast";
+import { DaisyMark, GithubIcon, ArrowUpRightIcon, CheckIcon } from "@/components/icons";
 
 export function Footer() {
   const { t } = useI18n();

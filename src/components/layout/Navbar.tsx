@@ -6,17 +6,17 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/use-auth";
-import { useI18n } from "@/hooks/use-i18n";
-import { AuthModal } from "./AuthModal";
-import { LanguageSwitcher } from "./LanguageSwitcher";
-import { ThemeToggle } from "./ThemeToggle";
+import { useI18n } from "@/components/providers/I18nProvider";
+import { AuthModal } from "@/components/modals/AuthModal";
+import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
+import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import {
   DaisyMark,
   MenuIcon,
   CloseIcon,
   ChevronDownIcon,
   GithubIcon,
-} from "./icons";
+} from "@/components/icons";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);

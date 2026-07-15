@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ChevronDownIcon } from "./icons";
+import { ChevronDownIcon } from "@/components/icons";
 
 export interface BreadcrumbItem {
   label: string;

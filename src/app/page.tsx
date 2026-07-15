@@ -4,13 +4,13 @@ import Link from "next/link";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useAuth } from "@/hooks/use-auth";
-import { useI18n } from "@/hooks/use-i18n";
-import { AuthModal } from "@/components/site/AuthModal";
-import { Reveal } from "@/components/site/Reveal";
-import { ClientOnly } from "@/components/site/ClientOnly";
-import { FEATURE_VISUALS } from "@/components/site/FeatureVisuals";
-import { CountUp, CardHover, FloatingElement, StaggerReveal, StaggerItem, AnimatedProgress } from "@/components/site/Animations";
-import { ArrowRightIcon, ArrowUpRightIcon } from "@/components/site/icons";
+import { useI18n } from "@/components/providers/I18nProvider";
+import { AuthModal } from "@/components/modals/AuthModal";
+import { Reveal } from "@/components/utils/Reveal";
+import { ClientOnly } from "@/components/utils/ClientOnly";
+import { FEATURE_VISUALS } from "@/components/sections/FeatureVisuals";
+import { CountUp, CardHover, FloatingElement, StaggerReveal, StaggerItem, AnimatedProgress } from "@/components/utils/Animations";
+import { ArrowRightIcon, ArrowUpRightIcon } from "@/components/icons";
 import { cn } from "@/lib/utils";
 
 export default function Home() {

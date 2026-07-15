@@ -23,11 +23,9 @@ const I18nContext = createContext<I18nContextValue | null>(null);
 const STORAGE_KEY = "daisyflower_locale";
 
 export function I18nProvider({ children }: { children: ReactNode }) {
-  // Always start with default locale so SSR and first client render match.
   const [locale, setLocaleState] = useState<Locale>(DEFAULT_LOCALE);
   const [hydrated, setHydrated] = useState(false);
 
-  // Load saved locale on mount (client only)
   useEffect(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY) as Locale | null;

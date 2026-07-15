@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { PageHeader } from "@/components/site/PageHeader";
-import { Reveal } from "@/components/site/Reveal";
-import { useI18n } from "@/hooks/use-i18n";
-import { ArrowRightIcon } from "@/components/site/icons";
+import { PageHeader } from "@/components/layout/PageHeader";
+import { Reveal } from "@/components/utils/Reveal";
+import { useI18n } from "@/components/providers/I18nProvider";
+import { ArrowRightIcon } from "@/components/icons";
 import { cn } from "@/lib/utils";
-import { Breadcrumb } from "@/components/site/Breadcrumb";
+import { Breadcrumb } from "@/components/layout/Breadcrumb";
 
 export default function HowItWorksPage() {
   const { t } = useI18n();

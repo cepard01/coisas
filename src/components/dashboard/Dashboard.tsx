@@ -2,8 +2,8 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useMemo } from "react";
-import { useI18n } from "@/hooks/use-i18n";
-import { useToast } from "./Toast";
+import { useI18n } from "@/components/providers/I18nProvider";
+import { useToast } from "@/components/providers/Toast";
 import {
   SproutIcon,
   WalletIcon,
@@ -21,7 +21,7 @@ import {
   DaisyMark,
   ShopIcon,
   WeatherIcon,
-} from "./icons";
+} from "@/components/icons";
 import { cn } from "@/lib/utils";
 
 type Tab = "garden" | "wallet" | "missions" | "collection" | "shop" | "weather";

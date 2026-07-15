@@ -2,13 +2,13 @@
 
 import { useState } from "react";
 import { useTheme } from "next-themes";
-import { PageHeader } from "@/components/site/PageHeader";
-import { Reveal } from "@/components/site/Reveal";
-import { useI18n } from "@/hooks/use-i18n";
+import { PageHeader } from "@/components/layout/PageHeader";
+import { Reveal } from "@/components/utils/Reveal";
+import { useI18n } from "@/components/providers/I18nProvider";
 import { LOCALES, type Locale } from "@/lib/i18n-config";
-import { CheckIcon, SunIcon, MoonIcon } from "@/components/site/icons";
+import { CheckIcon, SunIcon, MoonIcon } from "@/components/icons";
 import { cn } from "@/lib/utils";
-import { Breadcrumb } from "@/components/site/Breadcrumb";
+import { Breadcrumb } from "@/components/layout/Breadcrumb";
 
 export default function SettingsPage() {
   const { t, locale, setLocale } = useI18n();

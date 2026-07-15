@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { useI18n } from "@/hooks/use-i18n";
+import { useI18n } from "@/components/providers/I18nProvider";
 import {
   SearchIcon,
   SproutIcon,
@@ -17,7 +17,7 @@ import {
   DaisyMark,
   GearIcon,
   TrendingIcon,
-} from "./icons";
+} from "@/components/icons";
 import { cn } from "@/lib/utils";
 
 interface PaletteItem {

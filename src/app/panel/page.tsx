@@ -2,13 +2,13 @@
 
 import { useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
-import { useI18n } from "@/hooks/use-i18n";
-import { AuthModal } from "@/components/site/AuthModal";
-import { PageHeader } from "@/components/site/PageHeader";
-import { Reveal } from "@/components/site/Reveal";
-import { DashboardLayout } from "@/components/site/Dashboard";
-import { LockIcon, ArrowUpRightIcon } from "@/components/site/icons";
-import { Breadcrumb } from "@/components/site/Breadcrumb";
+import { useI18n } from "@/components/providers/I18nProvider";
+import { AuthModal } from "@/components/modals/AuthModal";
+import { PageHeader } from "@/components/layout/PageHeader";
+import { Reveal } from "@/components/utils/Reveal";
+import { DashboardLayout } from "@/components/dashboard/Dashboard";
+import { LockIcon, ArrowUpRightIcon } from "@/components/icons";
+import { Breadcrumb } from "@/components/layout/Breadcrumb";
 
 type Tab = "garden" | "wallet" | "missions" | "collection" | "shop" | "weather";
 

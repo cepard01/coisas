@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useI18n } from "@/hooks/use-i18n";
+import { useI18n } from "@/components/providers/I18nProvider";
 
 /**
  * Updates the <html lang="..."> attribute when the locale changes.

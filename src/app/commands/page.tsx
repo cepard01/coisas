@@ -1,12 +1,12 @@
 "use client";
 
 import { useState, useMemo, useRef, useEffect } from "react";
-import { PageHeader } from "@/components/site/PageHeader";
-import { Reveal } from "@/components/site/Reveal";
-import { useI18n } from "@/hooks/use-i18n";
-import { SearchIcon, CheckIcon } from "@/components/site/icons";
+import { PageHeader } from "@/components/layout/PageHeader";
+import { Reveal } from "@/components/utils/Reveal";
+import { useI18n } from "@/components/providers/I18nProvider";
+import { SearchIcon, CheckIcon } from "@/components/icons";
 import { cn } from "@/lib/utils";
-import { Breadcrumb } from "@/components/site/Breadcrumb";
+import { Breadcrumb } from "@/components/layout/Breadcrumb";
 
 type Category = "all" | "core" | "economy" | "system";
 

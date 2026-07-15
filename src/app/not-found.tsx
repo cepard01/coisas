@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { useI18n } from "@/hooks/use-i18n";
-import { ArrowRightIcon } from "@/components/site/icons";
+import { useI18n } from "@/components/providers/I18nProvider";
+import { ArrowRightIcon } from "@/components/icons";
 
 export default function NotFound() {
   const { t } = useI18n();

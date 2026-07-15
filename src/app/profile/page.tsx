@@ -1,14 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { PageHeader } from "@/components/site/PageHeader";
-import { Reveal } from "@/components/site/Reveal";
-import { useI18n } from "@/hooks/use-i18n";
+import { PageHeader } from "@/components/layout/PageHeader";
+import { Reveal } from "@/components/utils/Reveal";
+import { useI18n } from "@/components/providers/I18nProvider";
 import { useAuth } from "@/hooks/use-auth";
-import { DaisyMark, ArrowRightIcon, LockIcon } from "@/components/site/icons";
-import { CountUp, AnimatedProgress, CardHover } from "@/components/site/Animations";
+import { DaisyMark, ArrowRightIcon, LockIcon } from "@/components/icons";
+import { CountUp, AnimatedProgress, CardHover } from "@/components/utils/Animations";
 import { cn } from "@/lib/utils";
-import { Breadcrumb } from "@/components/site/Breadcrumb";
+import { Breadcrumb } from "@/components/layout/Breadcrumb";
 
 export default function ProfilePage() {
   const { t } = useI18n();

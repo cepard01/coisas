@@ -2,15 +2,15 @@ import type { Metadata } from "next";
 import { Inter, Fraunces, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
-import { Navbar } from "@/components/site/Navbar";
-import { Footer } from "@/components/site/Footer";
-import { I18nProvider } from "@/hooks/use-i18n";
-import { LangUpdater } from "@/components/site/LangUpdater";
-import { ThemeProvider } from "@/components/site/ThemeProvider";
-import { ScrollProgress } from "@/components/site/Animations";
-import { CommandPalette } from "@/components/site/CommandPalette";
-import { ToastProvider } from "@/components/site/Toast";
-import { PageTransition } from "@/components/site/PageTransition";
+import { Navbar } from "@/components/layout/Navbar";
+import { Footer } from "@/components/layout/Footer";
+import { I18nProvider } from "@/components/providers/I18nProvider";
+import { LangUpdater } from "@/components/providers/LangUpdater";
+import { ThemeProvider } from "@/components/providers/ThemeProvider";
+import { ScrollProgress } from "@/components/utils/Animations";
+import { CommandPalette } from "@/components/modals/CommandPalette";
+import { ToastProvider } from "@/components/providers/Toast";
+import { PageTransition } from "@/components/layout/PageTransition";
 
 const inter = Inter({
   variable: "--font-inter",

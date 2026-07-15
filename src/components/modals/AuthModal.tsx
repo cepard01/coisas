@@ -2,14 +2,14 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useI18n } from "@/hooks/use-i18n";
+import { useI18n } from "@/components/providers/I18nProvider";
 import {
   CloseIcon,
   SproutIcon,
   ShieldIcon,
   CheckIcon,
   DaisyMark,
-} from "./icons";
+} from "@/components/icons";
 
 interface AuthModalProps {
   open: boolean;

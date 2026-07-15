@@ -1,11 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { PageHeader } from "@/components/site/PageHeader";
-import { Reveal } from "@/components/site/Reveal";
-import { useI18n } from "@/hooks/use-i18n";
-import { ArrowRightIcon, TerminalIcon, SproutIcon, CheckIcon } from "@/components/site/icons";
-import { Breadcrumb } from "@/components/site/Breadcrumb";
+import { PageHeader } from "@/components/layout/PageHeader";
+import { Reveal } from "@/components/utils/Reveal";
+import { useI18n } from "@/components/providers/I18nProvider";
+import { ArrowRightIcon, TerminalIcon, SproutIcon, CheckIcon } from "@/components/icons";
+import { Breadcrumb } from "@/components/layout/Breadcrumb";
 
 export default function GetStartedPage() {
   const { t } = useI18n();

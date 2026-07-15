@@ -1,6 +1,6 @@
 "use client";
 
-import { Reveal } from "./Reveal";
+import { Reveal } from "@/components/utils/Reveal";
 
 /**
  * Header for inner pages — handles top padding for the fixed navbar

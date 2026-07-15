@@ -2,9 +2,9 @@
 
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useI18n } from "@/hooks/use-i18n";
+import { useI18n } from "@/components/providers/I18nProvider";
 import { LOCALES, type Locale } from "@/lib/i18n-config";
-import { ChevronDownIcon } from "./icons";
+import { ChevronDownIcon } from "@/components/icons";
 import { cn } from "@/lib/utils";
 
 export function LanguageSwitcher({ compact = false }: { compact?: boolean }) {

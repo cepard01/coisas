@@ -1,10 +1,10 @@
 "use client";
 
-import { PageHeader } from "@/components/site/PageHeader";
-import { Reveal } from "@/components/site/Reveal";
-import { useI18n } from "@/hooks/use-i18n";
+import { PageHeader } from "@/components/layout/PageHeader";
+import { Reveal } from "@/components/utils/Reveal";
+import { useI18n } from "@/components/providers/I18nProvider";
 import { cn } from "@/lib/utils";
-import { Breadcrumb } from "@/components/site/Breadcrumb";
+import { Breadcrumb } from "@/components/layout/Breadcrumb";
 
 export default function ChangelogPage() {
   const { t } = useI18n();
