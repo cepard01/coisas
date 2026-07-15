@@ -6,6 +6,7 @@ import { Reveal } from "@/components/site/Reveal";
 import { useI18n } from "@/hooks/use-i18n";
 import { useAuth } from "@/hooks/use-auth";
 import { DaisyMark, ArrowRightIcon, LockIcon } from "@/components/site/icons";
+import { CountUp, AnimatedProgress, CardHover } from "@/components/site/Animations";
 import { cn } from "@/lib/utils";
 
 export default function ProfilePage() {
@@ -36,11 +37,11 @@ export default function ProfilePage() {
           {/* Stats grid */}
           <Reveal delay={0.05}>
             <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
-              <StatCard label={t.profile.stats.level} value="7" />
-              <StatCard label={t.profile.stats.gardensPlanted} value="12" />
-              <StatCard label={t.profile.stats.flowersHarvested} value="147" />
-              <StatCard label={t.profile.stats.mutationsFound} value="3" />
-              <StatCard label={t.profile.stats.streak} value="4" />
+              <StatCard label={t.profile.stats.level} value={7} />
+              <StatCard label={t.profile.stats.gardensPlanted} value={12} />
+              <StatCard label={t.profile.stats.flowersHarvested} value={147} />
+              <StatCard label={t.profile.stats.mutationsFound} value={3} />
+              <StatCard label={t.profile.stats.streak} value={4} />
             </div>
           </Reveal>
 
@@ -205,21 +206,27 @@ function PlayerCard({
             <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
               {t.profile.stats.level} {player.level}
             </span>
-            <span className="font-mono text-xs text-muted-foreground tabular">2,140 / 3,000 XP</span>
+            <span className="font-mono text-xs text-muted-foreground tabular">
+              <CountUp value={2140} duration={1.5} /> / 3,000 XP
+            </span>
           </div>
-          <div className="h-2 w-full rounded-full bg-secondary overflow-hidden">
-            <div className="h-full w-[71%] rounded-full bg-gradient-to-r from-sage to-sage-deep transition-all duration-1000" />
-          </div>
+          <AnimatedProgress
+            value={71}
+            delay={0.3}
+            barClassName="bg-gradient-to-r from-sage to-sage-deep"
+          />
         </div>
       </div>
     </div>
   );
 }
 
-function StatCard({ label, value }: { label: string; value: string }) {
+function StatCard({ label, value }: { label: string; value: number }) {
   return (
     <div className="card-hairline rounded-xl p-4 text-center">
-      <p className="font-display text-2xl font-medium text-foreground marker-num tabular">{value}</p>
+      <p className="font-display text-2xl font-medium text-foreground marker-num tabular">
+        <CountUp value={value} duration={1.2} />
+      </p>
       <p className="mt-1 text-[10px] text-muted-foreground text-pretty leading-tight">{label}</p>
     </div>
   );

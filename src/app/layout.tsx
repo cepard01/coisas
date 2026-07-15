@@ -7,6 +7,7 @@ import { Footer } from "@/components/site/Footer";
 import { I18nProvider } from "@/hooks/use-i18n";
 import { LangUpdater } from "@/components/site/LangUpdater";
 import { ThemeProvider } from "@/components/site/ThemeProvider";
+import { ScrollProgress } from "@/components/site/Animations";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -70,6 +71,7 @@ export default function RootLayout({
         <ThemeProvider>
           <I18nProvider>
             <LangUpdater />
+            <ScrollProgress />
             <div className="min-h-screen flex flex-col">
               <Navbar />
               <main className="flex-1">{children}</main>

@@ -2,12 +2,14 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { useAuth } from "@/hooks/use-auth";
 import { useI18n } from "@/hooks/use-i18n";
 import { AuthModal } from "@/components/site/AuthModal";
 import { Reveal } from "@/components/site/Reveal";
 import { ClientOnly } from "@/components/site/ClientOnly";
 import { FEATURE_VISUALS } from "@/components/site/FeatureVisuals";
+import { CountUp, CardHover, FloatingElement, StaggerReveal, StaggerItem, AnimatedProgress } from "@/components/site/Animations";
 import { ArrowRightIcon, ArrowUpRightIcon } from "@/components/site/icons";
 
 export default function Home() {
@@ -118,26 +120,28 @@ export default function Home() {
             </p>
           </Reveal>
 
-          <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <StaggerReveal stagger={0.06} className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {t.explore.cards.map((card, i) => (
-              <Reveal key={i} delay={i * 0.05}>
+              <StaggerItem key={i}>
                 <Link
                   href={["/how-it-works", "/plants", "/panel", "/commands", "/#progression", "/faq"][i]}
-                  className="group block card-hairline card-hairline-hover rounded-xl p-6 h-full"
+                  className="group block h-full"
                 >
-                  <div className="text-3xl mb-4">{card.emoji}</div>
-                  <h3 className="font-display text-lg font-medium text-foreground">{card.title}</h3>
-                  <p className="mt-2 text-sm text-muted-foreground text-pretty leading-relaxed flex-1">
-                    {card.description}
-                  </p>
-                  <p className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-sage">
-                    {card.cta}
-                    <ArrowUpRightIcon size={14} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                  </p>
+                  <CardHover className="card-hairline card-hairline-hover rounded-xl p-6 h-full">
+                    <div className="text-3xl mb-4">{card.emoji}</div>
+                    <h3 className="font-display text-lg font-medium text-foreground">{card.title}</h3>
+                    <p className="mt-2 text-sm text-muted-foreground text-pretty leading-relaxed flex-1">
+                      {card.description}
+                    </p>
+                    <p className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-sage">
+                      {card.cta}
+                      <ArrowUpRightIcon size={14} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                    </p>
+                  </CardHover>
                 </Link>
-              </Reveal>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerReveal>
         </div>
       </section>
 
@@ -548,24 +552,33 @@ function CommunitySection() {
         </Reveal>
 
         {/* Stats strip */}
-        <Reveal delay={0.05}>
-          <div className="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-px bg-border rounded-2xl overflow-hidden border border-border">
-            {c.stats.map((s, i) => (
-              <div key={i} className="bg-card p-5 text-center">
-                <p className="font-display text-3xl sm:text-4xl font-medium text-foreground marker-num tabular">
-                  {s.value}
-                </p>
-                <p className="mt-1 text-xs text-muted-foreground text-pretty">{s.label}</p>
-              </div>
-            ))}
-          </div>
-        </Reveal>
+        <StaggerReveal delay={0.05} stagger={0.1} className="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-px bg-border rounded-2xl overflow-hidden border border-border">
+          {c.stats.map((s, i) => {
+            // Parse numeric value and non-numeric suffix
+            const match = s.value.match(/^([\d,]+)(.*)$/);
+            const numericValue = match ? parseInt(match[1].replace(/,/g, ""), 10) : 0;
+            const suffix = match ? match[2] : s.value;
+            return (
+              <StaggerItem key={i}>
+                <div className="bg-card p-5 text-center">
+                  <p className="font-display text-3xl sm:text-4xl font-medium text-foreground marker-num tabular">
+                    <ClientOnly fallback={<span>{s.value}</span>}>
+                      <CountUp value={numericValue} duration={1.2} />
+                      {suffix}
+                    </ClientOnly>
+                  </p>
+                  <p className="mt-1 text-xs text-muted-foreground text-pretty">{s.label}</p>
+                </div>
+              </StaggerItem>
+            );
+          })}
+        </StaggerReveal>
 
         {/* Quotes */}
         <div className="mt-6 grid sm:grid-cols-3 gap-4">
           {c.quotes.map((q, i) => (
             <Reveal key={i} delay={i * 0.06}>
-              <figure className="card-hairline rounded-xl p-5 h-full flex flex-col">
+              <CardHover className="card-hairline rounded-xl p-5 h-full flex flex-col">
                 <blockquote className="text-sm text-foreground text-pretty leading-relaxed flex-1">
                   &ldquo;{q.text}&rdquo;
                 </blockquote>
@@ -578,7 +591,7 @@ function CommunitySection() {
                     <p className="text-[10px] text-muted-foreground">{q.role}</p>
                   </div>
                 </figcaption>
-              </figure>
+              </CardHover>
             </Reveal>
           ))}
         </div>
@@ -697,8 +710,20 @@ function GardenIllustration() {
         preserveAspectRatio="xMidYMid meet"
         aria-label="Garden illustration with sunflowers and roses at different growth stages"
       >
-        <circle cx="700" cy="55" r="22" fill="oklch(0.8 0.1 85)" opacity="0.7" />
-        <circle cx="700" cy="55" r="14" fill="oklch(0.82 0.12 85)" />
+        {/* Sun — pulsing glow */}
+        <motion.circle
+          cx="700" cy="55" r="22" fill="oklch(0.8 0.1 85)" opacity="0.7"
+          animate={{ scale: [1, 1.08, 1], opacity: [0.6, 0.8, 0.6] }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+          style={{ transformOrigin: "700px 55px" }}
+        />
+        <motion.circle
+          cx="700" cy="55" r="14" fill="oklch(0.82 0.12 85)"
+          animate={{ scale: [1, 1.1, 1] }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+          style={{ transformOrigin: "700px 55px" }}
+        />
+
         <path d="M0 200 L800 200 L800 280 L0 280 Z" fill="oklch(0.42 0.04 50)" opacity="0.85" />
         <path
           d="M0 200 Q 200 196 400 200 T 800 200"
@@ -717,16 +742,26 @@ function GardenIllustration() {
           <circle cx="350" cy="260" r="1" />
         </g>
 
-        {/* Plant 1 — Sunflower growing */}
-        <g transform="translate(110, 200)">
+        {/* Plant 1 — Sunflower growing (sways) */}
+        <motion.g
+          transform="translate(110, 200)"
+          animate={{ rotate: [0, 2, 0, -2, 0] }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+          style={{ transformOrigin: "110px 200px" }}
+        >
           <path d="M0 0 L0 -55" stroke="oklch(0.46 0.06 145)" strokeWidth="2.5" strokeLinecap="round" />
           <ellipse cx="-8" cy="-30" rx="9" ry="4" fill="oklch(0.5 0.07 145)" transform="rotate(-30 -8 -30)" />
           <ellipse cx="8" cy="-20" rx="9" ry="4" fill="oklch(0.5 0.07 145)" transform="rotate(30 8 -20)" />
           <circle cx="0" cy="-55" r="6" fill="oklch(0.55 0.08 145)" />
-        </g>
+        </motion.g>
 
-        {/* Plant 2 — Sunflower mature */}
-        <g transform="translate(250, 200)">
+        {/* Plant 2 — Sunflower mature (sways opposite) */}
+        <motion.g
+          transform="translate(250, 200)"
+          animate={{ rotate: [0, -2.5, 0, 2.5, 0] }}
+          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+          style={{ transformOrigin: "250px 200px" }}
+        >
           <path d="M0 0 L0 -95" stroke="oklch(0.42 0.06 145)" strokeWidth="3" strokeLinecap="round" />
           <ellipse cx="-12" cy="-50" rx="14" ry="6" fill="oklch(0.46 0.07 145)" transform="rotate(-35 -12 -50)" />
           <ellipse cx="12" cy="-35" rx="14" ry="6" fill="oklch(0.46 0.07 145)" transform="rotate(35 12 -35)" />
@@ -748,10 +783,15 @@ function GardenIllustration() {
             <circle cx="0" cy="0" r="8" fill="oklch(0.55 0.1 65)" />
             <circle cx="0" cy="0" r="5" fill="oklch(0.45 0.1 60)" />
           </g>
-        </g>
+        </motion.g>
 
-        {/* Plant 3 — Rose bush growing */}
-        <g transform="translate(400, 200)">
+        {/* Plant 3 — Rose bush growing (gentle sway) */}
+        <motion.g
+          transform="translate(400, 200)"
+          animate={{ rotate: [0, 1.5, 0, -1.5, 0] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+          style={{ transformOrigin: "400px 200px" }}
+        >
           <path d="M0 0 L0 -70" stroke="oklch(0.42 0.06 145)" strokeWidth="2.5" strokeLinecap="round" />
           <path d="M0 -40 L-15 -55" stroke="oklch(0.42 0.06 145)" strokeWidth="2" strokeLinecap="round" />
           <path d="M0 -30 L15 -45" stroke="oklch(0.42 0.06 145)" strokeWidth="2" strokeLinecap="round" />
@@ -759,10 +799,15 @@ function GardenIllustration() {
           <ellipse cx="15" cy="-45" rx="6" ry="3" fill="oklch(0.5 0.07 145)" transform="rotate(40 15 -45)" />
           <circle cx="0" cy="-70" r="7" fill="oklch(0.62 0.16 15)" />
           <path d="M-4 -73 Q 0 -78 4 -73" stroke="oklch(0.52 0.16 15)" strokeWidth="1.5" fill="none" />
-        </g>
+        </motion.g>
 
-        {/* Plant 4 — White Rose mature */}
-        <g transform="translate(550, 200)">
+        {/* Plant 4 — White Rose mature (sways) */}
+        <motion.g
+          transform="translate(550, 200)"
+          animate={{ rotate: [0, -2, 0, 2, 0] }}
+          transition={{ duration: 7.5, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
+          style={{ transformOrigin: "550px 200px" }}
+        >
           <path d="M0 0 L0 -85" stroke="oklch(0.42 0.06 145)" strokeWidth="3" strokeLinecap="round" />
           <path d="M0 -45 L-18 -60" stroke="oklch(0.42 0.06 145)" strokeWidth="2" strokeLinecap="round" />
           <path d="M0 -35 L18 -50" stroke="oklch(0.42 0.06 145)" strokeWidth="2" strokeLinecap="round" />
@@ -775,7 +820,7 @@ function GardenIllustration() {
             <circle cx="0" cy="-2" r="5" fill="oklch(0.98 0.005 75)" />
             <circle cx="0" cy="-2" r="2" fill="oklch(0.85 0.04 85)" opacity="0.5" />
           </g>
-        </g>
+        </motion.g>
 
         {/* Plant 5 — empty */}
         <g transform="translate(690, 200)" opacity="0.5">
