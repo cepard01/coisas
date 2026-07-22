@@ -1,9 +1,9 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect, useMemo, useRef } from "react";
-import { useI18n } from "@/components/providers/I18nProvider";
-import { useToast } from "@/components/providers/Toast";
+import { useState, useEffect, useMemo } from "react";
+import { useI18n } from "@/hooks/use-i18n";
+import { useToast } from "./Toast";
 import {
   SproutIcon,
   WalletIcon,
@@ -21,11 +21,10 @@ import {
   DaisyMark,
   ShopIcon,
   WeatherIcon,
-  CloseIcon,
-} from "@/components/icons";
+} from "./icons";
 import { cn } from "@/lib/utils";
 
-type Tab = "garden" | "wallet" | "missions" | "collection" | "shop" | "weather" | "achievements";
+type Tab = "garden" | "wallet" | "missions" | "collection" | "shop" | "weather";
 
 export function DashboardLayout({
   tab,
@@ -46,7 +45,6 @@ export function DashboardLayout({
     { id: "collection", label: d.tabs.collection, icon: BookIcon },
     { id: "shop", label: d.tabs.shop, icon: ShopIcon },
     { id: "weather", label: d.tabs.weather, icon: WeatherIcon },
-    { id: "achievements", label: "Badges", icon: SparkIcon },
   ];
 
   return (
@@ -60,7 +58,7 @@ export function DashboardLayout({
       </div>
 
       <div className="grid lg:grid-cols-[200px_1fr]">
-        <aside className="border-b lg:border-b-0 lg:border-r border-border p-3 overflow-y-auto max-h-[60vh] lg:max-h-none scrollbar-soft">
+        <aside className="border-b lg:border-b-0 lg:border-r border-border p-3">
           <div className="flex items-center gap-2.5 p-2 rounded-lg border border-border bg-background">
             <span className="grid place-items-center h-8 w-8 rounded-full bg-sage/10 shrink-0">
               <DaisyMark size={16} className="text-sage" />
@@ -118,7 +116,6 @@ export function DashboardLayout({
               {tab === "collection" && <CollectionTab />}
               {tab === "shop" && <ShopTab />}
               {tab === "weather" && <WeatherTab />}
-              {tab === "achievements" && <AchievementsTab />}
             </motion.div>
           </AnimatePresence>
         </div>
@@ -162,12 +159,6 @@ function GardenTab() {
     return () => clearInterval(interval);
   }, []);
 
-  // Live humidity drain
-  const [humidity, setHumidity] = useState(50);
-  useEffect(() => {
-    if (tick > 0) setHumidity((h) => Math.max(10, h - 0.5));
-  }, [tick]);
-
   const liveSlots = useMemo(() => {
     return g.slots.map((slot, i) => {
       const increment = tick * (0.3 + i * 0.1);
@@ -185,52 +176,14 @@ function GardenTab() {
   }, [liveSlots]);
 
   const [harvested, setHarvested] = useState(false);
-  const [showXpPopup, setShowXpPopup] = useState(false);
-  const [selectedSlot, setSelectedSlot] = useState<typeof liveSlots[number] | null>(null);
-
   const handleHarvestAll = () => {
     setHarvested(true);
-    setShowXpPopup(true);
     setTimeout(() => setHarvested(false), 2000);
-    setTimeout(() => setShowXpPopup(false), 2500);
     toast("Harvested 1 Sunflower · +400 🪙 +20 XP", "success");
   };
 
-  const handleWater = () => {
-    setHumidity((h) => Math.min(100, h + 30));
-    toast("Watered garden · Humidity +30%", "success");
-  };
-
-  // Live activity feed
-  const [activities, setActivities] = useState(g.activity);
-  useEffect(() => {
-    if (tick > 0 && tick % 5 === 0) {
-      const newActivity = {
-        time: "just now",
-        text: `Sunflower in slot ${Math.floor(Math.random() * 6) + 1} grew ${Math.floor(Math.random() * 5) + 1}%`,
-        tone: "sage" as const,
-      };
-      setActivities((prev) => [newActivity, ...prev.slice(0, 3)]);
-    }
-  }, [tick]);
-
   return (
-    <div className="relative">
-      {/* XP popup */}
-      <AnimatePresence>
-        {showXpPopup && (
-          <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.8 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -30, scale: 0.8 }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute top-0 right-0 z-20 rounded-lg bg-sage text-white px-4 py-2 shadow-lg"
-          >
-            <p className="font-display text-sm font-bold">+400 🪙 +20 XP</p>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
+    <div>
       <TabHeader
         title={g.title}
         subtitle={g.subtitle}
@@ -244,14 +197,6 @@ function GardenTab() {
             <motion.button
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
-              onClick={handleWater}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-medium hover:bg-secondary transition-colors"
-            >
-              💧 Water
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
               onClick={handleHarvestAll}
               className={cn(
                 "inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-colors",
@@ -262,7 +207,7 @@ function GardenTab() {
             >
               {harvested ? (
                 <>
-                  <CheckIcon size={13} /> Done!
+                  <CheckIcon size={13} /> +400 🪙 +20 XP
                 </>
               ) : (
                 <>🌻 {g.harvestNow}</>
@@ -274,18 +219,7 @@ function GardenTab() {
 
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mb-7">
         <MiniStat icon={SproutIcon} label={g.slotsUsed} value="4 / 6" />
-        <div className="rounded-lg border border-border bg-background p-3">
-          <DropletIcon size={14} className="text-sky-soft mb-2" />
-          <p className="font-display text-base font-medium text-foreground tabular">{Math.round(humidity)}%</p>
-          <p className="text-[10px] text-muted-foreground">{g.humidity}</p>
-          <div className="mt-1.5 h-0.5 w-full rounded-full bg-secondary overflow-hidden">
-            <motion.div
-              className="h-full rounded-full bg-sky-soft"
-              animate={{ width: `${humidity}%` }}
-              transition={{ duration: 0.5 }}
-            />
-          </div>
-        </div>
+        <MiniStat icon={DropletIcon} label={g.humidity} value="50%" />
         <MiniStat icon={ClockIcon} label={g.nextReady} value={nextReady} />
         <MiniStat icon={SparkIcon} label={g.mutationHint} value="✓" />
       </div>
@@ -301,10 +235,9 @@ function GardenTab() {
             name={slot.name}
             progress={slot.liveProgress}
             eta={slot.liveEta}
-            onClick={() => setSelectedSlot(slot)}
           />
         ))}
-        <DashSlot emoji={g.readySlot.emoji} name={g.readySlot.name} progress={100} ready onClick={() => setSelectedSlot({ ...g.readySlot, liveProgress: 100, liveEta: "" } as any)} />
+        <DashSlot emoji={g.readySlot.emoji} name={g.readySlot.name} progress={100} ready />
         <DashSlot empty />
         <DashSlot empty />
       </div>
@@ -313,15 +246,10 @@ function GardenTab() {
         {g.activityLabel}
       </p>
       <div className="space-y-2.5">
-        <AnimatePresence initial={false}>
-          {activities.map((a, i) => (
-            <ActivityRow key={i} time={a.time} text={a.text} tone={a.tone} />
-          ))}
-        </AnimatePresence>
+        {g.activity.map((a, i) => (
+          <ActivityRow key={i} time={a.time} text={a.text} tone={a.tone} />
+        ))}
       </div>
-
-      {/* Slot detail modal */}
-      <SlotDetailModal slot={selectedSlot} onClose={() => setSelectedSlot(null)} />
     </div>
   );
 }
@@ -333,7 +261,6 @@ function DashSlot({
   eta,
   ready,
   empty,
-  onClick,
 }: {
   emoji?: string;
   name?: string;
@@ -341,10 +268,10 @@ function DashSlot({
   eta?: string;
   ready?: boolean;
   empty?: boolean;
-  onClick?: () => void;
 }) {
   const { t } = useI18n();
   const g = t.panel.dashboard.garden;
+  const [hovered, setHovered] = useState(false);
 
   if (empty) {
     return (
@@ -357,10 +284,12 @@ function DashSlot({
   return (
     <motion.div
       whileHover={{ y: -2 }}
-      onClick={onClick}
+      onHoverStart={() => setHovered(true)}
+      onHoverEnd={() => setHovered(false)}
       className={cn(
         "rounded-lg border p-3 cursor-pointer transition-colors",
-        ready ? "border-sage/40 bg-sage/[0.04]" : "border-border bg-background hover:border-sage/30"
+        ready ? "border-sage/40 bg-sage/[0.04]" : "border-border bg-background",
+        hovered && "border-sage/30"
       )}
     >
       <div className="flex items-center justify-between">
@@ -394,141 +323,14 @@ function DashSlot({
   );
 }
 
-function SlotDetailModal({ slot, onClose }: { slot: any; onClose: () => void }) {
-  const { t } = useI18n();
-  const g = t.panel.dashboard.garden;
-  const [harvesting, setHarvesting] = useState(false);
-
-  useEffect(() => {
-    if (!slot) return;
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [slot, onClose]);
-
-  if (!slot) return null;
-
-  const isReady = slot.liveProgress >= 100 || slot.ready;
-
-  const handleHarvest = () => {
-    setHarvesting(true);
-    setTimeout(() => {
-      setHarvesting(false);
-      onClose();
-    }, 1500);
-  };
-
-  return (
-    <AnimatePresence>
-      {slot && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[100] grid place-items-center p-4"
-          role="dialog"
-          aria-modal="true"
-        >
-          <button aria-label="Close" onClick={onClose} className="absolute inset-0 bg-ink/40 backdrop-blur-sm" />
-          <motion.div
-            initial={{ opacity: 0, y: 16, scale: 0.96 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 8, scale: 0.96 }}
-            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className="relative w-full max-w-sm bg-card border border-border rounded-2xl shadow-2xl overflow-hidden"
-          >
-            <button onClick={onClose} className="absolute top-3 right-3 grid place-items-center h-8 w-8 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors z-10" aria-label="Close">
-              <CloseIcon size={16} />
-            </button>
-
-            <div className={cn("h-32 grid place-items-center", isReady ? "bg-gradient-to-br from-sage/10 to-transparent" : "bg-gradient-to-br from-secondary/30 to-transparent")}>
-              <motion.span
-                initial={{ scale: 0.5 }}
-                animate={{ scale: 1 }}
-                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                className="text-6xl"
-              >
-                {slot.emoji}
-              </motion.span>
-            </div>
-
-            <div className="p-5">
-              <h3 className="font-display text-xl font-medium text-foreground">{slot.name}</h3>
-              <div className="mt-3 space-y-2">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">Status</span>
-                  <span className={cn("font-medium", isReady ? "text-sage" : "text-foreground")}>
-                    {isReady ? g.ready : g.growing}
-                  </span>
-                </div>
-                {!isReady && (
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-muted-foreground">Progress</span>
-                    <span className="font-mono text-foreground tabular">{Math.round(slot.liveProgress ?? slot.progress ?? 0)}%</span>
-                  </div>
-                )}
-                {!isReady && (
-                  <div className="h-1.5 w-full rounded-full bg-secondary overflow-hidden">
-                    <motion.div
-                      className="h-full rounded-full bg-sage-soft"
-                      initial={{ width: 0 }}
-                      animate={{ width: `${slot.liveProgress ?? slot.progress ?? 0}%` }}
-                      transition={{ duration: 0.5 }}
-                    />
-                  </div>
-                )}
-                {isReady && (
-                  <div className="mt-4 rounded-lg bg-sage/[0.06] border border-sage/20 px-4 py-3">
-                    <p className="text-sm text-foreground text-pretty">
-                      <span className="font-semibold text-sage">Ready to harvest!</span> You'll get flowers, XP, and Daisies.
-                    </p>
-                  </div>
-                )}
-              </div>
-
-              <div className="mt-5 flex gap-2">
-                {isReady ? (
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={handleHarvest}
-                    className={cn(
-                      "flex-1 inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors",
-                      harvesting ? "bg-sage text-white" : "bg-foreground text-background hover:bg-foreground/90"
-                    )}
-                  >
-                    {harvesting ? <><CheckIcon size={15} /> Harvested!</> : <>🌻 {g.harvestNow}</>}
-                  </motion.button>
-                ) : (
-                  <button className="flex-1 inline-flex items-center justify-center gap-2 rounded-lg border border-border bg-background px-4 py-2.5 text-sm font-medium text-foreground hover:bg-secondary transition-colors">
-                    💧 Water this plant
-                  </button>
-                )}
-                <button onClick={onClose} className="rounded-lg border border-border bg-background px-4 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors">
-                  Close
-                </button>
-              </div>
-            </div>
-          </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
-}
-
 function ActivityRow({ time, text, tone }: { time: string; text: string; tone: "sage" | "sky" | "gold" | "ink" }) {
   const tones = { sage: "bg-sage", sky: "bg-sky-soft", gold: "bg-gold", ink: "bg-foreground/30" };
   return (
-    <motion.div
-      initial={{ opacity: 0, x: -10 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0 }}
-      className="flex items-start gap-3 text-sm"
-    >
+    <div className="flex items-start gap-3 text-sm">
       <span className={cn("h-1.5 w-1.5 rounded-full mt-1.5 shrink-0", tones[tone])} />
       <p className="flex-1 text-foreground/90">{text}</p>
       <span className="font-mono text-[11px] text-muted-foreground shrink-0 tabular">{time}</span>
-    </motion.div>
+    </div>
   );
 }
 
@@ -536,11 +338,9 @@ function ActivityRow({ time, text, tone }: { time: string; text: string; tone: "
 
 function WalletTab() {
   const { t } = useI18n();
-  const { toast } = useToast();
   const w = t.panel.dashboard.wallet;
 
   const [balance, setBalance] = useState(0);
-  const [displayBalance, setDisplayBalance] = useState(0);
   useEffect(() => {
     const target = 1240;
     const duration = 1200;
@@ -551,29 +351,11 @@ function WalletTab() {
       const progress = Math.min(elapsed / duration, 1);
       const eased = 1 - Math.pow(1 - progress, 3);
       setBalance(Math.round(target * eased));
-      setDisplayBalance(Math.round(target * eased));
       if (progress < 1) raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
   }, []);
-
-  const [sellItems, setSellItems] = useState([
-    { emoji: "🌻", name: "Sunflower", count: 12, price: 200, selected: 0 },
-    { emoji: "🌹", name: "Red Rose", count: 4, price: 400, selected: 0 },
-    { emoji: "🤍", name: "White Rose", count: 2, price: 400, selected: 0 },
-    { emoji: "🥕", name: "Carrot", count: 7, price: 50, selected: 0 },
-  ]);
-
-  const handleSell = (index: number) => {
-    const item = sellItems[index];
-    if (item.count <= 0) return;
-    setSellItems((prev) => prev.map((it, i) =>
-      i === index ? { ...it, count: it.count - 1, selected: it.selected + 1 } : it
-    ));
-    setDisplayBalance((b) => b + item.price);
-    toast(`Sold 1 ${item.name} for ${item.price} 🪙`, "success");
-  };
 
   return (
     <div>
@@ -583,47 +365,13 @@ function WalletTab() {
         <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">{w.balance}</p>
         <div className="mt-1 flex items-baseline gap-3">
           <p className="font-display text-5xl font-medium text-foreground marker-num tabular">
-            {displayBalance.toLocaleString()}
+            {balance.toLocaleString()}
           </p>
           <span className="text-sm text-muted-foreground">{w.daisies}</span>
         </div>
         <p className="mt-2 text-xs text-sage flex items-center gap-1">
           <TrendingIcon size={12} /> {w.thisWeek}
         </p>
-      </div>
-
-      {/* Sell flowers */}
-      <div className="mb-6">
-        <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground mb-3">Sell flowers</p>
-        <div className="grid grid-cols-2 gap-2.5">
-          {sellItems.map((item, i) => (
-            <motion.div
-              key={i}
-              whileHover={{ y: -2 }}
-              className="card-hairline rounded-lg p-3 flex items-center gap-3"
-            >
-              <span className="text-2xl shrink-0">{item.emoji}</span>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-foreground truncate">{item.name}</p>
-                <p className="font-mono text-[10px] text-muted-foreground">×{item.count} · 🪙 {item.price}</p>
-              </div>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => handleSell(i)}
-                disabled={item.count <= 0}
-                className={cn(
-                  "rounded-md px-2 py-1 text-[10px] font-medium transition-colors",
-                  item.count > 0
-                    ? "bg-foreground text-background hover:bg-foreground/90"
-                    : "bg-secondary text-muted-foreground cursor-not-allowed"
-                )}
-              >
-                Sell
-              </motion.button>
-            </motion.div>
-          ))}
-        </div>
       </div>
 
       {/* Sparkline chart */}
@@ -739,82 +487,38 @@ function TxRow({ icon, label, amount, time, positive }: { icon: string; label: s
 
 function MissionsTab() {
   const { t } = useI18n();
-  const { toast } = useToast();
   const m = t.panel.dashboard.missions;
-
-  const [items, setItems] = useState(m.items.map((item) => ({ ...item, claimed: item.done })));
-
-  const claimableCount = items.filter((i) => i.done && !i.claimed).length;
-
-  const handleClaim = (index: number) => {
-    setItems((prev) => prev.map((it, i) => i === index ? { ...it, claimed: true } : it));
-    toast(`Claimed: ${items[index].reward}`, "success");
-  };
-
-  const handleClaimAll = () => {
-    const count = claimableCount;
-    if (count === 0) return;
-    setItems((prev) => prev.map((it) => it.done ? { ...it, claimed: true } : it));
-    toast(`Claimed ${count} mission${count > 1 ? "s" : ""}`, "success");
-  };
-
   return (
     <div>
       <TabHeader
         title={m.title}
         subtitle={m.subtitle}
         action={
-          <div className="flex items-center gap-2">
-            <span className="hidden sm:inline-flex items-center gap-1.5 font-mono text-[11px] text-muted-foreground">
-              <TrendingIcon size={13} className="text-sage" /> {m.streak}
-            </span>
-            {claimableCount > 0 && (
-              <motion.button
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                onClick={handleClaimAll}
-                className="inline-flex items-center gap-1.5 rounded-lg bg-sage text-white px-3 py-1.5 text-xs font-medium"
-              >
-                <CheckIcon size={13} /> Claim all ({claimableCount})
-              </motion.button>
-            )}
-          </div>
+          <span className="hidden sm:inline-flex items-center gap-1.5 font-mono text-[11px] text-muted-foreground">
+            <TrendingIcon size={13} className="text-sage" /> {m.streak}
+          </span>
         }
       />
 
       <div className="divide-y divide-border">
-        {items.map((item, i) => (
+        {m.items.map((item, i) => (
           <div key={i} className="flex items-center gap-4 py-3.5">
             <span className={cn(
               "grid place-items-center h-7 w-7 rounded-full shrink-0 text-xs",
-              item.claimed ? "bg-sage text-white" : item.locked ? "bg-secondary text-muted-foreground/50" : "bg-secondary text-muted-foreground"
+              item.done ? "bg-sage text-white" : item.locked ? "bg-secondary text-muted-foreground/50" : "bg-secondary text-muted-foreground"
             )}>
-              {item.claimed ? <CheckIcon size={13} /> : item.locked ? <LockIcon size={12} /> : i + 1}
+              {item.done ? <CheckIcon size={13} /> : item.locked ? <LockIcon size={12} /> : i + 1}
             </span>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">
                 <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">{item.type}</span>
                 {item.progress && <span className="font-mono text-[10px] text-foreground tabular">{item.progress}</span>}
               </div>
-              <p className={cn("text-sm mt-0.5", item.claimed ? "text-muted-foreground line-through" : "text-foreground font-medium")}>
+              <p className={cn("text-sm mt-0.5", item.done ? "text-muted-foreground line-through" : "text-foreground font-medium")}>
                 {item.title}
               </p>
             </div>
-            <div className="flex items-center gap-2 shrink-0">
-              <span className="text-xs text-muted-foreground">{item.reward}</span>
-              {item.done && !item.claimed && (
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => handleClaim(i)}
-                  className="rounded-md bg-foreground text-background px-2 py-1 text-[10px] font-medium"
-                >
-                  Claim
-                </motion.button>
-              )}
-            </div>
+            <span className="text-xs text-muted-foreground shrink-0">{item.reward}</span>
           </div>
         ))}
       </div>
@@ -887,7 +591,7 @@ function CollectionTab() {
   );
 }
 
-/* ── Shop Tab ────────────────────────────────────────────────────────── */
+/* ── Shop Tab (NEW) ──────────────────────────────────────────────────── */
 
 function ShopTab() {
   const { t } = useI18n();
@@ -895,7 +599,6 @@ function ShopTab() {
   const s = t.panel.dashboard.shop;
   const [filter, setFilter] = useState<string>("all");
   const [bought, setBought] = useState<string | null>(null);
-  const [balance, setBalance] = useState(1240);
 
   const categories = [
     { id: "all", label: "All" },
@@ -909,7 +612,6 @@ function ShopTab() {
 
   const handleBuy = (name: string, price: number) => {
     setBought(name);
-    setBalance((b) => b - price);
     setTimeout(() => setBought(null), 1500);
     toast(`Bought ${name} for ${price} Daisies`, "success");
   };
@@ -922,11 +624,12 @@ function ShopTab() {
         action={
           <div className="flex items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1.5">
             <span className="text-sm">🪙</span>
-            <span className="font-mono text-xs font-medium text-foreground tabular">{balance.toLocaleString()}</span>
+            <span className="font-mono text-xs font-medium text-foreground tabular">1,240</span>
           </div>
         }
       />
 
+      {/* Category filter */}
       <div className="flex flex-wrap gap-1.5 mb-5">
         {categories.map((cat) => (
           <button
@@ -944,9 +647,10 @@ function ShopTab() {
         ))}
       </div>
 
+      {/* Shop items */}
       <div className="grid sm:grid-cols-2 gap-3">
         {filtered.map((item, i) => {
-          const canAfford = balance >= item.price;
+          const canAfford = 1240 >= item.price;
           const justBought = bought === item.name;
           return (
             <motion.div
@@ -998,7 +702,7 @@ function ShopTab() {
   );
 }
 
-/* ── Weather Tab ─────────────────────────────────────────────────────── */
+/* ── Weather Tab (NEW) ───────────────────────────────────────────────── */
 
 function WeatherTab() {
   const { t } = useI18n();
@@ -1016,6 +720,7 @@ function WeatherTab() {
     <div>
       <TabHeader title={w.title} subtitle={w.subtitle} />
 
+      {/* Current weather — big card */}
       <div className="card-hairline rounded-xl p-6 mb-6 bg-gradient-to-br from-gold/10 to-transparent">
         <div className="flex items-center gap-4">
           <motion.div
@@ -1040,6 +745,7 @@ function WeatherTab() {
         </div>
       </div>
 
+      {/* Forecast */}
       <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground mb-3">{w.forecast}</p>
       <div className="grid grid-cols-5 gap-2 mb-6">
         {weatherItems.map((item, i) => {
@@ -1066,6 +772,7 @@ function WeatherTab() {
         })}
       </div>
 
+      {/* History */}
       <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground mb-3">{w.history}</p>
       <div className="space-y-2">
         {w.historyItems.map((h, i) => (
@@ -1079,76 +786,6 @@ function WeatherTab() {
             <span className="text-base">{h.emoji}</span>
             <span className="flex-1 text-foreground">{h.name}</span>
             <span className="font-mono text-[11px] text-muted-foreground tabular">{h.time}</span>
-          </motion.div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-/* ── Achievements Tab (NEW) ──────────────────────────────────────────── */
-
-function AchievementsTab() {
-  const { t } = useI18n();
-  const a = t.achievements;
-  const earnedCount = a.items.filter((i) => i.earned).length;
-
-  const rarityColor: Record<string, string> = {
-    Common: "text-muted-foreground",
-    Uncommon: "text-sage",
-    Rare: "text-terra-deep",
-    Epic: "text-gold-deep",
-  };
-
-  return (
-    <div>
-      <TabHeader
-        title={a.title.replace("playing, not paying.", "").trim() || "Achievements"}
-        subtitle={`${earnedCount} / ${a.items.length} ${a.earnedLabel}`}
-        action={
-          <div className="hidden sm:flex items-center gap-2">
-            <div className="h-1 w-20 rounded-full bg-secondary overflow-hidden">
-              <motion.div
-                className="h-full rounded-full bg-sage"
-                initial={{ width: 0 }}
-                animate={{ width: `${(earnedCount / a.items.length) * 100}%` }}
-                transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              />
-            </div>
-            <span className="font-mono text-[11px] text-muted-foreground tabular">
-              {Math.round((earnedCount / a.items.length) * 100)}%
-            </span>
-          </div>
-        }
-      />
-
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5">
-        {a.items.map((badge, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.3, delay: Math.min(i * 0.03, 0.3) }}
-            whileHover={{ y: -2 }}
-            className={cn(
-              "rounded-lg border p-4 text-center transition-colors cursor-pointer",
-              badge.earned
-                ? "border-border bg-background hover:border-sage/30"
-                : "border-dashed border-border bg-background/30"
-            )}
-          >
-            <div className={cn("text-3xl mb-2", !badge.earned && "grayscale opacity-30")}>
-              {badge.earned ? badge.emoji : "🔒"}
-            </div>
-            <p className={cn("text-xs font-medium leading-tight", badge.earned ? "text-foreground" : "text-muted-foreground")}>
-              {badge.name}
-            </p>
-            <p className="mt-1 text-[10px] text-muted-foreground text-pretty leading-tight">
-              {badge.desc}
-            </p>
-            <p className={cn("mt-2 font-mono text-[9px] uppercase tracking-wider", badge.earned ? "text-sage" : "text-muted-foreground/50")}>
-              {badge.earned ? a.earnedLabel : a.lockedLabel}
-            </p>
           </motion.div>
         ))}
       </div>

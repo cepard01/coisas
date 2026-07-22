@@ -1,0 +1,795 @@
+     1→"use client";
+     2→
+     3→import { motion, AnimatePresence } from "framer-motion";
+     4→import { useState, useEffect, useMemo } from "react";
+     5→import { useI18n } from "@/components/providers/I18nProvider";
+     6→import { useToast } from "@/components/providers/Toast";
+     7→import {
+     8→  SproutIcon,
+     9→  WalletIcon,
+    10→  ListIcon,
+    11→  BookIcon,
+    12→  BellIcon,
+    13→  GearIcon,
+    14→  SunIcon,
+    15→  DropletIcon,
+    16→  ClockIcon,
+    17→  SparkIcon,
+    18→  TrendingIcon,
+    19→  CheckIcon,
+    20→  LockIcon,
+    21→  DaisyMark,
+    22→  ShopIcon,
+    23→  WeatherIcon,
+    24→} from "@/components/icons";
+    25→import { cn } from "@/lib/utils";
+    26→
+    27→type Tab = "garden" | "wallet" | "missions" | "collection" | "shop" | "weather";
+    28→
+    29→export function DashboardLayout({
+    30→  tab,
+    31→  onTab,
+    32→  player,
+    33→}: {
+    34→  tab: Tab;
+    35→  onTab?: (t: Tab) => void;
+    36→  player?: { username: string; level: number };
+    37→}) {
+    38→  const { t } = useI18n();
+    39→  const d = t.panel.dashboard;
+    40→
+    41→  const tabs: { id: Tab; label: string; icon: React.ElementType }[] = [
+    42→    { id: "garden", label: d.tabs.garden, icon: SproutIcon },
+    43→    { id: "wallet", label: d.tabs.wallet, icon: WalletIcon },
+    44→    { id: "missions", label: d.tabs.missions, icon: ListIcon },
+    45→    { id: "collection", label: d.tabs.collection, icon: BookIcon },
+    46→    { id: "shop", label: d.tabs.shop, icon: ShopIcon },
+    47→    { id: "weather", label: d.tabs.weather, icon: WeatherIcon },
+    48→  ];
+    49→
+    50→  return (
+    51→    <div className="rounded-xl border border-border bg-card overflow-hidden">
+    52→      <div className="flex items-center justify-between px-4 py-2.5 border-b border-border bg-secondary/30">
+    53→        <span className="font-mono text-[11px] text-muted-foreground">{d.url}</span>
+    54→        <span className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+    55→          <span className="h-1.5 w-1.5 rounded-full bg-sage animate-pulse-dot" />
+    56→          {d.synced}
+    57→        </span>
+    58→      </div>
+    59→
+    60→      <div className="grid lg:grid-cols-[200px_1fr]">
+    61→        <aside className="border-b lg:border-b-0 lg:border-r border-border p-3">
+    62→          <div className="flex items-center gap-2.5 p-2 rounded-lg border border-border bg-background">
+    63→            <span className="grid place-items-center h-8 w-8 rounded-full bg-sage/10 shrink-0">
+    64→              <DaisyMark size={16} className="text-sage" />
+    65→            </span>
+    66→            <div className="min-w-0">
+    67→              <p className="text-sm font-medium text-foreground truncate">
+    68→                {player?.username ?? "gardener"}
+    69→              </p>
+    70→              <p className="text-[11px] text-muted-foreground">{t.userMenu.level} {player?.level ?? 7}</p>
+    71→            </div>
+    72→          </div>
+    73→
+    74→          <nav className="mt-3 space-y-0.5">
+    75→            {tabs.map((tb) => (
+    76→              <button
+    77→                key={tb.id}
+    78→                onClick={() => onTab?.(tb.id)}
+    79→                disabled={!onTab}
+    80→                className={cn(
+    81→                  "w-full flex items-center gap-2.5 rounded-md px-2.5 py-1.5 text-sm transition-colors text-left",
+    82→                  tab === tb.id
+    83→                    ? "bg-foreground text-background"
+    84→                    : "text-muted-foreground hover:text-foreground hover:bg-secondary/60",
+    85→                  !onTab && "cursor-default"
+    86→                )}
+    87→              >
+    88→                <tb.icon size={15} className="shrink-0" />
+    89→                {tb.label}
+    90→              </button>
+    91→            ))}
+    92→          </nav>
+    93→
+    94→          <div className="mt-4 pt-3 border-t border-border space-y-0.5">
+    95→            <button className="w-full flex items-center gap-2.5 rounded-md px-2.5 py-1.5 text-sm text-muted-foreground hover:text-foreground hover:bg-secondary/60 transition-colors text-left">
+    96→              <BellIcon size={15} className="shrink-0" /> {d.alerts}
+    97→            </button>
+    98→            <button className="w-full flex items-center gap-2.5 rounded-md px-2.5 py-1.5 text-sm text-muted-foreground hover:text-foreground hover:bg-secondary/60 transition-colors text-left">
+    99→              <GearIcon size={15} className="shrink-0" /> {d.settings}
+   100→            </button>
+   101→          </div>
+   102→        </aside>
+   103→
+   104→        <div className="p-5 sm:p-6 lg:p-8 overflow-hidden">
+   105→          <AnimatePresence mode="wait">
+   106→            <motion.div
+   107→              key={tab}
+   108→              initial={{ opacity: 0, y: 8 }}
+   109→              animate={{ opacity: 1, y: 0 }}
+   110→              exit={{ opacity: 0, y: -8 }}
+   111→              transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+   112→            >
+   113→              {tab === "garden" && <GardenTab />}
+   114→              {tab === "wallet" && <WalletTab />}
+   115→              {tab === "missions" && <MissionsTab />}
+   116→              {tab === "collection" && <CollectionTab />}
+   117→              {tab === "shop" && <ShopTab />}
+   118→              {tab === "weather" && <WeatherTab />}
+   119→            </motion.div>
+   120→          </AnimatePresence>
+   121→        </div>
+   122→      </div>
+   123→    </div>
+   124→  );
+   125→}
+   126→
+   127→function TabHeader({ title, subtitle, action }: { title: string; subtitle: string; action?: React.ReactNode }) {
+   128→  return (
+   129→    <div className="flex items-start justify-between gap-4 mb-7">
+   130→      <div>
+   131→        <h3 className="font-display text-2xl font-medium text-foreground">{title}</h3>
+   132→        <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p>
+   133→      </div>
+   134→      {action}
+   135→    </div>
+   136→  );
+   137→}
+   138→
+   139→function MiniStat({ icon: Icon, label, value }: { icon: React.ElementType; label: string; value: string }) {
+   140→  return (
+   141→    <div className="rounded-lg border border-border bg-background p-3">
+   142→      <Icon size={14} className="text-muted-foreground mb-2" />
+   143→      <p className="font-display text-base font-medium text-foreground tabular">{value}</p>
+   144→      <p className="text-[10px] text-muted-foreground">{label}</p>
+   145→    </div>
+   146→  );
+   147→}
+   148→
+   149→/* ── Garden Tab ──────────────────────────────────────────────────────── */
+   150→
+   151→function GardenTab() {
+   152→  const { t } = useI18n();
+   153→  const { toast } = useToast();
+   154→  const g = t.panel.dashboard.garden;
+   155→
+   156→  const [tick, setTick] = useState(0);
+   157→  useEffect(() => {
+   158→    const interval = setInterval(() => setTick((v) => v + 1), 2000);
+   159→    return () => clearInterval(interval);
+   160→  }, []);
+   161→
+   162→  const liveSlots = useMemo(() => {
+   163→    return g.slots.map((slot, i) => {
+   164→      const increment = tick * (0.3 + i * 0.1);
+   165→      const progress = Math.min(slot.progress + increment, 99);
+   166→      const remaining = Math.max(0, 100 - progress);
+   167→      const minutes = Math.max(1, Math.ceil(remaining * 0.2));
+   168→      return { ...slot, liveProgress: progress, liveEta: `~${minutes}m` };
+   169→    });
+   170→  }, [g.slots, tick]);
+   171→
+   172→  const nextReady = useMemo(() => {
+   173→    const times = liveSlots.map((s) => Math.max(0, 100 - s.liveProgress));
+   174→    const min = Math.min(...times);
+   175→    return `~${Math.ceil(min * 0.2)}m`;
+   176→  }, [liveSlots]);
+   177→
+   178→  const [harvested, setHarvested] = useState(false);
+   179→  const handleHarvestAll = () => {
+   180→    setHarvested(true);
+   181→    setTimeout(() => setHarvested(false), 2000);
+   182→    toast("Harvested 1 Sunflower · +400 🪙 +20 XP", "success");
+   183→  };
+   184→
+   185→  return (
+   186→    <div>
+   187→      <TabHeader
+   188→        title={g.title}
+   189→        subtitle={g.subtitle}
+   190→        action={
+   191→          <div className="flex items-center gap-2">
+   192→            <div className="hidden sm:flex items-center gap-2 rounded-full border border-border bg-background px-3 py-1.5">
+   193→              <SunIcon size={14} className="text-gold-deep" />
+   194→              <span className="text-xs font-medium text-foreground">{g.weather}</span>
+   195→              <span className="font-mono text-[10px] text-muted-foreground">×1.5</span>
+   196→            </div>
+   197→            <motion.button
+   198→              whileHover={{ scale: 1.03 }}
+   199→              whileTap={{ scale: 0.97 }}
+   200→              onClick={handleHarvestAll}
+   201→              className={cn(
+   202→                "inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-colors",
+   203→                harvested
+   204→                  ? "bg-sage text-white"
+   205→                  : "bg-foreground text-background hover:bg-foreground/90"
+   206→              )}
+   207→            >
+   208→              {harvested ? (
+   209→                <>
+   210→                  <CheckIcon size={13} /> +400 🪙 +20 XP
+   211→                </>
+   212→              ) : (
+   213→                <>🌻 {g.harvestNow}</>
+   214→              )}
+   215→            </motion.button>
+   216→          </div>
+   217→        }
+   218→      />
+   219→
+   220→      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mb-7">
+   221→        <MiniStat icon={SproutIcon} label={g.slotsUsed} value="4 / 6" />
+   222→        <MiniStat icon={DropletIcon} label={g.humidity} value="50%" />
+   223→        <MiniStat icon={ClockIcon} label={g.nextReady} value={nextReady} />
+   224→        <MiniStat icon={SparkIcon} label={g.mutationHint} value="✓" />
+   225→      </div>
+   226→
+   227→      <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground mb-3">
+   228→        {g.slotsLabel}
+   229→      </p>
+   230→      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+   231→        {liveSlots.map((slot, i) => (
+   232→          <DashSlot
+   233→            key={i}
+   234→            emoji={slot.emoji}
+   235→            name={slot.name}
+   236→            progress={slot.liveProgress}
+   237→            eta={slot.liveEta}
+   238→          />
+   239→        ))}
+   240→        <DashSlot emoji={g.readySlot.emoji} name={g.readySlot.name} progress={100} ready />
+   241→        <DashSlot empty />
+   242→        <DashSlot empty />
+   243→      </div>
+   244→
+   245→      <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground mt-7 mb-3">
+   246→        {g.activityLabel}
+   247→      </p>
+   248→      <div className="space-y-2.5">
+   249→        {g.activity.map((a, i) => (
+   250→          <ActivityRow key={i} time={a.time} text={a.text} tone={a.tone} />
+   251→        ))}
+   252→      </div>
+   253→    </div>
+   254→  );
+   255→}
+   256→
+   257→function DashSlot({
+   258→  emoji,
+   259→  name,
+   260→  progress,
+   261→  eta,
+   262→  ready,
+   263→  empty,
+   264→}: {
+   265→  emoji?: string;
+   266→  name?: string;
+   267→  progress?: number;
+   268→  eta?: string;
+   269→  ready?: boolean;
+   270→  empty?: boolean;
+   271→}) {
+   272→  const { t } = useI18n();
+   273→  const g = t.panel.dashboard.garden;
+   274→  const [hovered, setHovered] = useState(false);
+   275→
+   276→  if (empty) {
+   277→    return (
+   278→      <div className="rounded-lg border border-dashed border-border bg-background/30 p-3">
+   279→        <p className="font-mono text-[11px] text-muted-foreground/60">{g.empty}</p>
+   280→        <p className="mt-3 text-[11px] text-muted-foreground/50">{g.plantHere}</p>
+   281→      </div>
+   282→    );
+   283→  }
+   284→  return (
+   285→    <motion.div
+   286→      whileHover={{ y: -2 }}
+   287→      onHoverStart={() => setHovered(true)}
+   288→      onHoverEnd={() => setHovered(false)}
+   289→      className={cn(
+   290→        "rounded-lg border p-3 cursor-pointer transition-colors",
+   291→        ready ? "border-sage/40 bg-sage/[0.04]" : "border-border bg-background",
+   292→        hovered && "border-sage/30"
+   293→      )}
+   294→    >
+   295→      <div className="flex items-center justify-between">
+   296→        <motion.span
+   297→          animate={ready ? { scale: [1, 1.1, 1] } : {}}
+   298→          transition={{ duration: 2, repeat: Infinity }}
+   299→          className="text-lg"
+   300→        >
+   301→          {emoji}
+   302→        </motion.span>
+   303→        <span className={cn("font-mono text-[9px] uppercase tracking-wider", ready ? "text-sage" : "text-muted-foreground")}>
+   304→          {ready ? g.ready : g.growing}
+   305→        </span>
+   306→      </div>
+   307→      <p className="mt-1.5 text-sm font-medium text-foreground">{name}</p>
+   308→      {ready ? (
+   309→        <p className="mt-1 text-[11px] text-sage font-medium">{g.harvestNow}</p>
+   310→      ) : (
+   311→        <>
+   312→          <div className="mt-1.5 h-0.5 w-full rounded-full bg-secondary overflow-hidden">
+   313→            <motion.div
+   314→              className="h-full rounded-full bg-sage-soft"
+   315→              animate={{ width: `${progress}%` }}
+   316→              transition={{ duration: 0.5, ease: "easeOut" }}
+   317→            />
+   318→          </div>
+   319→          <p className="mt-1 font-mono text-[10px] text-muted-foreground tabular">{eta}</p>
+   320→        </>
+   321→      )}
+   322→    </motion.div>
+   323→  );
+   324→}
+   325→
+   326→function ActivityRow({ time, text, tone }: { time: string; text: string; tone: "sage" | "sky" | "gold" | "ink" }) {
+   327→  const tones = { sage: "bg-sage", sky: "bg-sky-soft", gold: "bg-gold", ink: "bg-foreground/30" };
+   328→  return (
+   329→    <div className="flex items-start gap-3 text-sm">
+   330→      <span className={cn("h-1.5 w-1.5 rounded-full mt-1.5 shrink-0", tones[tone])} />
+   331→      <p className="flex-1 text-foreground/90">{text}</p>
+   332→      <span className="font-mono text-[11px] text-muted-foreground shrink-0 tabular">{time}</span>
+   333→    </div>
+   334→  );
+   335→}
+   336→
+   337→/* ── Wallet Tab ──────────────────────────────────────────────────────── */
+   338→
+   339→function WalletTab() {
+   340→  const { t } = useI18n();
+   341→  const w = t.panel.dashboard.wallet;
+   342→
+   343→  const [balance, setBalance] = useState(0);
+   344→  useEffect(() => {
+   345→    const target = 1240;
+   346→    const duration = 1200;
+   347→    const start = performance.now();
+   348→    let raf: number;
+   349→    const tick = (now: number) => {
+   350→      const elapsed = now - start;
+   351→      const progress = Math.min(elapsed / duration, 1);
+   352→      const eased = 1 - Math.pow(1 - progress, 3);
+   353→      setBalance(Math.round(target * eased));
+   354→      if (progress < 1) raf = requestAnimationFrame(tick);
+   355→    };
+   356→    raf = requestAnimationFrame(tick);
+   357→    return () => cancelAnimationFrame(raf);
+   358→  }, []);
+   359→
+   360→  return (
+   361→    <div>
+   362→      <TabHeader title={w.title} subtitle={w.subtitle} />
+   363→
+   364→      <div className="border-b border-border pb-6 mb-6">
+   365→        <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">{w.balance}</p>
+   366→        <div className="mt-1 flex items-baseline gap-3">
+   367→          <p className="font-display text-5xl font-medium text-foreground marker-num tabular">
+   368→            {balance.toLocaleString()}
+   369→          </p>
+   370→          <span className="text-sm text-muted-foreground">{w.daisies}</span>
+   371→        </div>
+   372→        <p className="mt-2 text-xs text-sage flex items-center gap-1">
+   373→          <TrendingIcon size={12} /> {w.thisWeek}
+   374→        </p>
+   375→      </div>
+   376→
+   377→      {/* Sparkline chart */}
+   378→      <div className="mb-6">
+   379→        <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground mb-2">7-day balance</p>
+   380→        <Sparkline />
+   381→      </div>
+   382→
+   383→      <div className="mb-6">
+   384→        <div className="flex items-baseline justify-between mb-2">
+   385→          <div>
+   386→            <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">{w.level}</p>
+   387→            <p className="font-display text-lg font-medium text-foreground">{w.levelName}</p>
+   388→          </div>
+   389→          <span className="font-mono text-sm text-muted-foreground tabular">{w.xpToNext}</span>
+   390→        </div>
+   391→        <div className="h-1.5 w-full rounded-full bg-secondary overflow-hidden">
+   392→          <motion.div
+   393→            className="h-full rounded-full bg-sage"
+   394→            initial={{ width: 0 }}
+   395→            animate={{ width: "71%" }}
+   396→            transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+   397→          />
+   398→        </div>
+   399→        <p className="mt-2 text-xs text-muted-foreground">{w.unlocks}</p>
+   400→      </div>
+   401→
+   402→      <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground mb-3">
+   403→        {w.transactions}
+   404→      </p>
+   405→      <div className="divide-y divide-border">
+   406→        {w.transactionsRows.map((tx, i) => (
+   407→          <TxRow key={i} {...tx} />
+   408→        ))}
+   409→      </div>
+   410→    </div>
+   411→  );
+   412→}
+   413→
+   414→function Sparkline() {
+   415→  const data = [820, 950, 780, 1100, 980, 1150, 1240];
+   416→  const max = Math.max(...data);
+   417→  const min = Math.min(...data);
+   418→  const range = max - min || 1;
+   419→  const points = data.map((v, i) => {
+   420→    const x = (i / (data.length - 1)) * 280;
+   421→    const y = 40 - ((v - min) / range) * 35;
+   422→    return `${x},${y}`;
+   423→  }).join(" ");
+   424→
+   425→  return (
+   426→    <svg viewBox="0 0 280 50" className="w-full h-12" preserveAspectRatio="none">
+   427→      <defs>
+   428→        <linearGradient id="spark-grad" x1="0" y1="0" x2="0" y2="1">
+   429→          <stop offset="0%" stopColor="oklch(0.46 0.06 145)" stopOpacity="0.2" />
+   430→          <stop offset="100%" stopColor="oklch(0.46 0.06 145)" stopOpacity="0" />
+   431→        </linearGradient>
+   432→      </defs>
+   433→      <motion.polyline
+   434→        points={`0,50 ${points} 280,50`}
+   435→        fill="url(#spark-grad)"
+   436→        initial={{ opacity: 0 }}
+   437→        animate={{ opacity: 1 }}
+   438→        transition={{ duration: 0.5, delay: 0.5 }}
+   439→      />
+   440→      <motion.polyline
+   441→        points={points}
+   442→        fill="none"
+   443→        stroke="oklch(0.46 0.06 145)"
+   444→        strokeWidth="2"
+   445→        strokeLinecap="round"
+   446→        strokeLinejoin="round"
+   447→        initial={{ pathLength: 0 }}
+   448→        animate={{ pathLength: 1 }}
+   449→        transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+   450→      />
+   451→      {data.map((v, i) => {
+   452→        const x = (i / (data.length - 1)) * 280;
+   453→        const y = 40 - ((v - min) / range) * 35;
+   454→        return (
+   455→          <motion.circle
+   456→            key={i}
+   457→            cx={x}
+   458→            cy={y}
+   459→            r="2"
+   460→            fill="oklch(0.46 0.06 145)"
+   461→            initial={{ scale: 0 }}
+   462→            animate={{ scale: 1 }}
+   463→            transition={{ duration: 0.3, delay: 0.8 + i * 0.05 }}
+   464→          />
+   465→        );
+   466→      })}
+   467→    </svg>
+   468→  );
+   469→}
+   470→
+   471→function TxRow({ icon, label, amount, time, positive }: { icon: string; label: string; amount: string; time: string; positive?: boolean }) {
+   472→  return (
+   473→    <div className="flex items-center gap-3 py-3">
+   474→      <span className="grid place-items-center h-7 w-7 rounded-md bg-secondary text-xs shrink-0">{icon}</span>
+   475→      <div className="flex-1 min-w-0">
+   476→        <p className="text-sm text-foreground truncate">{label}</p>
+   477→        <p className="font-mono text-[11px] text-muted-foreground tabular">{time}</p>
+   478→      </div>
+   479→      <span className={cn("font-mono text-sm font-medium tabular", positive ? "text-sage" : "text-foreground")}>
+   480→        {amount}
+   481→      </span>
+   482→    </div>
+   483→  );
+   484→}
+   485→
+   486→/* ── Missions Tab ────────────────────────────────────────────────────── */
+   487→
+   488→function MissionsTab() {
+   489→  const { t } = useI18n();
+   490→  const m = t.panel.dashboard.missions;
+   491→  return (
+   492→    <div>
+   493→      <TabHeader
+   494→        title={m.title}
+   495→        subtitle={m.subtitle}
+   496→        action={
+   497→          <span className="hidden sm:inline-flex items-center gap-1.5 font-mono text-[11px] text-muted-foreground">
+   498→            <TrendingIcon size={13} className="text-sage" /> {m.streak}
+   499→          </span>
+   500→        }
+   501→      />
+   502→
+   503→      <div className="divide-y divide-border">
+   504→        {m.items.map((item, i) => (
+   505→          <div key={i} className="flex items-center gap-4 py-3.5">
+   506→            <span className={cn(
+   507→              "grid place-items-center h-7 w-7 rounded-full shrink-0 text-xs",
+   508→              item.done ? "bg-sage text-white" : item.locked ? "bg-secondary text-muted-foreground/50" : "bg-secondary text-muted-foreground"
+   509→            )}>
+   510→              {item.done ? <CheckIcon size={13} /> : item.locked ? <LockIcon size={12} /> : i + 1}
+   511→            </span>
+   512→            <div className="flex-1 min-w-0">
+   513→              <div className="flex items-center gap-2">
+   514→                <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">{item.type}</span>
+   515→                {item.progress && <span className="font-mono text-[10px] text-foreground tabular">{item.progress}</span>}
+   516→              </div>
+   517→              <p className={cn("text-sm mt-0.5", item.done ? "text-muted-foreground line-through" : "text-foreground font-medium")}>
+   518→                {item.title}
+   519→              </p>
+   520→            </div>
+   521→            <span className="text-xs text-muted-foreground shrink-0">{item.reward}</span>
+   522→          </div>
+   523→        ))}
+   524→      </div>
+   525→    </div>
+   526→  );
+   527→}
+   528→
+   529→/* ── Collection Tab ──────────────────────────────────────────────────── */
+   530→
+   531→function CollectionTab() {
+   532→  const { t } = useI18n();
+   533→  const c = t.panel.dashboard.collection;
+   534→  const rarityColor: Record<string, string> = {
+   535→    Common: "text-muted-foreground",
+   536→    Uncommon: "text-sage",
+   537→    Rare: "text-terra-deep",
+   538→    Epic: "text-gold-deep",
+   539→  };
+   540→  return (
+   541→    <div>
+   542→      <TabHeader
+   543→        title={c.title}
+   544→        subtitle={c.subtitle}
+   545→        action={
+   546→          <div className="hidden sm:flex items-center gap-2">
+   547→            <div className="h-1 w-20 rounded-full bg-secondary overflow-hidden">
+   548→              <motion.div
+   549→                className="h-full rounded-full bg-terra"
+   550→                initial={{ width: 0 }}
+   551→                animate={{ width: "50%" }}
+   552→                transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+   553→              />
+   554→            </div>
+   555→            <span className="font-mono text-[11px] text-muted-foreground tabular">50%</span>
+   556→          </div>
+   557→        }
+   558→      />
+   559→
+   560→      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5">
+   561→        {c.entries.map((e, i) => {
+   562→          const rarityLabel = t.rarity[e.rarity as keyof typeof t.rarity] ?? e.rarity;
+   563→          return (
+   564→            <motion.div
+   565→              key={i}
+   566→              whileHover={{ y: -2 }}
+   567→              className={cn(
+   568→                "rounded-lg border p-4 text-center transition-colors cursor-pointer",
+   569→                e.found ? "border-border bg-background hover:border-sage/30" : "border-dashed border-border bg-background/30"
+   570→              )}
+   571→            >
+   572→              <div className={cn("text-2xl mb-2", !e.found && "opacity-25")}>
+   573→                {e.found ? e.emoji : "?"}
+   574→              </div>
+   575→              <p className={cn("text-sm font-medium", e.found ? "text-foreground" : "text-muted-foreground")}>
+   576→                {e.found ? e.name : c.unknown}
+   577→              </p>
+   578→              <p className={cn("font-mono text-[9px] uppercase tracking-wider mt-0.5", rarityColor[e.rarity])}>
+   579→                {rarityLabel}
+   580→              </p>
+   581→              {e.found ? (
+   582→                <p className="mt-2 font-mono text-[11px] text-muted-foreground tabular">×{e.count}</p>
+   583→              ) : (
+   584→                <p className="mt-2 text-[10px] text-muted-foreground italic leading-tight">{e.hint}</p>
+   585→              )}
+   586→            </motion.div>
+   587→          );
+   588→        })}
+   589→      </div>
+   590→    </div>
+   591→  );
+   592→}
+   593→
+   594→/* ── Shop Tab (NEW) ──────────────────────────────────────────────────── */
+   595→
+   596→function ShopTab() {
+   597→  const { t } = useI18n();
+   598→  const { toast } = useToast();
+   599→  const s = t.panel.dashboard.shop;
+   600→  const [filter, setFilter] = useState<string>("all");
+   601→  const [bought, setBought] = useState<string | null>(null);
+   602→
+   603→  const categories = [
+   604→    { id: "all", label: "All" },
+   605→    { id: "seeds", label: s.categories.seeds },
+   606→    { id: "tools", label: s.categories.tools },
+   607→    { id: "consumables", label: s.categories.consumables },
+   608→    { id: "decor", label: s.categories.decor },
+   609→  ];
+   610→
+   611→  const filtered = filter === "all" ? s.items : s.items.filter((i) => i.category === filter);
+   612→
+   613→  const handleBuy = (name: string, price: number) => {
+   614→    setBought(name);
+   615→    setTimeout(() => setBought(null), 1500);
+   616→    toast(`Bought ${name} for ${price} Daisies`, "success");
+   617→  };
+   618→
+   619→  return (
+   620→    <div>
+   621→      <TabHeader
+   622→        title={s.title}
+   623→        subtitle={s.subtitle}
+   624→        action={
+   625→          <div className="flex items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1.5">
+   626→            <span className="text-sm">🪙</span>
+   627→            <span className="font-mono text-xs font-medium text-foreground tabular">1,240</span>
+   628→          </div>
+   629→        }
+   630→      />
+   631→
+   632→      {/* Category filter */}
+   633→      <div className="flex flex-wrap gap-1.5 mb-5">
+   634→        {categories.map((cat) => (
+   635→          <button
+   636→            key={cat.id}
+   637→            onClick={() => setFilter(cat.id)}
+   638→            className={cn(
+   639→              "rounded-full border px-3 py-1 text-xs font-medium transition-all",
+   640→              filter === cat.id
+   641→                ? "border-foreground bg-foreground text-background"
+   642→                : "border-border bg-card text-muted-foreground hover:text-foreground hover:border-foreground/30"
+   643→            )}
+   644→          >
+   645→            {cat.label}
+   646→          </button>
+   647→        ))}
+   648→      </div>
+   649→
+   650→      {/* Shop items */}
+   651→      <div className="grid sm:grid-cols-2 gap-3">
+   652→        {filtered.map((item, i) => {
+   653→          const canAfford = 1240 >= item.price;
+   654→          const justBought = bought === item.name;
+   655→          return (
+   656→            <motion.div
+   657→              key={i}
+   658→              layout
+   659→              initial={{ opacity: 0, scale: 0.95 }}
+   660→              animate={{ opacity: 1, scale: 1 }}
+   661→              transition={{ duration: 0.2, delay: Math.min(i * 0.03, 0.2) }}
+   662→              className="card-hairline rounded-lg p-4 flex items-center gap-3"
+   663→            >
+   664→              <span className="grid place-items-center h-12 w-12 rounded-lg bg-secondary text-2xl shrink-0">
+   665→                {item.emoji}
+   666→              </span>
+   667→              <div className="flex-1 min-w-0">
+   668→                <div className="flex items-center gap-2">
+   669→                  <p className="text-sm font-medium text-foreground truncate">{item.name}</p>
+   670→                  {item.owned > 0 && (
+   671→                    <span className="font-mono text-[10px] text-muted-foreground bg-secondary px-1.5 py-0.5 rounded">
+   672→                      {s.owned}: {item.owned}
+   673→                    </span>
+   674→                  )}
+   675→                </div>
+   676→                <p className="text-[11px] text-muted-foreground text-pretty mt-0.5">{item.desc}</p>
+   677→              </div>
+   678→              <div className="shrink-0 text-right">
+   679→                <p className="font-mono text-sm font-medium text-foreground tabular">🪙 {item.price}</p>
+   680→                <motion.button
+   681→                  whileHover={canAfford ? { scale: 1.05 } : {}}
+   682→                  whileTap={canAfford ? { scale: 0.95 } : {}}
+   683→                  onClick={() => canAfford && handleBuy(item.name, item.price)}
+   684→                  disabled={!canAfford}
+   685→                  className={cn(
+   686→                    "mt-1 inline-flex items-center gap-1 rounded-md px-2 py-1 text-[11px] font-medium transition-colors",
+   687→                    justBought
+   688→                      ? "bg-sage text-white"
+   689→                      : canAfford
+   690→                        ? "bg-foreground text-background hover:bg-foreground/90"
+   691→                        : "bg-secondary text-muted-foreground cursor-not-allowed"
+   692→                  )}
+   693→                >
+   694→                  {justBought ? <><CheckIcon size={11} /> +1</> : canAfford ? s.buy : s.notEnough}
+   695→                </motion.button>
+   696→              </div>
+   697→            </motion.div>
+   698→          );
+   699→        })}
+   700→      </div>
+   701→    </div>
+   702→  );
+   703→}
+   704→
+   705→/* ── Weather Tab (NEW) ───────────────────────────────────────────────── */
+   706→
+   707→function WeatherTab() {
+   708→  const { t } = useI18n();
+   709→  const w = t.panel.dashboard.weather;
+   710→  const weatherItems = t.howItWorks.weather.items;
+   711→
+   712→  const WEATHER_COLOR: Record<string, string> = {
+   713→    "sun": "from-gold/15",
+   714→    "sky": "from-sky-soft/20",
+   715→    "terra": "from-terra-deep/12",
+   716→    "snow": "from-sky-soft/12",
+   717→  };
+   718→
+   719→  return (
+   720→    <div>
+   721→      <TabHeader title={w.title} subtitle={w.subtitle} />
+   722→
+   723→      {/* Current weather — big card */}
+   724→      <div className="card-hairline rounded-xl p-6 mb-6 bg-gradient-to-br from-gold/10 to-transparent">
+   725→        <div className="flex items-center gap-4">
+   726→          <motion.div
+   727→            animate={{ scale: [1, 1.08, 1] }}
+   728→            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+   729→            className="text-5xl"
+   730→          >
+   731→            {weatherItems[0].emoji}
+   732→          </motion.div>
+   733→          <div className="flex-1">
+   734→            <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">{w.current.label}</p>
+   735→            <p className="font-display text-2xl font-medium text-foreground">{weatherItems[0].name}</p>
+   736→            <p className="mt-1 text-sm text-muted-foreground">{w.current.effect}</p>
+   737→          </div>
+   738→        </div>
+   739→        <div className="mt-4 pt-4 border-t border-border">
+   740→          <p className="text-sm text-foreground text-pretty">{w.current.advice}</p>
+   741→        </div>
+   742→        <div className="mt-4 flex items-center justify-between">
+   743→          <span className="font-mono text-[11px] text-muted-foreground">{w.next}</span>
+   744→          <span className="font-mono text-xs text-sage tabular">{w.nextTime}</span>
+   745→        </div>
+   746→      </div>
+   747→
+   748→      {/* Forecast */}
+   749→      <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground mb-3">{w.forecast}</p>
+   750→      <div className="grid grid-cols-5 gap-2 mb-6">
+   751→        {weatherItems.map((item, i) => {
+   752→          const colorKey = ["sun", "sky", "terra", "snow"][i] ?? "sky";
+   753→          return (
+   754→            <motion.div
+   755→              key={i}
+   756→              initial={{ opacity: 0, y: 10 }}
+   757→              animate={{ opacity: 1, y: 0 }}
+   758→              transition={{ duration: 0.3, delay: i * 0.05 }}
+   759→              className={cn(
+   760→                "rounded-lg border p-3 text-center bg-gradient-to-br to-transparent",
+   761→                i === 0 ? "border-foreground/30 bg-secondary/40" : "border-border",
+   762→                WEATHER_COLOR[colorKey]
+   763→              )}
+   764→            >
+   765→              <div className="text-xl mb-1">{item.emoji}</div>
+   766→              <p className="text-[10px] font-medium text-foreground">{item.name}</p>
+   767→              <p className="font-mono text-[9px] text-muted-foreground mt-0.5">
+   768→                {i === 0 ? "now" : `+${i * 4}h`}
+   769→              </p>
+   770→            </motion.div>
+   771→          );
+   772→        })}
+   773→      </div>
+   774→
+   775→      {/* History */}
+   776→      <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground mb-3">{w.history}</p>
+   777→      <div className="space-y-2">
+   778→        {w.historyItems.map((h, i) => (
+   779→          <motion.div
+   780→            key={i}
+   781→            initial={{ opacity: 0, x: -10 }}
+   782→            animate={{ opacity: 1, x: 0 }}
+   783→            transition={{ duration: 0.3, delay: i * 0.05 }}
+   784→            className="flex items-center gap-3 text-sm"
+   785→          >
+   786→            <span className="text-base">{h.emoji}</span>
+   787→            <span className="flex-1 text-foreground">{h.name}</span>
+   788→            <span className="font-mono text-[11px] text-muted-foreground tabular">{h.time}</span>
+   789→          </motion.div>
+   790→        ))}
+   791→      </div>
+   792→    </div>
+   793→  );
+   794→}
+   795→

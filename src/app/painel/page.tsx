@@ -2,40 +2,28 @@
 
 import { useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
-import { useI18n } from "@/components/providers/I18nProvider";
-import { AuthModal } from "@/components/modals/AuthModal";
-import { PageHeader } from "@/components/layout/PageHeader";
-import { Reveal } from "@/components/utils/Reveal";
-import { DashboardLayout } from "@/components/dashboard/Dashboard";
-import { LockIcon, ArrowUpRightIcon } from "@/components/icons";
-import { Breadcrumb } from "@/components/layout/Breadcrumb";
+import { AuthModal } from "@/components/site/AuthModal";
+import { PageHeader } from "@/components/site/PageHeader";
+import { Reveal } from "@/components/site/Reveal";
+import { DashboardLayout } from "@/components/site/Dashboard";
+import { LockIcon, ArrowUpRightIcon } from "@/components/site/icons";
 
-type Tab = "garden" | "wallet" | "missions" | "collection" | "shop" | "weather" | "achievements";
-
-export default function PanelPage() {
+export default function PainelPage() {
   const { player, signIn, hydrated } = useAuth();
-  const { t } = useI18n();
   const [authOpen, setAuthOpen] = useState(false);
-  const [tab, setTab] = useState<Tab>("garden");
+  const [tab, setTab] = useState<"garden" | "wallet" | "missions" | "collection">("garden");
 
   return (
     <>
-      <Breadcrumb
-        items={[
-          { label: "Home", href: "/" },
-          { label: t.nav.panel },
-        ]}
-      />
       <PageHeader
-        number={t.panel.number}
-        eyebrow={t.panel.eyebrow}
+        number="03"
+        eyebrow="Seu painel no site"
         title={
           <>
-            {t.panel.title}{" "}
-            <em className="font-normal text-sage">{t.panel.highlight}</em>
+            Seu jardim, <em className="font-normal text-sage">no navegador.</em>
           </>
         }
-        description={t.panel.description}
+        description="Conecte sua conta do Discord e acompanhe seu jardim pelo site — sem precisar abrir o app. Veja suas plantas, carteira, missões e coleção em um painel limpo."
       />
 
       <section className="py-16 md:py-24">
@@ -55,16 +43,21 @@ export default function PanelPage() {
         <div className="mx-auto max-w-4xl px-5 sm:px-6">
           <Reveal>
             <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-sage font-semibold mb-4">
-              {t.panel.whatYouCanDo.eyebrow}
+              O que você faz aqui
             </p>
             <h2 className="font-display text-2xl sm:text-3xl font-medium text-foreground mb-8 text-balance">
-              {t.panel.whatYouCanDo.title}
+              Tudo que está no Discord, também no site.
             </h2>
           </Reveal>
 
           <div className="grid sm:grid-cols-2 gap-4">
-            {t.panel.whatYouCanDo.items.map((item, i) => (
-              <Reveal key={i} delay={i * 0.05}>
+            {[
+              { emoji: "🌼", title: "Veja seu jardim", body: "Slots, crescimento, umidade e clima — tudo em um olhar." },
+              { emoji: "🪙", title: "Acompanhe sua carteira", body: "Saldo de Daisies, XP, nível e transações recentes." },
+              { emoji: "🎯", title: "Siga suas missões", body: "Tutorial, missões diárias e semanais com progresso." },
+              { emoji: "📚", title: "Complete sua coleção", body: "Flores descobertas e bloqueadas com dicas de como achar." },
+            ].map((item, i) => (
+              <Reveal key={item.title} delay={i * 0.05}>
                 <div className="card-hairline rounded-xl p-5">
                   <div className="flex items-start gap-3">
                     <span className="text-2xl shrink-0">{item.emoji}</span>
@@ -86,7 +79,6 @@ export default function PanelPage() {
 }
 
 function LockedDashboard({ onSignIn }: { onSignIn: () => void }) {
-  const { t } = useI18n();
   return (
     <div className="relative rounded-xl border border-border bg-card overflow-hidden">
       <div className="absolute inset-0 overflow-hidden" aria-hidden>
@@ -100,16 +92,17 @@ function LockedDashboard({ onSignIn }: { onSignIn: () => void }) {
             <LockIcon size={20} className="text-muted-foreground" />
           </span>
           <h3 className="mt-5 font-display text-2xl font-medium text-foreground">
-            {t.panel.locked.title}
+            Conecte para ver
           </h3>
           <p className="mt-2 text-sm text-muted-foreground max-w-md text-pretty">
-            {t.panel.locked.body}
+            Entre com Discord (mockup — nenhum dado real é enviado) para explorar como ficaria
+            seu painel no site.
           </p>
           <button
             onClick={onSignIn}
             className="mt-6 inline-flex items-center gap-2 rounded-lg bg-foreground text-background px-5 py-2.5 text-sm font-medium hover:bg-foreground/90 transition-colors"
           >
-            {t.panel.locked.button}
+            Entrar com Discord
             <ArrowUpRightIcon size={15} />
           </button>
         </Reveal>
