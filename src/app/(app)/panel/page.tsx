@@ -55,6 +55,8 @@ export default function PanelPage() {
           </div>
         </div>
       ) : null}
+
+      <AuthModal open={authOpen} onOpenChange={setAuthOpen} onAuthenticated={signIn} />
     </div>
   );
 }
