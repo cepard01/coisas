@@ -4,11 +4,9 @@ import { useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { useI18n } from "@/components/providers/I18nProvider";
 import { AuthModal } from "@/components/modals/AuthModal";
-import { PageHeader } from "@/components/layout/PageHeader";
 import { Reveal } from "@/components/utils/Reveal";
 import { DashboardLayout } from "@/components/dashboard/Dashboard";
 import { LockIcon, ArrowUpRightIcon } from "@/components/icons";
-import { Breadcrumb } from "@/components/layout/Breadcrumb";
 
 type Tab = "garden" | "wallet" | "missions" | "collection" | "shop" | "weather" | "achievements";
 
@@ -19,40 +17,18 @@ export default function PanelPage() {
   const [tab, setTab] = useState<Tab>("garden");
 
   return (
-    <>
-      <Breadcrumb
-        items={[
-          { label: "Home", href: "/" },
-          { label: t.nav.panel },
-        ]}
-      />
-      <PageHeader
-        number={t.panel.number}
-        eyebrow={t.panel.eyebrow}
-        title={
-          <>
-            {t.panel.title}{" "}
-            <em className="font-normal text-sage">{t.panel.highlight}</em>
-          </>
-        }
-        description={t.panel.description}
-      />
+    <div className="max-w-6xl mx-auto">
+      {hydrated && player ? (
+        <Reveal>
+          <DashboardLayout tab={tab} onTab={setTab} player={player} />
+        </Reveal>
+      ) : (
+        <LockedDashboard onSignIn={() => setAuthOpen(true)} />
+      )}
 
-      <section className="py-16 md:py-24">
-        <div className="mx-auto max-w-6xl px-5 sm:px-6">
-          {hydrated && player ? (
-            <Reveal>
-              <DashboardLayout tab={tab} onTab={setTab} player={player} />
-            </Reveal>
-          ) : (
-            <LockedDashboard onSignIn={() => setAuthOpen(true)} />
-          )}
-        </div>
-      </section>
-
-      {/* What you can do */}
-      <section className="py-16 md:py-24 border-t border-border">
-        <div className="mx-auto max-w-4xl px-5 sm:px-6">
+      {/* What you can do — only when not logged in */}
+      {!hydrated || !player ? (
+        <div className="mt-8">
           <Reveal>
             <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-sage font-semibold mb-4">
               {t.panel.whatYouCanDo.eyebrow}
@@ -78,10 +54,8 @@ export default function PanelPage() {
             ))}
           </div>
         </div>
-      </section>
-
-      <AuthModal open={authOpen} onOpenChange={setAuthOpen} onAuthenticated={signIn} />
-    </>
+      ) : null}
+    </div>
   );
 }
 

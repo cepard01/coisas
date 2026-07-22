@@ -2,15 +2,12 @@ import type { Metadata } from "next";
 import { Inter, Fraunces, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
-import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
 import { I18nProvider } from "@/components/providers/I18nProvider";
 import { LangUpdater } from "@/components/providers/LangUpdater";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { ScrollProgress } from "@/components/utils/Animations";
 import { CommandPalette } from "@/components/modals/CommandPalette";
 import { ToastProvider } from "@/components/providers/Toast";
-import { PageTransition } from "@/components/layout/PageTransition";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -77,13 +74,7 @@ export default function RootLayout({
               <LangUpdater />
               <ScrollProgress />
               <CommandPalette />
-              <div className="min-h-screen flex flex-col">
-                <Navbar />
-                <main className="flex-1">
-                  <PageTransition>{children}</PageTransition>
-                </main>
-                <Footer />
-              </div>
+              {children}
               <Toaster />
             </ToastProvider>
           </I18nProvider>
