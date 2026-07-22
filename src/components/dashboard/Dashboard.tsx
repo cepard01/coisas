@@ -29,99 +29,51 @@ type Tab = "garden" | "wallet" | "missions" | "collection" | "shop" | "weather" 
 
 export function DashboardLayout({
   tab,
-  onTab,
   player,
 }: {
   tab: Tab;
-  onTab?: (t: Tab) => void;
   player?: { username: string; level: number };
 }) {
   const { t } = useI18n();
   const d = t.panel.dashboard;
 
-  const tabs: { id: Tab; label: string; icon: React.ElementType }[] = [
-    { id: "garden", label: d.tabs.garden, icon: SproutIcon },
-    { id: "wallet", label: d.tabs.wallet, icon: WalletIcon },
-    { id: "missions", label: d.tabs.missions, icon: ListIcon },
-    { id: "collection", label: d.tabs.collection, icon: BookIcon },
-    { id: "shop", label: d.tabs.shop, icon: ShopIcon },
-    { id: "weather", label: d.tabs.weather, icon: WeatherIcon },
-    { id: "achievements", label: "Badges", icon: SparkIcon },
-  ];
-
   return (
     <div className="rounded-xl border border-border bg-card overflow-hidden">
+      {/* Status bar */}
       <div className="flex items-center justify-between px-4 py-2.5 border-b border-border bg-secondary/30">
         <span className="font-mono text-[11px] text-muted-foreground">{d.url}</span>
-        <span className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
-          <span className="h-1.5 w-1.5 rounded-full bg-sage animate-pulse-dot" />
-          {d.synced}
-        </span>
+        <div className="flex items-center gap-3">
+          {player && (
+            <span className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+              {t.userMenu.level} {player.level}
+            </span>
+          )}
+          <span className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+            <span className="h-1.5 w-1.5 rounded-full bg-sage animate-pulse-dot" />
+            {d.synced}
+          </span>
+        </div>
       </div>
 
-      <div className="grid lg:grid-cols-[200px_1fr]">
-        <aside className="border-b lg:border-b-0 lg:border-r border-border p-3 overflow-y-auto max-h-[60vh] lg:max-h-none scrollbar-soft">
-          <div className="flex items-center gap-2.5 p-2 rounded-lg border border-border bg-background">
-            <span className="grid place-items-center h-8 w-8 rounded-full bg-sage/10 shrink-0">
-              <DaisyMark size={16} className="text-sage" />
-            </span>
-            <div className="min-w-0">
-              <p className="text-sm font-medium text-foreground truncate">
-                {player?.username ?? "gardener"}
-              </p>
-              <p className="text-[11px] text-muted-foreground">{t.userMenu.level} {player?.level ?? 7}</p>
-            </div>
-          </div>
-
-          <nav className="mt-3 space-y-0.5">
-            {tabs.map((tb) => (
-              <button
-                key={tb.id}
-                onClick={() => onTab?.(tb.id)}
-                disabled={!onTab}
-                className={cn(
-                  "w-full flex items-center gap-2.5 rounded-md px-2.5 py-1.5 text-sm transition-colors text-left",
-                  tab === tb.id
-                    ? "bg-foreground text-background"
-                    : "text-muted-foreground hover:text-foreground hover:bg-secondary/60",
-                  !onTab && "cursor-default"
-                )}
-              >
-                <tb.icon size={15} className="shrink-0" />
-                {tb.label}
-              </button>
-            ))}
-          </nav>
-
-          <div className="mt-4 pt-3 border-t border-border space-y-0.5">
-            <button className="w-full flex items-center gap-2.5 rounded-md px-2.5 py-1.5 text-sm text-muted-foreground hover:text-foreground hover:bg-secondary/60 transition-colors text-left">
-              <BellIcon size={15} className="shrink-0" /> {d.alerts}
-            </button>
-            <button className="w-full flex items-center gap-2.5 rounded-md px-2.5 py-1.5 text-sm text-muted-foreground hover:text-foreground hover:bg-secondary/60 transition-colors text-left">
-              <GearIcon size={15} className="shrink-0" /> {d.settings}
-            </button>
-          </div>
-        </aside>
-
-        <div className="p-5 sm:p-6 lg:p-8 overflow-hidden">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={tab}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            >
-              {tab === "garden" && <GardenTab />}
-              {tab === "wallet" && <WalletTab />}
-              {tab === "missions" && <MissionsTab />}
-              {tab === "collection" && <CollectionTab />}
-              {tab === "shop" && <ShopTab />}
-              {tab === "weather" && <WeatherTab />}
-              {tab === "achievements" && <AchievementsTab />}
-            </motion.div>
-          </AnimatePresence>
-        </div>
+      {/* Tab content — no sidebar, the app layout provides navigation */}
+      <div className="p-5 sm:p-6 lg:p-8 overflow-hidden">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={tab}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          >
+            {tab === "garden" && <GardenTab />}
+            {tab === "wallet" && <WalletTab />}
+            {tab === "missions" && <MissionsTab />}
+            {tab === "collection" && <CollectionTab />}
+            {tab === "shop" && <ShopTab />}
+            {tab === "weather" && <WeatherTab />}
+            {tab === "achievements" && <AchievementsTab />}
+          </motion.div>
+        </AnimatePresence>
       </div>
     </div>
   );

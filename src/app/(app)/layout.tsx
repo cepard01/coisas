@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { useI18n } from "@/components/providers/I18nProvider";
@@ -33,21 +33,23 @@ export default function AppLayout({
   const { t } = useI18n();
   const { player, signIn, signOut, hydrated } = useAuth();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const currentTab = searchParams.get("tab") || "garden";
   const [authOpen, setAuthOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     setSidebarOpen(false);
-  }, [pathname]);
+  }, [pathname, searchParams]);
 
   const navItems = [
-    { href: "/panel", label: t.panel.dashboard.tabs.garden, icon: SproutIcon },
-    { href: "/panel?tab=wallet", label: t.panel.dashboard.tabs.wallet, icon: WalletIcon },
-    { href: "/panel?tab=missions", label: t.panel.dashboard.tabs.missions, icon: ListIcon },
-    { href: "/panel?tab=collection", label: t.panel.dashboard.tabs.collection, icon: BookIcon },
-    { href: "/panel?tab=shop", label: t.panel.dashboard.tabs.shop, icon: ShopIcon },
-    { href: "/panel?tab=weather", label: t.panel.dashboard.tabs.weather, icon: WeatherIcon },
-    { href: "/panel?tab=achievements", label: "Badges", icon: SparkIcon },
+    { href: "/panel", tab: "garden", label: t.panel.dashboard.tabs.garden, icon: SproutIcon },
+    { href: "/panel?tab=wallet", tab: "wallet", label: t.panel.dashboard.tabs.wallet, icon: WalletIcon },
+    { href: "/panel?tab=missions", tab: "missions", label: t.panel.dashboard.tabs.missions, icon: ListIcon },
+    { href: "/panel?tab=collection", tab: "collection", label: t.panel.dashboard.tabs.collection, icon: BookIcon },
+    { href: "/panel?tab=shop", tab: "shop", label: t.panel.dashboard.tabs.shop, icon: ShopIcon },
+    { href: "/panel?tab=weather", tab: "weather", label: t.panel.dashboard.tabs.weather, icon: WeatherIcon },
+    { href: "/panel?tab=achievements", tab: "achievements", label: "Badges", icon: SparkIcon },
   ];
 
   const accountItems = [
@@ -112,7 +114,7 @@ export default function AppLayout({
       <div className="flex-1 flex">
         {/* Sidebar — desktop */}
         <aside className="hidden lg:flex w-56 flex-col border-r border-border bg-card/50 p-3 sticky top-14 h-[calc(100vh-3.5rem)]">
-          <AppSidebar navItems={navItems} accountItems={accountItems} pathname={pathname} player={player} signOut={signOut} hydrated={hydrated} t={t} />
+          <AppSidebar navItems={navItems} accountItems={accountItems} pathname={pathname} currentTab={currentTab} player={player} signOut={signOut} hydrated={hydrated} t={t} />
         </aside>
 
         {/* Sidebar — mobile drawer */}
@@ -133,7 +135,7 @@ export default function AppLayout({
                 transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
                 className="lg:hidden fixed left-0 top-14 bottom-0 z-50 w-64 bg-card border-r border-border p-3 overflow-y-auto"
               >
-                <AppSidebar navItems={navItems} accountItems={accountItems} pathname={pathname} player={player} signOut={signOut} hydrated={hydrated} t={t} />
+                <AppSidebar navItems={navItems} accountItems={accountItems} pathname={pathname} currentTab={currentTab} player={player} signOut={signOut} hydrated={hydrated} t={t} />
               </motion.aside>
             </>
           )}
@@ -142,7 +144,7 @@ export default function AppLayout({
         {/* Main content */}
         <main className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8">
           <motion.div
-            key={pathname}
+            key={`${pathname}-${currentTab}`}
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
@@ -161,6 +163,7 @@ function AppSidebar({
   navItems,
   accountItems,
   pathname,
+  currentTab,
   player,
   signOut,
   hydrated,
@@ -169,6 +172,7 @@ function AppSidebar({
   navItems: any[];
   accountItems: any[];
   pathname: string;
+  currentTab: string;
   player: any;
   signOut: () => void;
   hydrated: boolean;
@@ -196,11 +200,11 @@ function AppSidebar({
         </p>
         {navItems.map((item) => {
           const Icon = item.icon;
-          const isActive = pathname === item.href.split("?")[0];
+          const isActive = pathname === "/panel" && currentTab === item.tab;
           return (
             <Link
               key={item.href}
-              href={item.href.split("?")[0]}
+              href={item.href}
               className={cn(
                 "w-full flex items-center gap-2.5 rounded-md px-2.5 py-1.5 text-sm transition-colors",
                 isActive

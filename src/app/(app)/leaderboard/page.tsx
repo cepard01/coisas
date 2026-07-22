@@ -1,11 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { PageHeader } from "@/components/layout/PageHeader";
+import { AppPageHeader } from "@/components/layout/AppPageHeader";
 import { Reveal } from "@/components/utils/Reveal";
 import { useI18n } from "@/components/providers/I18nProvider";
 import { cn } from "@/lib/utils";
-import { Breadcrumb } from "@/components/layout/Breadcrumb";
 
 type SortTab = "level" | "collection" | "mutations";
 
@@ -28,14 +27,8 @@ export default function LeaderboardPage() {
 
   return (
     <>
-      <Breadcrumb
-        items={[
-          { label: "Home", href: "/" },
-          { label: "Leaderboard" },
-        ]}
-      />
-      <PageHeader
-        number={lb.number}
+      <AppPageHeader
+        
         eyebrow={lb.eyebrow}
         title={
           <>

@@ -1,10 +1,9 @@
 "use client";
 
-import { PageHeader } from "@/components/layout/PageHeader";
+import { AppPageHeader } from "@/components/layout/AppPageHeader";
 import { Reveal } from "@/components/utils/Reveal";
 import { useI18n } from "@/components/providers/I18nProvider";
 import { cn } from "@/lib/utils";
-import { Breadcrumb } from "@/components/layout/Breadcrumb";
 
 export default function ChangelogPage() {
   const { t } = useI18n();
@@ -19,14 +18,8 @@ export default function ChangelogPage() {
 
   return (
     <>
-      <Breadcrumb
-        items={[
-          { label: "Home", href: "/" },
-          { label: "Changelog" },
-        ]}
-      />
-      <PageHeader
-        number={c.number}
+      <AppPageHeader
+        
         eyebrow={c.eyebrow}
         title={
           <>

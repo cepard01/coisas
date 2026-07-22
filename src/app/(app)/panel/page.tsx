@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/use-auth";
 import { useI18n } from "@/components/providers/I18nProvider";
 import { AuthModal } from "@/components/modals/AuthModal";
@@ -10,17 +11,28 @@ import { LockIcon, ArrowUpRightIcon } from "@/components/icons";
 
 type Tab = "garden" | "wallet" | "missions" | "collection" | "shop" | "weather" | "achievements";
 
+const VALID_TABS: Tab[] = ["garden", "wallet", "missions", "collection", "shop", "weather", "achievements"];
+
 export default function PanelPage() {
   const { player, signIn, hydrated } = useAuth();
   const { t } = useI18n();
   const [authOpen, setAuthOpen] = useState(false);
-  const [tab, setTab] = useState<Tab>("garden");
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  // Read tab from URL query param, default to "garden"
+  const tabParam = searchParams.get("tab") as Tab | null;
+  const tab: Tab = tabParam && VALID_TABS.includes(tabParam) ? tabParam : "garden";
+
+  const setTab = (newTab: Tab) => {
+    router.push(`/panel?tab=${newTab}`);
+  };
 
   return (
     <div className="max-w-6xl mx-auto">
       {hydrated && player ? (
         <Reveal>
-          <DashboardLayout tab={tab} onTab={setTab} player={player} />
+          <DashboardLayout tab={tab} player={player} />
         </Reveal>
       ) : (
         <LockedDashboard onSignIn={() => setAuthOpen(true)} />
@@ -65,11 +77,6 @@ function LockedDashboard({ onSignIn }: { onSignIn: () => void }) {
   const { t } = useI18n();
   return (
     <div className="relative rounded-xl border border-border bg-card overflow-hidden">
-      <div className="absolute inset-0 overflow-hidden" aria-hidden>
-        <div className="opacity-20 blur-md pointer-events-none select-none">
-          <DashboardLayout tab="garden" />
-        </div>
-      </div>
       <div className="relative grid place-items-center py-20 sm:py-28 px-6 text-center">
         <Reveal>
           <span className="grid place-items-center h-12 w-12 rounded-full border border-border mx-auto">
