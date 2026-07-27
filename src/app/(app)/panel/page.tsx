@@ -8,6 +8,7 @@ import { AuthModal } from "@/components/modals/AuthModal";
 import { Reveal } from "@/components/utils/Reveal";
 import { DashboardLayout } from "@/components/dashboard/Dashboard";
 import { LockIcon, ArrowUpRightIcon } from "@/components/icons";
+import { DashboardSkeleton } from "@/components/dashboard/Skeletons";
 
 type Tab = "garden" | "wallet" | "missions" | "collection" | "shop" | "weather" | "achievements";
 
@@ -34,12 +35,14 @@ export default function PanelPage() {
         <Reveal>
           <DashboardLayout tab={tab} player={player} />
         </Reveal>
-      ) : (
+      ) : hydrated && !player ? (
         <LockedDashboard onSignIn={() => setAuthOpen(true)} />
+      ) : (
+        <DashboardSkeleton />
       )}
 
       {/* What you can do — only when not logged in */}
-      {!hydrated || !player ? (
+      {hydrated && !player ? (
         <div className="mt-8">
           <Reveal>
             <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-sage font-semibold mb-4">

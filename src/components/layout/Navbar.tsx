@@ -92,7 +92,16 @@ export function Navbar() {
             <div className="hidden md:flex items-center gap-1.5">
               <button
                 onClick={() => {
-                  // Trigger Cmd+K programmatically
+                  window.dispatchEvent(new KeyboardEvent("keydown", { key: "?" }));
+                }}
+                className="grid place-items-center h-9 w-9 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
+                aria-label="Keyboard shortcuts (?)"
+                title="Keyboard shortcuts (?)"
+              >
+                <kbd className="font-mono text-xs">?</kbd>
+              </button>
+              <button
+                onClick={() => {
                   window.dispatchEvent(new KeyboardEvent("keydown", { key: "k", metaKey: true }));
                 }}
                 className="grid place-items-center h-9 px-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"

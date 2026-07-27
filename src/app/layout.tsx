@@ -8,6 +8,8 @@ import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { ScrollProgress } from "@/components/utils/Animations";
 import { CommandPalette } from "@/components/modals/CommandPalette";
 import { ToastProvider } from "@/components/providers/Toast";
+import { BackToTop } from "@/components/utils/BackToTop";
+import { KeyboardShortcuts } from "@/components/modals/KeyboardShortcuts";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -74,6 +76,8 @@ export default function RootLayout({
               <LangUpdater />
               <ScrollProgress />
               <CommandPalette />
+              <KeyboardShortcuts />
+              <BackToTop />
               {children}
               <Toaster />
             </ToastProvider>
