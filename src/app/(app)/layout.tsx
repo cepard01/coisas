@@ -23,6 +23,7 @@ import {
 } from "@/components/icons";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
+import { NotificationBell } from "@/components/layout/NotificationBell";
 import { cn } from "@/lib/utils";
 
 export default function AppLayout({
@@ -86,6 +87,7 @@ export default function AppLayout({
           <div className="flex items-center gap-1.5">
             <ThemeToggle />
             <LanguageSwitcher compact />
+            {hydrated && player && <NotificationBell />}
             <div className="w-px h-5 bg-border mx-0.5" />
             {hydrated && player ? (
               <div className="flex items-center gap-2 rounded-full border border-border bg-card pl-1 pr-2.5 py-1">

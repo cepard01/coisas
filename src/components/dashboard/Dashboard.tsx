@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useMemo, useRef } from "react";
 import { useI18n } from "@/components/providers/I18nProvider";
 import { useToast } from "@/components/providers/Toast";
+import { GardenHealth } from "@/components/dashboard/GardenHealth";
 import {
   SproutIcon,
   WalletIcon,
@@ -240,6 +241,16 @@ function GardenTab() {
         </div>
         <MiniStat icon={ClockIcon} label={g.nextReady} value={nextReady} />
         <MiniStat icon={SparkIcon} label={g.mutationHint} value="✓" />
+      </div>
+
+      {/* Garden health indicator */}
+      <div className="mb-7">
+        <GardenHealth
+          humidity={humidity}
+          weather={g.weather}
+          readyCount={1}
+          totalSlots={6}
+        />
       </div>
 
       <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground mb-3">
