@@ -5,6 +5,7 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import { useI18n } from "@/components/providers/I18nProvider";
 import { useToast } from "@/components/providers/Toast";
 import { GardenHealth } from "@/components/dashboard/GardenHealth";
+import { ConfirmDialog } from "@/components/modals/ConfirmDialog";
 import {
   SproutIcon,
   WalletIcon,
@@ -527,6 +528,7 @@ function WalletTab() {
     { emoji: "🤍", name: "White Rose", count: 2, price: 400, selected: 0 },
     { emoji: "🥕", name: "Carrot", count: 7, price: 50, selected: 0 },
   ]);
+  const [sellConfirm, setSellConfirm] = useState<{ index: number; emoji: string; name: string; price: number } | null>(null);
 
   const handleSell = (index: number) => {
     const item = sellItems[index];
@@ -536,6 +538,12 @@ function WalletTab() {
     ));
     setDisplayBalance((b) => b + item.price);
     toast(`Sold 1 ${item.name} for ${item.price} 🪙`, "success");
+  };
+
+  const confirmSell = () => {
+    if (!sellConfirm) return;
+    handleSell(sellConfirm.index);
+    setSellConfirm(null);
   };
 
   return (
@@ -573,7 +581,7 @@ function WalletTab() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => handleSell(i)}
+                onClick={() => item.count > 0 && setSellConfirm({ index: i, emoji: item.emoji, name: item.name, price: item.price })}
                 disabled={item.count <= 0}
                 className={cn(
                   "rounded-md px-2 py-1 text-[10px] font-medium transition-colors",
@@ -622,6 +630,19 @@ function WalletTab() {
           <TxRow key={i} {...tx} />
         ))}
       </div>
+
+      {/* Sell confirmation dialog */}
+      <ConfirmDialog
+        open={!!sellConfirm}
+        onClose={() => setSellConfirm(null)}
+        onConfirm={confirmSell}
+        title={`Sell ${sellConfirm?.name ?? ""}?`}
+        description={`You'll receive ${sellConfirm?.price ?? 0} Daisies for selling 1 ${sellConfirm?.name ?? ""}. This cannot be undone.`}
+        confirmLabel={`Sell for 🪙 ${sellConfirm?.price ?? 0}`}
+        cancelLabel="Keep"
+        emoji={sellConfirm?.emoji}
+        amount={`+${sellConfirm?.price ?? 0} 🪙`}
+      />
     </div>
   );
 }
